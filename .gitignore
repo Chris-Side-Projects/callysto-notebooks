@@ -8,6 +8,8 @@ dist/
 build/
 .next/
 .cache/
+*.tsbuildinfo
+.next/types/
 __pycache__/
 *.pyc
 .venv/

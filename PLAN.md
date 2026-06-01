@@ -80,17 +80,23 @@ Goal: Anyone can fork a notebook and run it on the platform.
 - Forked notebooks link back to the original (and vice versa — "N forks")
 - Diff view between a fork and its parent (cell-level changes)
 
-**Execution:**
-- Sandboxed per-run container (one container per execution, destroyed after)
-- Resource limits: CPU, RAM, time (e.g., 2 CPU, 4GB RAM, 5-min timeout)
-- Kernel support: Python 3 (default), R, Julia (later)
-- Users can modify cell inputs and re-run
-- Outputs saved to their fork, not the original
+**Execution — client-side first (Pyodide/WebAssembly):**
+- Notebooks run directly in the user's browser via **Pyodide** (CPython compiled to WASM)
+- Zero server-side compute cost — the user's machine does all the work
+- No data leaves the user's machine during execution
+- Scales to unlimited concurrent users for free
+- Supported: Python 3, NumPy, pandas, matplotlib, scikit-learn, SciPy, and most of the scientific Python stack
+- Not supported client-side: packages requiring native C extensions not in Pyodide, GPU compute, R, Julia (initially)
+- First load: ~20-40MB WASM bundle (cached by browser after first run)
+- Implementation: embed **JupyterLite** kernel or use Pyodide directly via `@pyodide/pyodide` npm package
+- Users can modify cell inputs and re-run; outputs saved to their fork
 
-**Infrastructure for execution:**
-- Docker containers with pre-built kernel images
-- Queue-based dispatch (don't run more than N concurrent executions)
-- Option: use Binder-compatible images (repo2docker) for dependency resolution
+**Execution — cloud fallback (v3+, optional):**
+- For notebooks flagged as "heavy" (GPU, non-Pyodide packages, R/Julia)
+- Sandboxed ephemeral containers (Docker + repo2docker)
+- Queue-based, resource-limited, time-limited
+- Only triggered when Pyodide can't handle the notebook's requirements
+- Requirement detection: parse `requirements.txt` / `environment.yml` / kernel metadata at upload time and flag incompatible packages
 
 ---
 
@@ -125,12 +131,13 @@ Candidates:
 
 ### Phase 3 additions (execution)
 
-| Layer | Choice |
-|-------|--------|
-| Execution containers | Docker + repo2docker |
-| Kernel management | Jupyter Server (headless) |
-| Queue | Redis + BullMQ |
-| Execution hosting | Railway or fly.io (ephemeral containers) |
+| Layer | Choice | Notes |
+|-------|--------|-------|
+| Client-side execution | Pyodide + JupyterLite | Runs in browser, zero infra cost |
+| WASM Python kernel | `@pyodide/pyodide` npm package | Loaded client-side, ~20-40MB cached |
+| Cloud fallback (heavy notebooks) | Docker + repo2docker | Only for GPU/non-Pyodide packages |
+| Cloud queue | Redis + BullMQ | Only needed if cloud fallback is enabled |
+| Cloud execution hosting | fly.io ephemeral containers | Cheaper than Railway for burst workloads |
 
 ---
 

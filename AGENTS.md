@@ -63,7 +63,8 @@ Do not build Phase 2 or 3 features until Phase 1 is complete.
 ## Key Technical Constraints
 
 - Notebook rendering is **build-time / upload-time only** — never re-executed at read time
-- Execution sandboxing is a **Phase 3 feature** — do not add it to Phase 1 code
+- Execution is **client-side via Pyodide** (Phase 3) — do not add server-side execution infrastructure to Phase 1 or 2
+- Cloud execution fallback is Phase 3+ and only for notebooks Pyodide can't handle
 - Auth must support: GitHub, Google, email magic link, ORCID
 - All notebook files (`.ipynb` + rendered HTML) live in **Cloudflare R2**, not the database
 - The database (PostgreSQL) holds only metadata, user data, comments, votes

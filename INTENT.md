@@ -38,7 +38,7 @@ The starting point is **reproducibility**: take a published study, rebuild its a
 
 4. **Fork** — Copy any notebook to your own profile and modify it. Run your version of the calculations. Publish your fork as a linked derivative.
 
-5. **Run** — Execute notebooks directly on the platform in a sandboxed environment. Modify inputs, rerun cells, explore variations — all without leaving Callysto.
+5. **Run** — Execute notebooks directly in your browser — no server required. Powered by Pyodide (Python compiled to WebAssembly), the full scientific Python stack runs on your machine. Modify inputs, rerun cells, explore variations. Nothing leaves your browser.
 
 6. **Vote** — Upvote notebooks and comments for visibility. The best rises, the noise sinks.
 

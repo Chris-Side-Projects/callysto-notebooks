@@ -1,116 +1,199 @@
 # PLAN.md - Callysto Notebooks
 
-*Architecture and phased roadmap. Update as decisions are made.*
+*Architecture and phased roadmap.*
 
-**Status:** Pre-build — awaiting Chris answers to open questions in INTENT.md
+**Status:** Pre-build — stack decided, starting Phase 0 completion.
 
 ---
 
-## Phase 0 — Foundation (now)
+## Phases
+
+### Phase 0 — Foundation *(now)*
 
 - [x] Domain: callysto.io (purchased 2026-06-01)
 - [x] GitHub: Chris-Side-Projects/callysto-notebooks
-- [ ] Decide stack (see Stack Decision below)
-- [ ] Decide core feature set for v1
-- [ ] Write DEVELOPER_NOTES.md once stack is chosen
-- [ ] Set up CI/CD skeleton
+- [x] INTENT.md, PLAN.md, TODO.md, CLAUDE.md, CODING.md
+- [ ] Finalize stack (see Stack section below)
+- [ ] Scaffold project structure
+- [ ] Set up CI/CD (GitHub Actions: lint + build + test)
+- [ ] Set up Railway project + PostgreSQL + R2
+- [ ] Write DEVELOPER_NOTES.md
+- [ ] Deploy empty shell to callysto.io
 
 ---
 
-## Phase 1 — MVP (read-only browsing)
+### Phase 1 — Read + Publish *(MVP)*
 
-Goal: Public can browse and view submitted notebooks. No auth required.
+Goal: Anyone can publish a notebook. Anyone can read it. No auth required to browse.
 
-Features:
-- Submit a notebook (paste GitHub URL or upload .ipynb)
-- Notebook stored and rendered statically
-- Browse by category / tag / date
-- Simple homepage with recent + featured
+**Submission methods (all three):**
+- Upload a `.ipynb` file directly
+- Paste a GitHub file URL (auto-fetched and stored)
+- Connect a GitHub repo via OAuth (auto-sync on push)
 
-Success metric: 10 real notebooks published by real people
+**Notebook rendering:**
+- Convert `.ipynb` → static HTML at upload time via `nbconvert`
+- Store raw `.ipynb` + rendered HTML in R2
+- Serve rendered HTML — no re-execution at read time
+- Metadata (title, author, tags, description, study link) in PostgreSQL
 
----
+**Auth:**
+- GitHub OAuth
+- Email/password (magic link or traditional)
+- Additional providers matching the researcher/technical audience:
+  - ORCID (the standard academic identity — critical for the reproducibility use case)
+  - Google OAuth
+  - Institutional SSO (SAML/ADFS) — Phase 3+
 
-## Phase 2 — Social layer
-
-Goal: Community can engage with notebooks.
-
-Features:
-- GitHub OAuth login
-- Comments on notebooks
-- Upvotes / quality signals
-- Notebook author profile pages
-- Forking (link derivative work back to original)
-
----
-
-## Phase 3 — Review layer
-
-Goal: Structured peer review, not just comments.
-
-Features:
-- Line-level annotation (like a code review)
-- Review status (needs-work / approved / under-review)
-- Version history with diffs
-- Citation links (notebook A references notebook B)
+**Success metric:** 10 real notebooks published by people other than Chris.
 
 ---
 
-## Phase 4 — Ecosystem
+### Phase 2 — Comment + Vote *(Social layer)*
 
-Goal: Become the canonical home for open executable analysis.
+Goal: Community can engage with notebooks at the cell level.
 
-Options (TBD):
-- Dataset hosting alongside notebooks
+**Comments:**
+- Inline cell-level comments (attach to a specific cell index)
+- Threaded replies
+- Markdown support in comments
+- Free-form, like a code review — no structured review form required
+
+**Voting:**
+- Upvote notebooks (HN-style, no downvotes initially)
+- Upvote individual comments
+- Ranked feeds: Recent / Top / Trending
+
+**Profiles:**
+- Public profile page per user
+- Notebook portfolio
+- Contribution history (comments, forks, published notebooks)
+
+---
+
+### Phase 3 — Fork + Run *(Execution layer)*
+
+Goal: Anyone can fork a notebook and run it on the platform.
+
+**Forking:**
+- Fork any notebook to your own profile
+- Forked notebooks link back to the original (and vice versa — "N forks")
+- Diff view between a fork and its parent (cell-level changes)
+
+**Execution:**
+- Sandboxed per-run container (one container per execution, destroyed after)
+- Resource limits: CPU, RAM, time (e.g., 2 CPU, 4GB RAM, 5-min timeout)
+- Kernel support: Python 3 (default), R, Julia (later)
+- Users can modify cell inputs and re-run
+- Outputs saved to their fork, not the original
+
+**Infrastructure for execution:**
+- Docker containers with pre-built kernel images
+- Queue-based dispatch (don't run more than N concurrent executions)
+- Option: use Binder-compatible images (repo2docker) for dependency resolution
+
+---
+
+### Phase 4 — Expand *(Ecosystem)*
+
+Goal: Become the canonical home for open executable analysis, beyond just notebooks.
+
+Candidates:
+- Dataset hosting alongside notebooks (link a dataset to a notebook)
 - Model cards / experiment tracking
-- Institutional pages (a lab or team's public notebook portfolio)
-- API for programmatic access / embedding
+- Institutional/lab pages (private workspaces for teams, universities)
+- Embeddable notebooks (drop a Callysto notebook into any webpage)
+- API for programmatic submission and retrieval
+- "Verified Replication" badge system (community-confirmed reproducibility)
 
 ---
 
-## Stack Decision (TBD)
+## Stack
 
-**Options under consideration:**
+### Decided
 
-| Layer | Option A | Option B |
-|-------|----------|----------|
-| Frontend | Next.js | SvelteKit |
-| Backend | FastAPI (Python) | Next.js API routes |
-| DB | PostgreSQL | SQLite → Postgres |
-| Notebook render | nbconvert static HTML | react-ipynb or similar |
-| Auth | NextAuth (GitHub) | Clerk |
-| Storage | R2 / S3 | Supabase storage |
-| Hosting | Railway | Vercel + Railway |
+| Layer | Choice | Rationale |
+|-------|--------|-----------|
+| Frontend | Next.js (TypeScript) | Matches existing projects, fast dev, SSR for SEO |
+| Backend | Next.js API routes + Python microservice for execution | API routes for CRUD; Python needed for nbconvert + Jupyter kernel |
+| Database | PostgreSQL (Railway) | Relational, handles notebooks + users + comments cleanly |
+| Object storage | Cloudflare R2 | Already have CF account, cheap, fast, S3-compatible |
+| Notebook rendering | nbconvert (Python) | Battle-tested, produces clean HTML from .ipynb |
+| Auth | NextAuth.js | GitHub + Google + email/magic-link; ORCID via custom provider |
+| Hosting | Railway | Consistent with other projects |
+| CDN | Cloudflare | Already managing callysto.io DNS |
 
-**Recommendation (pending Chris input):**
-Next.js + PostgreSQL + nbconvert for rendering + GitHub OAuth + R2 storage + Railway deploy.
-Rationale: matches existing stack patterns (xcap-hq, xcap-terminal), familiar tooling, fast to ship.
+### Phase 3 additions (execution)
 
----
-
-## Key Architectural Decisions
-
-### Notebook Rendering
-- Convert .ipynb → static HTML at upload time (via nbconvert)
-- Store rendered HTML in R2/S3
-- Serve directly — no re-execution
-- Rationale: security, speed, simplicity
-
-### Storage
-- Raw .ipynb files: object storage (R2)
-- Rendered HTML: object storage (R2)
-- Metadata (title, author, tags, stats): PostgreSQL
-- Comments/reviews: PostgreSQL
-
-### Auth
-- GitHub OAuth only for v1 (natural fit for the audience)
-- Expand later if needed
+| Layer | Choice |
+|-------|--------|
+| Execution containers | Docker + repo2docker |
+| Kernel management | Jupyter Server (headless) |
+| Queue | Redis + BullMQ |
+| Execution hosting | Railway or fly.io (ephemeral containers) |
 
 ---
 
-## Non-Goals (v1)
+## Data Model (v1)
 
-- In-browser notebook execution
-- Private/paid tiers
-- Mobile-native experience
-- Real-time collaboration
+```
+users
+  id, username, email, auth_provider, auth_provider_id
+  display_name, bio, avatar_url, created_at
+
+notebooks
+  id, slug, title, description, tags[]
+  owner_id (→ users), parent_notebook_id (→ notebooks, for forks)
+  study_url, study_title           -- link to original paper if applicable
+  ipynb_path (R2 key), html_path (R2 key)
+  kernel_language, kernel_name
+  cell_count, published_at, updated_at
+  vote_count, fork_count, comment_count, view_count
+  status: draft | published | unlisted
+
+comments
+  id, notebook_id (→ notebooks), cell_index (nullable — null = top-level)
+  parent_comment_id (→ comments, for threads)
+  author_id (→ users), body (markdown), created_at
+  vote_count, is_deleted
+
+votes
+  id, user_id, target_type (notebook|comment), target_id, created_at
+
+notebook_versions
+  id, notebook_id, version_num, ipynb_path, html_path, created_at, change_summary
+```
+
+---
+
+## URL Structure
+
+```
+callysto.io/                          homepage (recent + featured)
+callysto.io/explore                   browse all notebooks
+callysto.io/@username                 user profile
+callysto.io/@username/notebook-slug   notebook detail page
+callysto.io/@username/notebook-slug/fork   fork this notebook
+callysto.io/submit                    submit a notebook
+callysto.io/topics/statistics         tag/topic page
+```
+
+---
+
+## Open Source Strategy
+
+- Code is fully open source (MIT or Apache 2.0)
+- Hosted platform is free for individuals
+- Institutional plans later: private workspaces, team management, analytics
+- This follows the GitHub/GitLab/Posit model: open code, monetize the hosted service
+- Being open source is a trust signal for the scientific community — essential for the reproducibility use case
+
+---
+
+## Non-Goals (v1 + v2)
+
+- In-browser execution (v3 only)
+- Private notebooks (v1 is all-public)
+- Mobile-native app
+- Real-time collaborative editing (not a Google Docs replacement)
+- Replacing arXiv or peer review journals

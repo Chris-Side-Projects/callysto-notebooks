@@ -4,34 +4,57 @@
 
 ---
 
-## The Problem
+## The Core Idea
 
-Jupyter notebooks are the dominant medium for data analysis, research, and computational communication — but they have no native publishing or review layer.
+Science publishes results. Nobody checks the math.
 
-Today, sharing a notebook means:
-- Pasting a GitHub link (no commenting, no review workflow)
-- Uploading to nbviewer (read-only, no discussion)
-- Publishing a blog post (loses interactivity, loses reproducibility)
-- Submitting to arXiv (heavyweight, academic-only, no iteration)
+Published studies contain data analyses, statistical models, and computational claims — but the notebooks behind them are either not shared, shared as static PDFs, or dumped in a GitHub repo nobody ever opens. There is no standard place to:
 
-There is no place that is simultaneously:
-- Open and publicly browsable
-- Commentable and improvable by the community
-- Version-aware (the notebook can be updated, forks tracked)
-- Low-friction to submit
-
----
-
-## The Idea
+- Run the actual calculations yourself
+- See if the methodology holds up
+- Comment on a specific step
+- Propose a better approach
+- Fork and test a variation
 
 Callysto is that place.
 
-A notebook commons where:
-1. Anyone can publish a notebook
-2. Anyone can comment, suggest improvements, or fork
-3. Notebooks are versioned and linked (like a living document)
-4. Quality rises over time through community review
-5. The best analyses become canonical references
+---
+
+## What Callysto Is
+
+An open platform for publishing Jupyter notebooks — where every notebook is a living, executable, reviewable document.
+
+The starting point is **reproducibility**: take a published study, rebuild its analysis as a notebook, publish it on Callysto, and let the community run it, comment on it, fork it, and improve it. Over time, the best notebooks become canonical references — the kind of thing you cite alongside the original paper.
+
+---
+
+## Core User Flow
+
+1. **Publish** — Submit a notebook (upload .ipynb, paste GitHub URL, or connect a GitHub repo). Add title, description, tags, and link to the original study if applicable.
+
+2. **Read** — Anyone can browse and read notebooks, rendered clearly with outputs shown.
+
+3. **Comment** — Leave inline comments on specific cells, calculations, or outputs. Like a code review, but for analysis.
+
+4. **Fork** — Copy any notebook to your own profile and modify it. Run your version of the calculations. Publish your fork as a linked derivative.
+
+5. **Run** — Execute notebooks directly on the platform in a sandboxed environment. Modify inputs, rerun cells, explore variations — all without leaving Callysto.
+
+6. **Vote** — Upvote notebooks and comments for visibility. The best rises, the noise sinks.
+
+---
+
+## The Reproducibility Angle
+
+The primary use case at launch: **replicate the data science behind published studies**.
+
+This is valuable because:
+- Reproducibility failures in science are rampant and mostly invisible
+- Most researchers lack the time or tooling to audit others' analyses
+- Making replication easy and social changes the incentives
+- A "verified replication" badge on a notebook is genuinely meaningful signal
+
+Callysto doesn't need to solve all of science. It just needs to make one thing easy: *here is the analysis, run it yourself, tell me what you think.*
 
 ---
 
@@ -39,49 +62,53 @@ A notebook commons where:
 
 | Platform | What Callysto borrows |
 |----------|-----------------------|
-| GitHub | Versioning, forking, public profiles |
-| arXiv | Open publishing, citable, permanent |
+| GitHub | Public profiles, forking, version history |
+| arXiv | Open publishing, citable, permanent links |
 | Wikipedia | Collaborative improvement, community ownership |
-| Hacker News | Signal surfacing, community quality filter |
-| Jupyter | Execution format, rendering |
+| Hacker News | Voting, signal surfacing, quality filter |
+| Jupyter | Notebook format, execution |
+| Code Review | Inline cell-level comments, structured feedback |
 
 ---
 
 ## What It Is NOT
 
-- Not a notebook execution environment (no running code in-browser, at least initially)
-- Not a replacement for Jupyter/JupyterHub/Colab
-- Not a private/enterprise product (public-first)
-- Not an academic journal (no gatekeeping, low friction)
-- Not a blogging platform (notebooks are first-class, not embedded)
+- Not a Jupyter hosting service (you don't do your primary work here)
+- Not a replacement for JupyterHub, Colab, or Binder
+- Not a private tool (public-first; institutional private spaces come later)
+- Not a blogging platform (notebooks are first-class objects, not embedded content)
+- Not a journal (no gatekeeping, no editorial board, no paywalls)
 
 ---
 
 ## Who It's For
 
-**Primary:** Data scientists, researchers, analysts who want to share work and get feedback
+**Primary users:**
+- Data scientists who want to share work and get real feedback
+- Researchers who want to publish reproducible analyses alongside their papers
+- Analysts who want to replicate or challenge published findings
 
-**Secondary:** Learners who want to find high-quality, reviewed, executable analyses
+**Secondary users:**
+- Learners who want high-quality, reviewed, executable tutorials
+- Educators who want to assign or distribute interactive analyses
 
-**Tertiary:** Organizations that want their analytical work to be public and citable
+**Later:**
+- Research labs and universities who want institutional presence and private workspaces
 
 ---
 
 ## The Name
 
-Callysto — a variant of Callisto, one of Jupiter's Galilean moons. Jupiter's moons = Jupyter notebooks. Callisto is described as "the safest place in the Jovian system" and "geologically quiet" — fitting for a platform meant to be a stable, durable, reliable home for analyses.
+Callysto — variant spelling of Callisto, one of Jupiter's Galilean moons. Jupiter = Jupyter. Callisto is described as "the safest and most stable location in the Jovian system" and "the ideal site for a future human outpost." That's the vibe: a stable, permanent, trusted home for analytical work.
 
-The spelling variant (Callysto) keeps the sound, avoids direct trademark conflicts, and visually evokes words like catalyst, crystal, colab, and Jupyter.
+The spelling variant (Callysto) is more brandable — avoids trademark conflicts, visually evokes *catalyst*, *crystal*, *colab*, *Jupyter*. Easier to own as a brand long-term.
 
 ---
 
-## Open Questions (to resolve with Chris before building)
+## Principles
 
-- [ ] Notebook rendering: iframe embed vs full re-render vs static HTML export?
-- [ ] Execution: read-only only, or sandboxed execution later?
-- [ ] Auth: GitHub OAuth only, or broader?
-- [ ] Submission flow: paste URL, upload file, or GitHub-connected?
-- [ ] Review model: open comments, structured review, or both?
-- [ ] Monetization: none, optional donations, institutional plans?
-- [ ] Scope: notebooks only, or expand to datasets / models / scripts later?
-- [ ] Community model: fully open, or curated/moderated queue?
+1. **Executable first.** A notebook you can run is worth more than one you can only read.
+2. **Open by default.** Everything public unless explicitly private. The open web > walled gardens.
+3. **Reproducibility as a value.** Replicating someone's analysis is a contribution, not a critique.
+4. **Community signal over editorial gatekeeping.** Quality rises through votes and forks, not approval queues.
+5. **Long-term stability.** Notebooks should be citable forever. No link rot. No disappearing repos.

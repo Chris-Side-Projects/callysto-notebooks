@@ -1,51 +1,95 @@
 # TODO.md - Callysto Notebooks
 
-*Active task list. Update constantly.*
+*Single source of truth for active work. Update after every session.*
 
 ---
 
-## 🔴 Blocking (need Chris answers first)
+## 🔴 Active
 
-- [ ] Answer open questions in INTENT.md (rendering, auth, submission flow, monetization, scope)
-- [ ] Decide stack (see PLAN.md Stack Decision)
-- [ ] Decide v1 feature set (which Phase 1 features are truly MVP)
+*Nothing in progress yet.*
 
 ---
 
-## 🟡 Ready once stack decided
+## 🟡 Up Next (Phase 0 — Foundation)
 
-- [ ] Scaffold project (Next.js or chosen framework)
-- [ ] Set up Railway project + PostgreSQL
-- [ ] Configure R2 bucket for notebook storage
-- [ ] Set up GitHub Actions CI (lint + build)
-- [ ] Write DEVELOPER_NOTES.md (local dev setup, env vars, deploy steps)
-- [ ] Set up DNS: callysto.io → deployment
-
----
-
-## 🟢 Design / product (can start now)
-
-- [ ] Sketch wireframes for: homepage, notebook detail page, submit flow, profile page
-- [ ] Define data model: notebooks, users, comments, reviews, tags
-- [ ] Define submission UX: GitHub URL paste vs file upload vs GitHub App integration
-- [ ] Define notebook metadata schema (title, description, tags, language, dependencies)
-- [ ] Design URL structure: callysto.io/@username/notebook-slug
+- [ ] Scaffold Next.js project (`npx create-next-app@latest`)
+- [ ] Set up Railway project: app service + PostgreSQL add-on
+- [ ] Create R2 bucket: `callysto-notebooks`
+- [ ] Configure DNS: callysto.io → Railway deployment (Cloudflare)
+- [ ] Set up GitHub Actions: lint + build on push to main
+- [ ] Write DEVELOPER_NOTES.md (local dev setup, env vars, deploy)
+- [ ] Deploy empty shell (just homepage placeholder) to callysto.io
 
 ---
 
-## 📋 Backlog
+## 🟢 Backlog — Phase 1 (Read + Publish)
 
-- [ ] Logo / visual identity
-- [ ] Landing page (callysto.io pre-launch)
-- [ ] Email capture for early access / launch
-- [ ] Decide on open source vs closed source
-- [ ] License decision
-- [ ] Outreach plan (HN, data science communities, Twitter)
+### Notebook submission
+- [ ] Upload .ipynb file endpoint + R2 storage
+- [ ] GitHub URL fetch + store endpoint
+- [ ] GitHub OAuth repo connect (auto-sync)
+- [ ] nbconvert render pipeline (Python microservice or CLI step)
+- [ ] Notebook metadata form (title, description, tags, study link)
+- [ ] Draft / publish toggle
+
+### Auth
+- [ ] NextAuth setup: GitHub OAuth
+- [ ] NextAuth: Google OAuth
+- [ ] NextAuth: email magic link
+- [ ] ORCID OAuth provider (custom — ORCID uses OAuth 2.0)
+- [ ] User profile creation on first login
+
+### Browsing
+- [ ] Notebook detail page (render stored HTML)
+- [ ] Homepage: recent + featured notebooks
+- [ ] Explore page with filters (tag, language, date)
+- [ ] User profile page
+
+### Database
+- [ ] PostgreSQL schema (see PLAN.md data model)
+- [ ] Migration tooling (Drizzle ORM or Prisma)
+
+---
+
+## 🟢 Backlog — Phase 2 (Comments + Votes)
+
+- [ ] Inline cell-level comment system
+- [ ] Threaded replies
+- [ ] Markdown rendering in comments
+- [ ] Notebook upvotes
+- [ ] Comment upvotes
+- [ ] Ranked feeds (Recent / Top / Trending)
+- [ ] Notification system (reply to your comment, fork of your notebook)
+
+---
+
+## 🟢 Backlog — Phase 3 (Fork + Run)
+
+- [ ] Fork a notebook (copy + link back to parent)
+- [ ] Fork diff view (cell-level changes from parent)
+- [ ] Sandboxed execution container (Docker + Jupyter Server)
+- [ ] Execution queue (Redis + BullMQ)
+- [ ] Resource limits enforcement (CPU/RAM/timeout)
+- [ ] Python 3 kernel support
+- [ ] Save execution outputs to fork
+
+---
+
+## 📋 Design / Product
+
+- [ ] Wireframes: homepage, notebook detail, submit flow, profile, explore
+- [ ] Visual identity / logo (Callysto + moon motif)
+- [ ] Landing page copy (pre-launch)
+- [ ] Email capture for early access
 
 ---
 
 ## ✅ Done
 
-- [x] Purchase callysto.io domain (2026-06-01, GoDaddy, $59.99/yr)
+- [x] Purchase callysto.io (2026-06-01, GoDaddy, $59.99/yr, order #4101768411)
 - [x] Create GitHub repo: Chris-Side-Projects/callysto-notebooks (2026-06-01)
-- [x] Write INTENT.md, PLAN.md, TODO.md, CLAUDE.md, CODING.md
+- [x] Write INTENT.md, PLAN.md, TODO.md, CLAUDE.md, CODING.md, README.md
+- [x] Decide stack: Next.js + PostgreSQL + R2 + nbconvert + NextAuth + Railway
+- [x] Decide execution model: read-only v1, sandboxed execution v3
+- [x] Decide open source: yes (MIT/Apache 2.0)
+- [x] Decide monetization: free for individuals, institutional plans later

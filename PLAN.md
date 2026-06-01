@@ -197,6 +197,26 @@ callysto.io/topics/statistics         tag/topic page
 
 ---
 
+## AI Pipeline (data-backed)
+
+*Based on two agent tournaments run 2026-06-01. Full results: `docs/agent-tournament.md`.*
+
+| Role | Agent | Notes |
+|------|-------|-------|
+| Code generation (write tools) | **Claude Code** (`claude-opus-4-7`) | Only agent that shipped working code in both tournaments |
+| Code review | **Claude Code** | Most calibrated reviewer across all phases |
+| Plan / architecture | **Claude or Codex** (`gpt-5.5`) | Codex won plan phase in upgraded run; Claude wins on risk depth |
+| Second opinion on plans | **Codex** (`gpt-5.5`) | Flags different risks than Claude; useful for complex architectural decisions |
+| Grok Build | Not recommended (yet) | Terminal-echo failures in both runs; may need different invocation |
+| Gemini | Not recommended for implementation | Produced exploration logs, no builds, both runs |
+
+### What the upgrade data showed
+- Codex `gpt-5` → `gpt-5.5`: measurable improvement in plan quality (won plan vote in upgraded run)
+- Gemini `2.0-pro-exp` → `2.5-flash`: no measurable change for implementation tasks
+- Open question: Codex produced no build output in either run — likely CLI/timeout issue, not model capability
+
+---
+
 ## Non-Goals (v1 + v2)
 
 - In-browser execution (v3 only)

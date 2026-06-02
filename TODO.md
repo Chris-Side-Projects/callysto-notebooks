@@ -12,7 +12,7 @@
 
 ## 🟡 Up Next (Phase 0 — Foundation)
 
-- [ ] Scaffold Next.js project (`npx create-next-app@latest`)
+- [x] Scaffold Next.js project (`npx create-next-app@latest`)
 - [ ] Set up Railway project: app service + PostgreSQL add-on
 - [ ] Create R2 bucket: `callysto-notebooks`
 - [ ] Configure DNS: callysto.io → Railway deployment (Cloudflare)
@@ -93,3 +93,4 @@
 - [x] Decide execution model: read-only v1, sandboxed execution v3
 - [x] Decide open source: yes (MIT/Apache 2.0)
 - [x] Decide monetization: free for individuals, institutional plans later
+- [x] Scaffold Next.js app router project with TypeScript, Tailwind, Drizzle schema, and initial pages

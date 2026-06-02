@@ -3,14 +3,12 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-html,
 body {
-  background-color: theme("colors.ink.950");
-  color: theme("colors.moon.100");
-  -webkit-font-smoothing: antialiased;
+  background: #f8fafc;
+  color: #111827;
 }
 
 a {

@@ -197,18 +197,23 @@ callysto.io/topics/statistics         tag/topic page
 
 ---
 
-## Agent Pipeline (from Tournament 2026-06-02)
+## AI Pipeline (data-backed)
 
-Based on a 4-agent tournament (Claude, Codex, Gemini, Grok) on Task 1 (Vote Button):
+*Based on two agent tournaments run 2026-06-01. Full results: `docs/agent-tournament.md`.*
 
-| Role | Recommended Agent | Notes |
-|------|-------------------|-------|
-| Planning | Codex (gpt-5.5) or Claude | Codex edges Claude on planning with upgraded models |
-| Building | **Claude** | Won build in both baseline and upgraded rounds |
-| QA / Review | Multi-agent panel | Majority vote; catches more issues than single reviewer |
+| Role | Agent | Notes |
+|------|-------|-------|
+| Code generation (write tools) | **Claude Code** (`claude-opus-4-7`) | Only agent that shipped working code in both tournaments |
+| Code review | **Claude Code** | Most calibrated reviewer across all phases |
+| Plan / architecture | **Claude or Codex** (`gpt-5.5`) | Codex won plan phase in upgraded run; Claude wins on risk depth |
+| Second opinion on plans | **Codex** (`gpt-5.5`) | Flags different risks than Claude; useful for complex architectural decisions |
+| Grok Build | Not recommended (yet) | Terminal-echo failures in both runs; may need different invocation |
+| Gemini | Not recommended for implementation | Produced exploration logs, no builds, both runs |
 
-Common risk: mock data vs. real DB wiring. Always specify in task specs.
-Full results: `docs/agent-tournament.md`
+### What the upgrade data showed
+- Codex `gpt-5` → `gpt-5.5`: measurable improvement in plan quality (won plan vote in upgraded run)
+- Gemini `2.0-pro-exp` → `2.5-flash`: no measurable change for implementation tasks
+- Open question: Codex produced no build output in either run — likely CLI/timeout issue, not model capability
 
 ---
 

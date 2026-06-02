@@ -1,84 +1,101 @@
-import Link from "next/link";
-import { NotebookCard } from "@/components/NotebookCard";
-import { mockNotebooks } from "@/lib/mock-data";
+import { NotebookCard, type NotebookCardProps } from "@/components/NotebookCard";
+
+const recentNotebooks: NotebookCardProps[] = [
+  {
+    author: "mira",
+    commentCount: 8,
+    description:
+      "A reproducible look at confidence intervals, sampling assumptions, and sensitivity checks from a published education study.",
+    forkCount: 3,
+    href: "/@mira/replicating-classroom-outcomes",
+    language: "Python",
+    publishedAt: "Today",
+    tags: ["education", "statistics", "replication"],
+    title: "Replicating Classroom Outcomes",
+    voteCount: 42
+  },
+  {
+    author: "arden",
+    commentCount: 5,
+    description:
+      "Notebook walkthrough for cleaning public air-quality data and testing whether the headline trend survives alternate filters.",
+    forkCount: 2,
+    href: "/@arden/air-quality-trend-audit",
+    language: "Python",
+    publishedAt: "Yesterday",
+    tags: ["climate", "pandas", "audit"],
+    title: "Air Quality Trend Audit",
+    voteCount: 31
+  },
+  {
+    author: "jlee",
+    commentCount: 12,
+    description:
+      "A cell-by-cell review of the regression model behind a nutrition paper, including model diagnostics and robustness checks.",
+    forkCount: 6,
+    href: "/@jlee/nutrition-regression-review",
+    language: "R",
+    publishedAt: "May 30",
+    tags: ["health", "regression", "review"],
+    title: "Nutrition Regression Review",
+    voteCount: 57
+  }
+];
 
 export default function HomePage() {
   return (
-    <>
-      {/* Hero */}
-      <section className="border-b border-ink-800">
+    <div>
+      <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-accent-500">
+            <p className="text-sm font-semibold uppercase tracking-wide text-signal">
               Reproducible notebooks for open science
             </p>
-            <h1 className="mt-4 max-w-3xl text-5xl font-semibold tracking-tight text-moon-50">
-              Publish the analysis.{" "}
-              <span className="text-accent-500">Review the methods.</span>{" "}
-              Improve the result.
+            <h1 className="mt-4 max-w-3xl text-5xl font-semibold tracking-tight text-ink">
+              Publish the analysis, review the methods, improve the result.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-500">
-              Callysto is a public home for Jupyter notebooks behind studies,
-              audits, and data-driven claims. Read rendered notebooks, discuss
-              specific cells, fork and run analyses in your browser — no server
-              required.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+              Callysto is a public home for Jupyter notebooks behind studies, audits, and
+              data-driven claims. Read rendered notebooks, discuss specific cells, and build a
+              durable record of reproducible work.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/submit"
-                className="rounded-md bg-accent-500 px-5 py-2.5 text-sm font-semibold text-ink-950 hover:bg-accent-600 transition-colors"
-              >
+              <a href="/submit" className="rounded-md bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
                 Submit a notebook
-              </Link>
-              <Link
-                href="/explore"
-                className="rounded-md border border-ink-700 px-5 py-2.5 text-sm font-semibold text-moon-100 hover:bg-ink-800 transition-colors"
-              >
-                Browse all
-              </Link>
+              </a>
+              <a href="#recent" className="rounded-md border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+                Browse recent
+              </a>
             </div>
           </div>
-
-          {/* Code preview panel */}
-          <div className="rounded-lg border border-ink-700 bg-ink-900 p-5">
-            <div className="rounded-md bg-ink-800 p-4 font-mono text-sm leading-7 text-moon-200 shadow-sm">
-              <p className="text-ink-500">In [12]:</p>
-              <p className="text-moon-100">model = sm.OLS(outcome, predictors).fit()</p>
-              <p className="text-moon-100">model.summary()</p>
-              <div className="mt-4 rounded border border-ink-700 bg-ink-950 p-3 font-sans text-sm text-ink-500">
-                R-squared: 0.68 · p-value: 0.014 ·{" "}
-                <span className="text-accent-500">3 review threads</span>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-5">
+            <div className="rounded-md bg-white p-4 font-mono text-sm leading-7 text-slate-700 shadow-sm">
+              <p className="text-slate-400">In [12]:</p>
+              <p>model = sm.OLS(outcome, predictors).fit()</p>
+              <p>model.summary()</p>
+              <div className="mt-4 rounded border border-slate-200 bg-paper p-3 font-sans text-sm text-slate-600">
+                R-squared: 0.68 · p-value: 0.014 · 3 review threads
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Recent notebooks */}
       <section id="recent" className="mx-auto max-w-6xl px-6 py-14">
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-moon-100">
-              Recent Notebooks
-            </h2>
-            <p className="mt-1 text-sm text-ink-500">
+            <h2 className="text-2xl font-semibold tracking-tight">Recent Notebooks</h2>
+            <p className="mt-2 text-sm text-slate-600">
               Freshly published analyses ready for review.
             </p>
           </div>
-          <Link href="/explore" className="text-sm text-ink-500 hover:text-moon-100">
-            Browse all →
-          </Link>
         </div>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {mockNotebooks.map((nb) => (
-            <NotebookCard
-              key={`${nb.owner.username}/${nb.slug}`}
-              notebook={nb}
-            />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {recentNotebooks.map((notebook) => (
+            <NotebookCard key={notebook.href} {...notebook} />
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

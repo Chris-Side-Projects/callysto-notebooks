@@ -197,6 +197,21 @@ callysto.io/topics/statistics         tag/topic page
 
 ---
 
+## Agent Pipeline (from Tournament 2026-06-02)
+
+Based on a 4-agent tournament (Claude, Codex, Gemini, Grok) on Task 1 (Vote Button):
+
+| Role | Recommended Agent | Notes |
+|------|-------------------|-------|
+| Planning | Codex (gpt-5.5) or Claude | Codex edges Claude on planning with upgraded models |
+| Building | **Claude** | Won build in both baseline and upgraded rounds |
+| QA / Review | Multi-agent panel | Majority vote; catches more issues than single reviewer |
+
+Common risk: mock data vs. real DB wiring. Always specify in task specs.
+Full results: `docs/agent-tournament.md`
+
+---
+
 ## Non-Goals (v1 + v2)
 
 - In-browser execution (v3 only)

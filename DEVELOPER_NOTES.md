@@ -38,7 +38,7 @@ The scaffold is locally green raw material, not a working MVP.
 | `npm run docs:check` | Pass across 27 Markdown files. | Local links/required docs/trailing whitespace checks pass. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect is repaired. |
 | Browser suites | Pass locally in development and CI-equivalent production modes: 2 E2E, 6 Chromium/Firefox header, 4 axe smoke tests. | This is an application-shell baseline, not the T003 cross-origin hostile-output proof or manual accessibility certification. |
-| GitHub Actions | Fixed Ubuntu 24.04, SHA-pinned actions, runtime assertions, and production browser serving are configured; workflow not run. | Hosted Linux evidence is pending commit/push authorization. |
+| GitHub Actions | Pass on Ubuntu 24.04 for baseline commit `558a4cb`; SHA-pinned actions, runtime assertions, strict install, core gate, and production browser suites ran in workflow `29780426457`. | T002 hosted evidence is complete; draft PR #1 still needs repository review/merge. |
 | Database migrations/product APIs/auth/storage | Absent. | Product implementation has not started and is not implied by the green scaffold. |
 | Staging/production | No evidence. | Do not infer deployment from the domain or README. |
 

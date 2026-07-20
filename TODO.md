@@ -48,7 +48,7 @@ Completion evidence:
 | ID | Work item | Dependency | Done when |
 |---|---|---|---|
 | T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T002 **IN PROGRESS — LOCAL ACCEPTANCE PASS** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, and development/production-mode browser suites pass locally; only committed Linux CI execution remains. |
+| T002 **COMPLETE — LOCAL + HOSTED CI 2026-07-20** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, browser suites, and the Ubuntu 24.04 workflow pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
 | T003 **PARTIAL LOCAL PROOF** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | Application headers and a header test exist; real two-origin hostile-browser/capability/expiry/restriction proof remains. |
 | T004 **PARTIAL LOCAL PROOF** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | Local converter/vector/SQLite cases pass; PostgreSQL and deployed egress/secret/sentinel evidence remain. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
 | T005 | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | 6–10 participants/8 notebooks have source-workflow evidence; decision and affected docs are reconciled before ingestion code. |
@@ -74,7 +74,7 @@ Resolved locally:
 
 Still open:
 
-- committed Linux GitHub Actions evidence for T002;
+- review/merge of draft PR [#1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1); T002 acceptance evidence itself is complete;
 - real content-origin/capability isolation and deployed converter/egress proof;
 - migrations, application APIs, authentication, storage, staging, production, and provider evidence;
 - cohort/source choice and legal/policy ownership.

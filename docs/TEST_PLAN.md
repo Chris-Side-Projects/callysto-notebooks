@@ -3,7 +3,7 @@
 - Status: **APPROVED VALIDATION CONTRACT — M0 HARNESS ACTIVE**
 - Scope: invite-only publishing pilot
 - Requirement sources: `PRODUCT_SPEC.md`, `UX_SPEC.md`, `ARCHITECTURE.md`, `docs/SECURITY.md`
-- Current implementation status: local core and application-shell browser harnesses pass; hosted Linux CI, PostgreSQL, staging, content-isolation, and provider suites remain
+- Current implementation status: local and hosted Linux core/application-shell browser harnesses pass; PostgreSQL, staging, content-isolation, and provider suites remain
 
 ## 1. Test objective
 

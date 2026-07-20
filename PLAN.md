@@ -112,9 +112,9 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 
 - M0.1: complete; D001-D024 and M0 authorization are recorded.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
-- M0.3/M0.4: local core passes with a strict clean install, exact Node/npm, audits, static checks,
-  unit/integration/exact-Python/vector/docs checks, build, and development/production-mode browser
-  baselines. Only committed Linux CI remains open.
+- M0.3/M0.4: complete on draft PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
+  Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
+  baselines.
 - M0.5: application headers only; the real two-origin capability/isolation/revocation proof is open.
 - M0.6: exact cell-ID/default-deny conversion/SQLite fencing proof passes locally; PostgreSQL and
   deployed secret/egress/sentinel evidence remain open.

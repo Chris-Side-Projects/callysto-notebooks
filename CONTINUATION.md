@@ -1,9 +1,11 @@
 # Callysto continuation handoff
 
 - Handoff prepared: **2026-07-20**
-- Branch: `main`
+- Branch: `agent/m0-baseline`
 - Starting commit: `e8237479a79f3188263f17fe2e9ed69348a3c646`
-- Worktree: **uncommitted Milestone 0 changes; preserve them**
+- Baseline commit: `558a4cbd74e1ed02be7c0691220a5c64f8572cd5`
+- Draft PR: [#1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1)
+- Worktree: **committed Milestone 0 branch; preserve it and inspect status before new work**
 - Authorized scope: **Milestone 0 / T001-T010 only**
 - Product milestones M1-M8: **not authorized**
 
@@ -11,10 +13,10 @@
 
 When the owner says **“let's continue”**, resume in
 `/Users/christelles/Documents/Coding/EdTech/callysto-notebooks`, read this file and
-[`TODO.md`](./TODO.md), inspect `git status`, and continue T002. Do not reset, clean, checkout, or
-discard the uncommitted worktree. The changes are the approved specification rewrite plus the first
-Milestone 0 implementation sessions; no commit was requested or created. T002 now has complete local
-macOS evidence and is waiting only for an intentionally committed/pushed Linux GitHub Actions run.
+[`TODO.md`](./TODO.md), inspect `git status` and draft PR #1, and preserve any later work. T001/T002
+and the approved specification/mockup baseline are committed and pushed. The Ubuntu 24.04 workflow
+passed; repository review/merge is the next boundary. Do not stack T003 onto this branch before the
+baseline lands.
 
 ## Why this project exists
 
@@ -55,7 +57,7 @@ target notebooks already have a suitable GitHub workflow.
 Why: the original scaffold could not build and advertised votes, forks, auth, upload, and rendering
 behavior that the approved pilot either removed or has not implemented.
 
-### T002 tooling baseline — local acceptance green; hosted CI pending
+### T002 tooling baseline — complete locally and in hosted CI
 
 - Pinned Node `24.18.0`, npm `11.16.0`, Python `3.14.6`, and exact JavaScript dependencies.
 - Upgraded Next to `16.2.10`, React to `19.2.7`, Drizzle ORM to `0.45.2`, added Drizzle Kit, and
@@ -73,6 +75,8 @@ behavior that the approved pilot either removed or has not implemented.
   returned 404, and one homepage prompt had only 2.56:1 contrast.
 - Documented the four accepted moderate development-only findings under Drizzle Kit. The production
   dependency tree has zero findings at moderate or higher.
+- Baseline commit `558a4cb` passed the complete Ubuntu 24.04 `verify` workflow in 1m26s on draft PR
+  #1.
 
 Why: future product work needs a reproducible, enforceable gate; a passing build on one machine is
 not enough, and dependency install scripts are a supply-chain boundary.
@@ -125,7 +129,8 @@ Environment labels matter:
   Chromium E2E tests, 6 exact header tests across Chromium/Firefox, and 4 Chromium axe smoke tests.
 - The axe result is an automated serious/critical smoke baseline through WCAG 2.2 tags, not a claim
   of full WCAG conformance; manual accessibility evidence remains required.
-- GitHub Actions: workflow exists, **not run** because this worktree is uncommitted/unpushed.
+- GitHub Actions: **pass** for baseline commit `558a4cb` in
+  [workflow run 29780426457](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29780426457).
 - Staging/production/provider/real-user evidence: **none**.
 
 Detailed local evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md) and
@@ -133,11 +138,10 @@ Detailed local evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.
 
 ## Exact next sequence and why
 
-1. **Commit/push the approved work and run the GitHub workflow.** The owner authorized commit/push on
-   2026-07-20. Linux, exact Python, action SHA, and strict install-script behavior are not CI-proven
-   until the workflow passes.
-2. **Build T003 as a real two-origin proof after T002 closes.** Add the app-owned cell shell,
-   cookieless output server,
+1. **Review and merge draft PR #1 when the owner is satisfied.** Merge is not implied by approval to
+   commit/push and remains a separate repository action.
+2. **After the baseline lands, build T003 as a real two-origin proof on a new branch.** Add the
+   app-owned cell shell, cookieless output server,
    signed short capabilities, hostile fixtures, two-browser isolation, expiry/lazy-refresh, no-store,
    and ≤60-second restriction evidence. Current app headers alone do not complete T003.
 3. **Port T004 semantics to PostgreSQL/deployment.** Prove DB-clock leases, `SKIP LOCKED`, concurrent
@@ -184,5 +188,9 @@ specific M0 task requires them.
 - Temporary runtimes and browser binaries are under `/private/tmp` and may disappear on restart;
   their exact URLs/checksums are encoded in `scripts/bootstrap-macos-arm64-runtimes.sh`, not treated
   as hidden project inputs.
-- No secrets, credentials, migrations, provider configuration, commit, push, deployment, or external
-  outreach occurred.
+- GitHub CLI authentication was refreshed in the local keyring; no token or credential is stored in
+  the repository or documentation.
+- Baseline commit `558a4cb` was pushed and draft PR #1 was opened. No merge, deployment, migration,
+  provider configuration, public launch, or external outreach occurred.
+- The pre-final-check ignored `.next` cache was moved intact to
+  `/private/tmp/callysto-next-cache-20260720-172458`; it is disposable and not part of the project.

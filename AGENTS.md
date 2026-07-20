@@ -126,12 +126,12 @@ A task is complete only when:
 
 As of 2026-07-20:
 
-- T001 route/configuration repair and the local T002 acceptance gate pass;
+- T001 route/configuration repair and the complete local/hosted T002 acceptance gate pass on draft PR #1;
 - a strict clean install and production audit pass; four documented moderate development-only Drizzle Kit findings remain;
 - unit, repository-contract, exact-Python proof, cell-ID vector, documentation, typecheck, lint, and production-build checks pass locally;
-- local development and production-server browser baselines pass; the hardened SHA-pinned hosted CI
-  workflow has not run because the worktree is uncommitted/unpushed;
+- local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
+  workflow pass for baseline commit `558a4cb`;
 - migrations, product APIs, real auth/storage/rendering, staging, and deployment evidence are absent;
-- `CONTINUATION.md` is the restart authority for the uncommitted worktree and exact next step.
+- `CONTINUATION.md` is the restart authority for the pull-request branch and exact next step.
 
 Repair these through approved Milestone 0 tasks. Never hide them by lowering checks.

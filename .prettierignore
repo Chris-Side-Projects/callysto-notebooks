@@ -1,0 +1,8 @@
+.next/
+node_modules/
+playwright-report/
+test-results/
+*.md
+docs/
+work/
+package-lock.json

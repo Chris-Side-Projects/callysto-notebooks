@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product demonstration · Desktop notebook review · Callysto</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#notebook">Skip to notebook</a>
+    <a class="skip-link" href="#review-panel" style="left: 180px">Skip to review panel</a>
+
+    <div class="demo-banner" role="note" aria-label="Demonstration notice">
+      <div class="demo-banner__inner">
+        <strong>Product demonstration</strong>
+        All notebook content, identities, metadata, and discussion below are static interface examples.
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="wordmark" href="index.html">Callysto</a>
+        <nav class="primary-nav" aria-label="Static product navigation preview">
+          <span class="static-nav-item" aria-disabled="true">Explore</span>
+          <a href="#trust">What Callysto checks</a>
+          <span class="static-nav-item" aria-disabled="true">Sign in</span>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Mockup set</a><span aria-hidden="true">/</span>
+        <span>Demo Publisher</span><span aria-hidden="true">/</span>
+        <span>classroom-outcomes</span><span aria-hidden="true">/</span>
+        <span aria-current="page">Version 2</span>
+      </nav>
+
+      <header class="notebook-head" id="metadata">
+        <span class="demo-pill">Product demonstration</span>
+        <h1>Checking whether a classroom-outcomes claim survives alternate specifications</h1>
+        <p class="lede">
+          A demonstration notebook that compares the reported effect under three preprocessing and model choices.
+          It is not a real study or scientific claim.
+        </p>
+
+        <section class="review-question" aria-labelledby="review-question-heading">
+          <span class="eyebrow" id="review-question-heading">Question for reviewers</span>
+          <p>Does the sensitivity analysis separate the effect of missing-data handling from the model specification?</p>
+        </section>
+
+        <div id="trust" class="trust-note" role="note">
+          <span class="trust-mark" aria-hidden="true">i</span>
+          <span><strong>Static render.</strong> Callysto did not run or verify this demonstration analysis.</span>
+        </div>
+
+        <div class="provenance" aria-label="Essential provenance">
+          <span><strong>Owner</strong> Demo Publisher</span>
+          <span><strong>Version</strong> 2</span>
+          <span><strong>Source</strong> Demonstration report</span>
+          <span><strong>License</strong> CC BY 4.0 demo</span>
+          <span><strong>Published</strong> Demonstration date</span>
+        </div>
+
+        <details class="technical-details">
+          <summary>Technical details</summary>
+          <dl>
+            <dt>Source digest</dt>
+            <dd class="mono">demo:9fb1…7a20</dd>
+            <dt>Renderer</dt>
+            <dd>Callysto demonstration policy 0.1</dd>
+            <dt>Kernel metadata</dt>
+            <dd>Python 3, author-supplied metadata</dd>
+            <dt>Format</dt>
+            <dd>Jupyter notebook format 4.5 demonstration</dd>
+            <dt>Cell anchors</dt>
+            <dd>Stable demonstration IDs are shown only to illustrate placement.</dd>
+          </dl>
+        </details>
+      </header>
+
+      <div class="content-grid">
+        <article id="notebook" class="notebook-document" aria-label="Product demonstration notebook">
+          <div class="document-tools">
+            <div class="document-tools__left">
+              <details class="outline-control">
+                <summary>Notebook outline</summary>
+                <ol>
+                  <li><a href="#cell-intro">Purpose and assumptions</a></li>
+                  <li><a href="#cell-model">Sensitivity model</a></li>
+                  <li><a href="#cell-output">Comparison output</a></li>
+                </ol>
+              </details>
+              <a href="#cell-model">Next open thread</a>
+            </div>
+            <div class="document-tools__right version-control">
+              <label for="version-select">Version</label>
+              <select id="version-select" aria-label="Static notebook version preview" disabled>
+                <option>2 · demonstration current</option>
+                <option>1 · demonstration prior</option>
+              </select>
+            </div>
+          </div>
+
+          <section id="cell-intro" class="cell" aria-labelledby="cell-intro-label">
+            <div class="cell__head">
+              <span id="cell-intro-label" class="cell__label">Purpose · Markdown cell 1</span>
+              <a class="discuss-link" href="#review-panel">Discuss this cell</a>
+            </div>
+            <div class="cell__body">
+              <h2>Sensitivity analysis</h2>
+              <p>
+                This demonstration compares a complete-case estimate with two imputation strategies.
+                The saved values below exist only to show notebook and review hierarchy.
+              </p>
+            </div>
+          </section>
+
+          <section id="cell-model" class="cell cell--selected" aria-labelledby="cell-model-label">
+            <div class="cell__head">
+              <div>
+                <span id="cell-model-label" class="cell__label">Methods · code cell 14</span>
+                <span class="cell__marker">Demonstration thread</span>
+              </div>
+              <a class="discuss-link" href="#thread-cell-14" aria-current="location">Viewing discussion</a>
+            </div>
+            <div class="cell__body">
+              <pre aria-label="Demonstration Python code"><code>models = {
+    "complete_case": fit_model(df.dropna()),
+    "median_impute": fit_model(impute_median(df)),
+    "group_impute": fit_model(impute_by_group(df)),
+}
+compare_effects(models)</code></pre>
+            </div>
+          </section>
+
+          <section id="cell-output" class="cell" aria-labelledby="cell-output-label">
+            <div class="cell__head">
+              <span id="cell-output-label" class="cell__label">Results · output for code cell 14</span>
+              <a class="discuss-link" href="#review-panel">Discuss this cell</a>
+            </div>
+            <div class="cell__body">
+              <p><strong>Demonstration output:</strong> estimated effects by preprocessing choice.</p>
+              <div class="output-frame-wrap">
+                <div class="output-frame-label">
+                  <span>Isolated rich output</span>
+                  <span>Author-supplied content boundary</span>
+                </div>
+                <iframe
+                  class="output-frame"
+                  sandbox=""
+                  title="Product demonstration isolated comparison table"
+                  srcdoc='<!doctype html><html lang="en"><head><meta charset="utf-8"><style>body{margin:0;padding:18px;font:14px Arial,sans-serif;color:#171a1c;background:#fff}table{width:100%;border-collapse:collapse}caption{text-align:left;font-weight:bold;margin-bottom:10px}th,td{text-align:left;border-bottom:1px solid #d9dddf;padding:9px}th{background:#f7f7f4}.note{margin-top:12px;color:#687178;font-size:12px}</style></head><body><table><caption>Product demonstration output</caption><thead><tr><th>Model</th><th>Effect</th><th>Interval</th></tr></thead><tbody><tr><td>Complete case</td><td>0.21</td><td>0.08–0.34</td></tr><tr><td>Median impute</td><td>0.17</td><td>0.04–0.30</td></tr><tr><td>Group impute</td><td>0.18</td><td>0.05–0.31</td></tr></tbody></table><p class="note">Illustrative numbers only. Not production or scientific evidence.</p></body></html>'
+                ></iframe>
+                <p class="output-fallback">
+                  Plain-language fallback: the three illustrative estimates are similar, with the complete-case estimate slightly higher.
+                </p>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <aside id="review-panel" class="review-rail" aria-labelledby="review-heading">
+          <div class="review-rail__head">
+            <span class="eyebrow">Contextual review</span>
+            <h2 id="review-heading">Methods · code cell 14</h2>
+            <p class="review-context">Version 2 · demo cell ID cly_demo14</p>
+          </div>
+
+          <section id="thread-cell-14" class="thread" aria-labelledby="thread-heading">
+            <div class="thread__meta">
+              <div class="identity">
+                <span class="avatar" aria-hidden="true">DR</span>
+                <span><strong id="thread-heading">Demo Reviewer</strong><small>Demonstration identity</small></span>
+              </div>
+              <span class="state-pill state-addressed">Owner addressed</span>
+            </div>
+            <div class="thread__body">
+              <p>
+                Can the notebook show whether the group-imputation result changes when the grouping variable is excluded from the final model?
+              </p>
+              <time datetime="2026-01-01">Demonstration time</time>
+
+              <div class="reply">
+                <div class="identity">
+                  <span class="avatar" aria-hidden="true">DP</span>
+                  <span><strong>Demo Publisher</strong><small>Notebook owner</small></span>
+                </div>
+                <p>
+                  Addressed in the demonstration revision: the alternate specification is now shown after this cell.
+                </p>
+                <a href="#metadata">Addressed in this demonstration version</a>
+              </div>
+            </div>
+            <div class="thread__actions" aria-label="Demonstration thread actions">
+              <button type="button" disabled>Resolve thread · static</button>
+              <a class="button" href="#thread-cell-14">Thread permalink</a>
+              <button class="text-action" type="button" disabled>Report · static</button>
+            </div>
+          </section>
+
+          <div class="composer">
+            <label for="reply-demo">Reply to this demonstration thread</label>
+            <textarea id="reply-demo" placeholder="Static composer preview" readonly aria-describedby="desktop-static-note"></textarea>
+            <div class="composer__actions">
+              <button class="button-primary" type="button" disabled>Post reply · static</button>
+              <button type="button" disabled>Cancel · static</button>
+            </div>
+            <p class="mockup-note" id="desktop-static-note">Static mockup. Product mutation controls are disabled; text is not saved or submitted.</p>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>

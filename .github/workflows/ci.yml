@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version-file: .python-version
+
+      - name: Verify pinned runtimes
+        run: |
+          test "$(node --version)" = "v$(cat .node-version)"
+          test "$(npm --version)" = "$(node -p 'require("./package.json").packageManager.split("@").pop()')"
+          test "$(python --version 2>&1)" = "Python $(cat .python-version)"
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Audit production dependency tree
+        run: npm run audit:prod
+
+      - name: Audit full dependency tree
+        run: npm run audit:all
+
+      - name: Run static, unit, integration, Python, docs, and build checks
+        run: npm run check
+
+      - name: Install browser dependencies
+        run: npm run browser:install -- --with-deps
+
+      - name: Run browser baseline
+        run: npm run test:e2e
+
+      - name: Run security-header baseline
+        run: npm run test:security
+
+      - name: Run automated accessibility baseline
+        run: npm run test:a11y

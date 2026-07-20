@@ -1,114 +1,83 @@
-# INTENT.md - Callysto Notebooks
+# Callysto intent
 
-*What this is, why it exists, and what it is NOT.*
+## The problem
 
----
+Computational claims are often published as prose while the analysis that produced them sits in a notebook somewhere else, if it is shared at all. When a notebook is available, the reader commonly gets one of four weak experiences:
 
-## The Core Idea
+- a static render with no contextual discussion;
+- raw notebook JSON or a repository that assumes Git fluency;
+- an execution environment with no durable review record;
+- a paper-level comment that cannot point to the calculation in question.
 
-Science publishes results. Nobody checks the math.
+This makes it unnecessarily hard to inspect a method, challenge an assumption, explain a correction, or see how the analysis changed after review.
 
-Published studies contain data analyses, statistical models, and computational claims — but the notebooks behind them are either not shared, shared as static PDFs, or dumped in a GitHub repo nobody ever opens. There is no standard place to:
+## The wedge
 
-- Run the actual calculations yourself
-- See if the methodology holds up
-- Comment on a specific step
-- Propose a better approach
-- Fork and test a variation
+Callysto is a public review layer for notebook-based computational claims.
 
-Callysto is that place.
+An author publishes a specific, immutable notebook source version. A reader can inspect the cells and saved outputs in a safe derived view, attach a discussion to a stable cell, distinguish an owner response from reviewer resolution, and see how the author responds in a later version.
 
----
+The product starts with inspectability and review. Execution comes later because executing arbitrary uploaded code is a different product and a much larger security and operations problem.
 
-## What Callysto Is
+## Product promise
 
-An open platform for publishing Jupyter notebooks — where every notebook is a living, executable, reviewable document.
+For every published notebook version, Callysto should make five things obvious:
 
-The starting point is **reproducibility**: take a published study, rebuild its analysis as a notebook, publish it on Callysto, and let the community run it, comment on it, fork it, and improve it. Over time, the best notebooks become canonical references — the kind of thing you cite alongside the original paper.
+1. **What artifact am I looking at?** The source notebook, owner, version, content digest, publication time, and license.
+2. **What claim is it connected to?** The paper, report, dataset, or external source the author says it supports or examines.
+3. **What did Callysto verify?** Format validity and successful safe rendering, never scientific correctness unless a distinct review process establishes it.
+4. **What are reviewers saying?** Notebook-level and cell-level discussions with authorship, timestamps, and resolution state.
+5. **What changed?** A durable lineage from one immutable version to the next without moving old comments onto new content.
 
----
+## Primary users
 
-## Core User Flow
+- Researchers publishing analysis behind a paper or preprint.
+- Data scientists and analysts publishing an audit or replication.
+- Reviewers who need to question a particular method, cell, assumption, or output.
 
-1. **Publish** — Submit a notebook (upload .ipynb, paste GitHub URL, or connect a GitHub repo). Add title, description, tags, and link to the original study if applicable.
+Secondary users are educators and learners consuming reviewed notebook explanations. Institutional workspaces are a later product, not a launch requirement.
 
-2. **Read** — Anyone can browse and read notebooks, rendered clearly with outputs shown.
+## The first job to be done
 
-3. **Comment** — Leave inline comments on specific cells, calculations, or outputs. Like a code review, but for analysis.
-
-4. **Fork** — Copy any notebook to your own profile and modify it. Run your version of the calculations. Publish your fork as a linked derivative.
-
-5. **Run** — Execute notebooks directly in your browser — no server required. Powered by Pyodide (Python compiled to WebAssembly), the full scientific Python stack runs on your machine. Modify inputs, rerun cells, explore variations. Nothing leaves your browser.
-
-6. **Vote** — Upvote notebooks and comments for visibility. The best rises, the noise sinks.
-
----
-
-## The Reproducibility Angle
-
-The primary use case at launch: **replicate the data science behind published studies**.
-
-This is valuable because:
-- Reproducibility failures in science are rampant and mostly invisible
-- Most researchers lack the time or tooling to audit others' analyses
-- Making replication easy and social changes the incentives
-- A "verified replication" badge on a notebook is genuinely meaningful signal
-
-Callysto doesn't need to solve all of science. It just needs to make one thing easy: *here is the analysis, run it yourself, tell me what you think.*
-
----
-
-## Core Analogies
-
-| Platform | What Callysto borrows |
-|----------|-----------------------|
-| GitHub | Public profiles, forking, version history |
-| arXiv | Open publishing, citable, permanent links |
-| Wikipedia | Collaborative improvement, community ownership |
-| Hacker News | Voting, signal surfacing, quality filter |
-| Jupyter | Notebook format, execution |
-| Code Review | Inline cell-level comments, structured feedback |
-
----
-
-## What It Is NOT
-
-- Not a Jupyter hosting service (you don't do your primary work here)
-- Not a replacement for JupyterHub, Colab, or Binder
-- Not a private tool (public-first; institutional private spaces come later)
-- Not a blogging platform (notebooks are first-class objects, not embedded content)
-- Not a journal (no gatekeeping, no editorial board, no paywalls)
-
----
-
-## Who It's For
-
-**Primary users:**
-- Data scientists who want to share work and get real feedback
-- Researchers who want to publish reproducible analyses alongside their papers
-- Analysts who want to replicate or challenge published findings
-
-**Secondary users:**
-- Learners who want high-quality, reviewed, executable tutorials
-- Educators who want to assign or distribute interactive analyses
-
-**Later:**
-- Research labs and universities who want institutional presence and private workspaces
-
----
-
-## The Name
-
-Callysto — variant spelling of Callisto, one of Jupiter's Galilean moons. Jupiter = Jupyter. Callisto is described as "the safest and most stable location in the Jovian system" and "the ideal site for a future human outpost." That's the vibe: a stable, permanent, trusted home for analytical work.
-
-The spelling variant (Callysto) is more brandable — avoids trademark conflicts, visually evokes *catalyst*, *crystal*, *colab*, *Jupyter*. Easier to own as a brand long-term.
-
----
+> “I have a notebook behind a real claim. I want to publish a stable version so other people can inspect the actual analysis and give feedback in context, without requiring them to clone a repository or configure an environment.”
 
 ## Principles
 
-1. **Executable first.** A notebook you can run is worth more than one you can only read.
-2. **Open by default.** Everything public unless explicitly private. The open web > walled gardens.
-3. **Reproducibility as a value.** Replicating someone's analysis is a contribution, not a critique.
-4. **Community signal over editorial gatekeeping.** Quality rises through votes and forks, not approval queues.
-5. **Long-term stability.** Notebooks should be citable forever. No link rot. No disappearing repos.
+1. **Claims are not verification.** “Uploaded,” “rendered,” “author-reported,” and “independently reproduced” are different states and must never be collapsed into a single badge.
+2. **Immutable evidence, visible revision.** Published source bytes and version metadata never change. Corrections create a new version. A security-fixed derived render may supersede an unsafe projection only through a visible audited render revision.
+3. **Contextual review is the wedge.** The product is differentiated by durable review attached to notebook structure, not by rendering alone.
+4. **Open access, attributable participation.** Reading is public. Publishing and commenting require an authenticated identity.
+5. **Untrusted by default.** Uploaded notebooks and their HTML, JavaScript, images, metadata, and links are hostile input until proven otherwise.
+6. **No silent failure.** Rendering, publishing, comment anchoring, and external-source failures must have named states visible to users and operators.
+7. **Portable artifacts.** Authors can download their original notebook, metadata, and review record. Callysto must not become the only copy.
+8. **Standards before invention.** Preserve Jupyter format semantics, cell IDs, SPDX license identifiers, ORCID identity rules, and common environment files.
+9. **Accessibility belongs in the contract.** Application chrome targets WCAG 2.2 AA. User-supplied notebook content may not comply, and the product must say so plainly.
+10. **Prove demand before compute.** Do not add arbitrary code execution, complex repository sync, or institutional administration until the review loop shows repeated use.
+
+## What Callysto is not
+
+- Not a primary notebook editor or replacement for JupyterLab, VS Code, Colab, or Deepnote.
+- Not a general Git forge.
+- Not a promise that a rendered notebook is reproducible.
+- Not a journal, editorial board, or scientific correctness oracle.
+- Not an anonymous file host.
+- Not a server-side code execution service in the initial release.
+- Not a place to publish private, restricted, secret, personally identifying, or unlawfully shared data.
+
+## Twelve-month direction
+
+If the pilot works, Callysto becomes a durable public record for executable analysis:
+
+```text
+TODAY                    PILOT                         12-MONTH DIRECTION
+docs + broken mockup  -> immutable notebook review -> version lineage, forks,
+                                                    reproducibility evidence,
+                                                    portable review exports,
+                                                    selective execution links
+```
+
+The twelve-month direction is a trajectory, not current scope. Each added capability must strengthen the publishing and review record rather than turn Callysto into a generic notebook host.
+
+## Naming
+
+Callysto is a spelling variant of Callisto, one of Jupiter’s Galilean moons. The Jupiter/Jupyter reference is a private layer of meaning, not the product explanation. The public brand should lead with the job it performs: open review for computational work.

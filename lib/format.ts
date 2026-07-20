@@ -5,7 +5,10 @@ export function formatCount(n: number): string {
   return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
 }
 
-export function formatRelativeTime(iso: string, now: Date = new Date()): string {
+export function formatRelativeTime(
+  iso: string,
+  now: Date = new Date(),
+): string {
   const then = new Date(iso).getTime();
   const diffSec = Math.max(0, Math.round((now.getTime() - then) / 1000));
   if (diffSec < 60) return "just now";

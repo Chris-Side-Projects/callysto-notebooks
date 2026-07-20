@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product demonstration · Draft processing and failure · Callysto</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#states">Skip to draft states</a>
+    <div class="demo-banner" role="note" aria-label="Demonstration notice">
+      <div class="demo-banner__inner">
+        <strong>Product demonstration</strong>
+        Both draft states are static alternatives for review. No upload occurred and no file was stored.
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="wordmark" href="index.html">Callysto</a>
+        <nav class="primary-nav" aria-label="Static product navigation preview">
+          <span class="static-nav-item" aria-disabled="true">Explore</span>
+          <span class="static-nav-item" aria-disabled="true">My drafts</span>
+          <span class="static-nav-item" aria-disabled="true">Demo Publisher</span>
+        </nav>
+      </div>
+    </header>
+
+    <nav class="stage-nav" aria-label="Publishing stages">
+      <ol class="stage-list">
+        <li class="is-complete"><strong>1 · Details</strong>Saved</li>
+        <li class="is-complete"><strong>2 · Notebook</strong>Received</li>
+        <li class="is-current" aria-current="step"><strong>3 · Processing</strong>Current stage</li>
+        <li><strong>4 · Preview</strong>Not ready</li>
+        <li><strong>5 · Publish</strong>Not ready</li>
+      </ol>
+    </nav>
+
+    <main class="page">
+      <header class="draft-head">
+        <div>
+          <span class="demo-pill">Product demonstration</span>
+          <h1>Draft processing and failure states</h1>
+          <p class="lede">Two static states of the same demonstration draft, presented side by side for design approval.</p>
+        </div>
+        <a class="button" href="index.html">Back to mockup set</a>
+      </header>
+
+      <div id="states" class="state-board">
+        <section class="state-card" aria-labelledby="processing-heading">
+          <header class="state-card__head">
+            <div>
+              <span class="eyebrow">State A · Product demonstration</span>
+              <h2 id="processing-heading">Processing saved notebook outputs</h2>
+            </div>
+            <span class="state-pill state-processing">Rendering</span>
+          </header>
+          <div class="state-card__body">
+            <dl class="file-summary">
+              <dt>Draft</dt>
+              <dd>Demo sensitivity check</dd>
+              <dt>File</dt>
+              <dd class="mono">demo-analysis.ipynb</dd>
+              <dt>Advisory digest</dt>
+              <dd class="mono">demo:12a4…90bc</dd>
+              <dt>Visibility</dt>
+              <dd>Private draft demonstration</dd>
+            </dl>
+
+            <ol class="progress-list" aria-label="Processing progress">
+              <li>
+                <span class="progress-icon done" aria-hidden="true">✓</span>
+                <span class="progress-copy"><strong>Upload received</strong><small>Browser upload finished.</small></span>
+              </li>
+              <li>
+                <span class="progress-icon done" aria-hidden="true">✓</span>
+                <span class="progress-copy"><strong>Accepted copy verified</strong><small>Callysto separately checked the stored bytes.</small></span>
+              </li>
+              <li aria-current="step">
+                <span class="progress-icon current" aria-hidden="true">3</span>
+                <span class="progress-copy"><strong>Rendering saved outputs</strong><small>No notebook code is being run.</small></span>
+              </li>
+              <li>
+                <span class="progress-icon" aria-hidden="true">4</span>
+                <span class="progress-copy"><strong>Preparing exact preview</strong><small>Waiting for render completion.</small></span>
+              </li>
+            </ol>
+
+            <div class="progress-track" role="progressbar" aria-label="Demonstration processing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68">
+              <span></span>
+            </div>
+            <p class="status-copy" role="status">
+              This durable state survives refresh. You may leave this page and return to the draft.
+            </p>
+
+            <div class="draft-actions">
+              <button type="button" disabled>Return to details · static</button>
+              <button type="button" disabled>Replace notebook · static</button>
+            </div>
+            <p class="mockup-note">Static mockup. Buttons do not change state.</p>
+          </div>
+        </section>
+
+        <section class="state-card" aria-labelledby="failure-heading">
+          <header class="state-card__head">
+            <div>
+              <span class="eyebrow">State B · Product demonstration</span>
+              <h2 id="failure-heading">Render stopped with a named failure</h2>
+            </div>
+            <span class="state-pill state-failed">Render failed</span>
+          </header>
+          <div class="state-card__body">
+            <dl class="file-summary">
+              <dt>Draft</dt>
+              <dd>Demo sensitivity check</dd>
+              <dt>File</dt>
+              <dd class="mono">demo-analysis.ipynb</dd>
+              <dt>Support code</dt>
+              <dd class="mono">DEMO-RENDER-014</dd>
+              <dt>Visibility</dt>
+              <dd>No public version created</dd>
+            </dl>
+
+            <div class="error-summary" role="alert" tabindex="-1">
+              <h3>The notebook could not be rendered safely</h3>
+              <p>
+                One saved HTML output exceeds the pilot display policy. Callysto did not run the notebook and did not publish a version.
+              </p>
+              <p><a href="#failure-actions">Choose how to continue</a></p>
+            </div>
+
+            <div class="safety-line">
+              <span aria-hidden="true">✓</span>
+              <span><strong>Your accepted original is safe.</strong> You can download it or replace this draft upload.</span>
+            </div>
+
+            <ol class="progress-list" aria-label="Failed processing progress">
+              <li>
+                <span class="progress-icon done" aria-hidden="true">✓</span>
+                <span class="progress-copy"><strong>Accepted copy verified</strong><small>Original retained under the draft policy.</small></span>
+              </li>
+              <li>
+                <span class="progress-icon done" aria-hidden="true">✓</span>
+                <span class="progress-copy"><strong>Notebook format valid</strong><small>The failure occurred during safe output conversion.</small></span>
+              </li>
+              <li>
+                <span class="progress-icon" aria-hidden="true">!</span>
+                <span class="progress-copy"><strong>Rich output rejected</strong><small>Replace the file or remove the unsupported saved output locally.</small></span>
+              </li>
+            </ol>
+
+            <div id="failure-actions" class="draft-actions">
+              <button class="button-primary" type="button" disabled>Replace notebook · static</button>
+              <button type="button" disabled>Download original · static</button>
+              <button class="text-action" type="button" disabled>Contact support · static</button>
+            </div>
+            <p class="mockup-note">Static mockup. The support code is intentionally prefixed DEMO.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

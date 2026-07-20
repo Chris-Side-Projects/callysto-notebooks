@@ -82,8 +82,7 @@ export const mockNotebooks: MockNotebook[] = [
       "Re-running the test battery from the paper on the latest model snapshot. Spoiler: results have changed.",
     tags: ["ml", "llm-eval", "replication"],
     owner: dlee,
-    studyTitle:
-      "Frieder et al. (2023). Mathematical Capabilities of ChatGPT.",
+    studyTitle: "Frieder et al. (2023). Mathematical Capabilities of ChatGPT.",
     studyUrl: "https://arxiv.org/abs/2301.13867",
     kernelLanguage: "python",
     cellCount: 19,

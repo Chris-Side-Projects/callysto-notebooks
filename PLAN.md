@@ -1,226 +1,296 @@
-# PLAN.md - Callysto Notebooks
+# Callysto build plan
 
-*Architecture and phased roadmap.*
+- Status: **MILESTONE 0 AUTHORIZED — M1-M8 GATED**
+- Product stage: pre-build; an incomplete scaffold exists
+- Planning unit: one milestone must end in independently verifiable behavior
+- Product source of truth: [`PRODUCT_SPEC.md`](./PRODUCT_SPEC.md)
+- Technical source of truth: [`ARCHITECTURE.md`](./ARCHITECTURE.md)
+- Active queue: [`TODO.md`](./TODO.md)
 
-**Status:** Pre-build — stack decided, starting Phase 0 completion.
+## 1. Build objective
 
----
+Build and pilot the smallest credible version of Callysto that proves one loop:
 
-## Phases
-
-### Phase 0 — Foundation *(now)*
-
-- [x] Domain: callysto.io (purchased 2026-06-01)
-- [x] GitHub: Chris-Side-Projects/callysto-notebooks
-- [x] INTENT.md, PLAN.md, TODO.md, CLAUDE.md, CODING.md
-- [ ] Finalize stack (see Stack section below)
-- [ ] Scaffold project structure
-- [ ] Set up CI/CD (GitHub Actions: lint + build + test)
-- [ ] Set up Railway project + PostgreSQL + R2
-- [ ] Write DEVELOPER_NOTES.md
-- [ ] Deploy empty shell to callysto.io
-
----
-
-### Phase 1 — Read + Publish *(MVP)*
-
-Goal: Anyone can publish a notebook. Anyone can read it. No auth required to browse.
-
-**Submission methods (all three):**
-- Upload a `.ipynb` file directly
-- Paste a GitHub file URL (auto-fetched and stored)
-- Connect a GitHub repo via OAuth (auto-sync on push)
-
-**Notebook rendering:**
-- Convert `.ipynb` → static HTML at upload time via `nbconvert`
-- Store raw `.ipynb` + rendered HTML in R2
-- Serve rendered HTML — no re-execution at read time
-- Metadata (title, author, tags, description, study link) in PostgreSQL
-
-**Auth:**
-- GitHub OAuth
-- Email/password (magic link or traditional)
-- Additional providers matching the researcher/technical audience:
-  - ORCID (the standard academic identity — critical for the reproducibility use case)
-  - Google OAuth
-  - Institutional SSO (SAML/ADFS) — Phase 3+
-
-**Success metric:** 10 real notebooks published by people other than Chris.
-
----
-
-### Phase 2 — Comment + Vote *(Social layer)*
-
-Goal: Community can engage with notebooks at the cell level.
-
-**Comments:**
-- Inline cell-level comments (attach to a specific cell index)
-- Threaded replies
-- Markdown support in comments
-- Free-form, like a code review — no structured review form required
-
-**Voting:**
-- Upvote notebooks (HN-style, no downvotes initially)
-- Upvote individual comments
-- Ranked feeds: Recent / Top / Trending
-
-**Profiles:**
-- Public profile page per user
-- Notebook portfolio
-- Contribution history (comments, forks, published notebooks)
-
----
-
-### Phase 3 — Fork + Run *(Execution layer)*
-
-Goal: Anyone can fork a notebook and run it on the platform.
-
-**Forking:**
-- Fork any notebook to your own profile
-- Forked notebooks link back to the original (and vice versa — "N forks")
-- Diff view between a fork and its parent (cell-level changes)
-
-**Execution — client-side first (Pyodide/WebAssembly):**
-- Notebooks run directly in the user's browser via **Pyodide** (CPython compiled to WASM)
-- Zero server-side compute cost — the user's machine does all the work
-- No data leaves the user's machine during execution
-- Scales to unlimited concurrent users for free
-- Supported: Python 3, NumPy, pandas, matplotlib, scikit-learn, SciPy, and most of the scientific Python stack
-- Not supported client-side: packages requiring native C extensions not in Pyodide, GPU compute, R, Julia (initially)
-- First load: ~20-40MB WASM bundle (cached by browser after first run)
-- Implementation: embed **JupyterLite** kernel or use Pyodide directly via `@pyodide/pyodide` npm package
-- Users can modify cell inputs and re-run; outputs saved to their fork
-
-**Execution — cloud fallback (v3+, optional):**
-- For notebooks flagged as "heavy" (GPU, non-Pyodide packages, R/Julia)
-- Sandboxed ephemeral containers (Docker + repo2docker)
-- Queue-based, resource-limited, time-limited
-- Only triggered when Pyodide can't handle the notebook's requirements
-- Requirement detection: parse `requirements.txt` / `environment.yml` / kernel metadata at upload time and flag incompatible packages
-
----
-
-### Phase 4 — Expand *(Ecosystem)*
-
-Goal: Become the canonical home for open executable analysis, beyond just notebooks.
-
-Candidates:
-- Dataset hosting alongside notebooks (link a dataset to a notebook)
-- Model cards / experiment tracking
-- Institutional/lab pages (private workspaces for teams, universities)
-- Embeddable notebooks (drop a Callysto notebook into any webpage)
-- API for programmatic submission and retrieval
-- "Verified Replication" badge system (community-confirmed reproducibility)
-
----
-
-## Stack
-
-### Decided
-
-| Layer | Choice | Rationale |
-|-------|--------|-----------|
-| Frontend | Next.js (TypeScript) | Matches existing projects, fast dev, SSR for SEO |
-| Backend | Next.js API routes + Python microservice for execution | API routes for CRUD; Python needed for nbconvert + Jupyter kernel |
-| Database | PostgreSQL (Railway) | Relational, handles notebooks + users + comments cleanly |
-| Object storage | Cloudflare R2 | Already have CF account, cheap, fast, S3-compatible |
-| Notebook rendering | nbconvert (Python) | Battle-tested, produces clean HTML from .ipynb |
-| Auth | NextAuth.js | GitHub + Google + email/magic-link; ORCID via custom provider |
-| Hosting | Railway | Consistent with other projects |
-| CDN | Cloudflare | Already managing callysto.io DNS |
-
-### Phase 3 additions (execution)
-
-| Layer | Choice | Notes |
-|-------|--------|-------|
-| Client-side execution | Pyodide + JupyterLite | Runs in browser, zero infra cost |
-| WASM Python kernel | `@pyodide/pyodide` npm package | Loaded client-side, ~20-40MB cached |
-| Cloud fallback (heavy notebooks) | Docker + repo2docker | Only for GPU/non-Pyodide packages |
-| Cloud queue | Redis + BullMQ | Only needed if cloud fallback is enabled |
-| Cloud execution hosting | fly.io ephemeral containers | Cheaper than Railway for burst workloads |
-
----
-
-## Data Model (v1)
-
-```
-users
-  id, username, email, auth_provider, auth_provider_id
-  display_name, bio, avatar_url, created_at
-
-notebooks
-  id, slug, title, description, tags[]
-  owner_id (→ users), parent_notebook_id (→ notebooks, for forks)
-  study_url, study_title           -- link to original paper if applicable
-  ipynb_path (R2 key), html_path (R2 key)
-  kernel_language, kernel_name
-  cell_count, published_at, updated_at
-  vote_count, fork_count, comment_count, view_count
-  status: draft | published | unlisted
-
-comments
-  id, notebook_id (→ notebooks), cell_index (nullable — null = top-level)
-  parent_comment_id (→ comments, for threads)
-  author_id (→ users), body (markdown), created_at
-  vote_count, is_deleted
-
-votes
-  id, user_id, target_type (notebook|comment), target_id, created_at
-
-notebook_versions
-  id, notebook_id, version_num, ipynb_path, html_path, created_at, change_summary
+```text
+publish an immutable notebook version
+  -> inspect its cells and provenance
+  -> leave a contextual review
+  -> receive an owner response/address, reviewer resolution, or revised version
 ```
 
----
+An upload page and notebook renderer alone do not satisfy the objective. Neither does a broad social network without evidence that review changes an analysis.
 
-## URL Structure
+## 2. Approval boundary
 
+The owner approved D001-D024 and authorized T001-T010/Milestone 0 on 2026-07-20. M0 may repair the scaffold, install approved development dependencies, create local/deployed feasibility proofs, prepare mockups, and collect the evidence named in this plan.
+
+The approval does **not** authorize M1-M8 product features, production deployment, public launch, external outreach without identified participants, or silent relaxation of a failed promotion/isolation/capability/provider/recovery proof. M1 opens only after the M0 gate is green and the owner reviews the evidence.
+
+## 3. Non-negotiable build invariants
+
+- The credential-free converter never executes notebook code and has no network; the orchestrator reaches only PostgreSQL/R2.
+- Incoming uploads are untrusted; accepted promoted originals and published source/version records are immutable.
+- Comments bind to notebook version plus cell ID, never cell position.
+- User-controlled notebook content never receives application-origin authority.
+- Public claims distinguish format/render checks from scientific verification.
+- Every mutation is authenticated where required, authorized server-side, validated, rate-limited, and audited where sensitive.
+- A failed, duplicated, stale-lease, or superseded-generation job cannot produce a false `ready` or duplicate published version.
+- No mocked engagement or inert control appears in staging or production.
+- The project must have a clean, repeatable validation command before feature work grows.
+
+## 4. Sequence and dependencies
+
+```text
+OWNER APPROVAL
+      |
+      v
+M0 BASELINE + FEASIBILITY
+      |
+      v
+M1 SECURE PLATFORM FOUNDATION
+      |
+      +---------------------+
+      v                     v
+M2 IDENTITY + DATA      M3 RENDERER CORE
+      |                     |
+      +----------+----------+
+                 v
+          M4 PUBLISH + READ
+                 |
+                 v
+          M5 REVIEW LOOP
+                 |
+                 v
+       M6 OPERATIONS + PORTABILITY
+                 |
+                 v
+       M7 LAUNCH READINESS
+                 |
+                 v
+          M8 COHORT PILOT
 ```
-callysto.io/                          homepage (recent + featured)
-callysto.io/explore                   browse all notebooks
-callysto.io/@username                 user profile
-callysto.io/@username/notebook-slug   notebook detail page
-callysto.io/@username/notebook-slug/fork   fork this notebook
-callysto.io/submit                    submit a notebook
-callysto.io/topics/statistics         tag/topic page
+
+M2 and the isolated Python renderer core in M3 can proceed in parallel after M1. The upload finalization path depends on both. UX mockups can proceed alongside M0 feasibility work, but application UI implementation starts only after mockup approval.
+
+## 5. Milestone summary
+
+| Milestone | Outcome | Exit evidence |
+|---|---|---|
+| M0 | Broken scaffold becomes a trustworthy baseline and risky assumptions are tested. | Clean CI; feasibility notes and browser proofs; accepted decisions. |
+| M1 | Secure application, primary/recovery storage, content capability, orchestrator, and converter boundaries exist. | Cross-origin isolation; egress boundary; promotion/recovery smoke; secret/header/log checks. |
+| M2 | Identity, roles, invitations, domain schema, and authorization work. | Migration tests; provider staging tests; authorization matrix tests. |
+| M3 | Server-promoted byte-preserving originals and fenced non-executing deterministic render revisions work. | Promotion/overwrite/fence/generation fixture suite; hostile-notebook browser tests. |
+| M4 | An invited publisher can preview and publish an immutable public version. | End-to-end publish/read/download journey on staging. |
+| M5 | A reviewer and owner can complete the contextual review loop. | Cell thread, reply, resolution/reopen, notification, and revision lineage E2E. |
+| M6 | Discovery, export, reports, scoped restrictions, and operator recovery work. | Ops drills; export fixtures; no fabricated production content. |
+| M7 | Product is safe and operable enough for a bounded external cohort. | All launch gates, restore exercise, accessibility/performance/security reports. |
+| M8 | Cohort behavior answers whether Callysto should proceed, iterate, or reframe. | Metrics dictionary, event export, interviews, and written pilot decision. |
+
+## 6. Detailed work plan
+
+### M0 — Approval, baseline repair, and feasibility
+
+**Purpose:** remove false assumptions before durable code is built.
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M0.1 | Record owner decisions and approval date. | Owner approval | Every proposed decision is accepted, rejected, or amended; taste choices have an explicit owner. |
+| M0.1a | Recruit/interview the 6–10 candidate cohort and inventory each real notebook's source workflow. | M0.1 | At least 8 candidate notebooks record GitHub availability, privacy/rights constraints, current review method, and upload/import friction; apply the 80% source rule and update all affected docs before M3. |
+| M0.2 | Repair the scaffold without preserving accidental tournament structure. | M0.1 | Duplicate dynamic routes and duplicate PostCSS configuration are removed; one coherent route convention remains. |
+| M0.3 | Establish dependency and runtime baselines. | M0.1 | Node and Python versions are pinned; lockfiles are reproducible; missing Drizzle tooling is resolved; vulnerability findings are triaged, not ignored. |
+| M0.4 | Add lint, unit, integration, browser, Python, and doc-link validation harnesses. | M0.3 | `npm ci`, lint, typecheck, tests, Python checks, production build, and doc checks run locally and in CI. |
+| M0.5 | Prove application/content headers, app-owned shell, on-demand short capabilities, and isolated-output design in two real browsers. | M0.3 | Hostile output cannot execute/read/navigate/fetch; preview expires; a later output still loads after the first 60-second token lifetime; restriction stops refresh/new delivery within ≤60 seconds; user artifacts are not cached. |
+| M0.6 | Prove the orchestrator/converter boundary, non-execution, deterministic cell-ID algorithm, and deployed egress enforcement. | M0.3 | Orchestrator reaches DB/R2 only; converter receives local paths with no secrets/network; side-effect/canary fixtures do nothing; current/pre-ID fixtures produce exact expected IDs. |
+| M0.7 | Prove the selected ingestion path and trusted-original contract. | M0.1a, M0.3 | Direct path proves incoming overwrite, server streaming hash, different no-overwrite accepted key, promotion crash/retry, generation CAS; exact-commit alternative receives an equivalent fetch/integrity/SSRF contract. |
+| M0.8 | Prove GitHub and ORCID identity feasibility. | M0.3 | Staging callbacks work, required scopes are documented, and collision/linking cases are decided. GitHub-only fallback is explicit if ORCID is blocked. |
+| M0.9 | Select and prove verified private-email onboarding and minimal transactional delivery. | M0.1 | Verification source, sender domain, dedicated dispatcher deployment/trigger, preference race, fenced outbox, provider idempotency, crash-after-acceptance, dead letter, and local sink are documented/tested. |
+| M0.10 | Produce responsive visual mockups for approval. | M0.1 | Homepage, notebook page, contextual thread, draft flow, and failure states are approved at mobile and desktop widths. |
+| M0.11 | Resolve license and policy ownership. | M0.1 | Repository license, notebook-license menu, contributor terms, privacy/terms/AUP/copyright owners, and launch deadlines are recorded. |
+| M0.12 | Prove recovery objectives and operator bootstrap. | M0.3 | Provider topology demonstrates proposed DB RPO/RTO, separate accepted-original recovery copy/no-delete credentials, isolated restore, offline operator grant, recent reauth, and MFA operating rule—or owner explicitly changes the objectives. |
+
+#### M0 progress snapshot — 2026-07-20
+
+- M0.1: complete; D001-D024 and M0 authorization are recorded.
+- M0.2: locally complete; the canonical route/configuration contract and production build pass.
+- M0.3/M0.4: complete on draft PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
+  Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
+  baselines.
+- M0.5: application headers only; the real two-origin capability/isolation/revocation proof is open.
+- M0.6: exact cell-ID/default-deny conversion/SQLite fencing proof passes locally; PostgreSQL and
+  deployed secret/egress/sentinel evidence remain open.
+- M0.10: complete; four static responsive mockups were approved without amendment under D024.
+- M0.1a/M0.7-M0.9/M0.11-M0.12: no real participant/provider/staging/policy evidence yet.
+
+See [`CONTINUATION.md`](./CONTINUATION.md) and [`docs/evidence`](./docs/evidence/) for exact commands,
+environment labels, and the next sequence.
+
+**Gate:** no product feature milestone starts if the build is red or source choice, promotion, egress isolation, capability revocation, identity/contact, or recovery feasibility is unresolved. Redesign/change providers rather than weaken a boundary.
+
+### M1 — Secure platform foundation
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M1.1 | Create environment-aware configuration with startup validation. | M0 | Missing or invalid required configuration fails fast without printing secrets. |
+| M1.2 | Implement typed PostgreSQL access and migration workflow. | M0 | Empty database upgrades to head; rollback/forward-fix posture is documented; migration test runs in CI. |
+| M1.3 | Implement primary/recovery object interfaces, incoming/accepted prefixes, conditional promotion, and deterministic local fakes. | M0.7, M0.12 | Staging service identities are least-privilege; converter has none; accepted/recovery writes and lifecycle exclusions pass. |
+| M1.4 | Deploy signed-capability content gateway plus on-demand issuance and application/content header policies. | M0.5 | Only exact active-manifest outputs resolve; public/preview expiry and refresh, long-notebook lazy load, no-store, ≤60-second restriction SLO, CSP/cookie/sandbox tests pass. |
+| M1.5 | Scaffold fenced Python orchestrator and credential-free converter boundary. | M0.6 | Deployed orchestrator is DB/R2 allowlisted; converter is non-root, bounded, secret-free, no-network, and non-executing. |
+| M1.6 | Add structured logging, redaction, correlation IDs, health/readiness endpoints, and baseline metrics. | M1.1 | A sample request/job trace crosses services; secrets, notebook source, presigned URLs, and comment bodies are absent from logs. |
+| M1.7 | Add feature flags for publishing, commenting, and operator-only rollout. | M1.1 | Features can be disabled without deployment or destructive data changes. |
+
+### M2 — Identity, invitations, persistence, and policy boundaries
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M2.1 | Implement GitHub sign-in and session hardening. | M1 | Staging login/logout/session expiry pass; secure cookies and callback restrictions are tested. |
+| M2.2 | Implement ORCID authenticated-iD sign-in or exercise documented fallback. | M0.8, M2.1 | Verified provider identifier is stored; typed identifiers are never shown as authenticated. |
+| M2.3 | Implement explicit provider linking and collision handling. | M2.1 | Email match alone never merges users; collision tests cover both link directions. |
+| M2.4 | Implement verified private-email onboarding, additive roles, invitations, offline operator bootstrap, recent reauth, and publisher revocation. | M2.1, M0.9, M0.12 | Pending/member/publisher/owner/operator/composed/suspended cases pass; no self-elevation or operator possession. |
+| M2.5 | Implement draft, accepted-original, render-revision, activation, version, restriction, idempotency, event, and outbox schema/state functions. | M1.2 | Constraints prevent impossible lifecycle states and store explicit fences/generations/digests. |
+| M2.6 | Implement immutable audit events for sensitive actions. | M2.5 | Grant/revoke, publish, unlist, restriction/lift, render activation, retry/fence rejection, address/resolve, and account actions record actor/cause/correlation ID. |
+| M2.7 | Implement rate-limit abstraction and abuse-safe defaults. | M1.1 | Mutation limits have deterministic tests and never rely only on client behavior. |
+
+### M3 — Ingestion and rendering
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M3.1 | Build draft metadata creation and validation. | M2.4, M2.5 | Required review question, claim/source statement, license, limits, and field errors match `PRODUCT_SPEC.md`. |
+| M3.2 | Build selected-source authorization and advisory checksum/progress UI. | M1.3, M2.4 | Only owner publisher supplies source; incoming/exact-commit status and retry retain metadata. |
+| M3.3 | Build idempotent finalize, fenced ingest verification/promotion, and accepted-only render enqueue. | M3.2, M2.5 | Presigned overwrite cannot alter accepted bytes; server digest/no-overwrite/promotion crash pass; duplicate/different-payload behavior is correct. |
+| M3.4 | Build token/generation leasing, heartbeat, retry/dead-letter, draft-generation CAS, poison-job handling, and operator visibility. | M1.5, M3.3 | Lease-loss/stale completion/replacement/duplicate races reach one correct state and never promote stale work. |
+| M3.5 | Build notebook validation, limits, and named error taxonomy. | M1.5 | Malformed, unsupported, oversized, duplicate-ID, and expansion fixtures fail safely and distinctly. |
+| M3.6 | Preserve accepted original and create deterministic normalized notebook/cell manifest using `callysto-cell-id-v1`. | M3.5 | Accepted/recovery digest round-trip and cross-process exact-ID vectors pass; invalid/duplicate IDs reject. |
+| M3.7 | Export immutable structured render revision and isolated display artifacts without execution/network. | M3.6 | Side-effect/canary fixtures prove boundary; artifact identity includes every policy/schema version; repeated jobs converge. |
+| M3.8 | Render safe unsupported-output placeholders and enforce artifact limits. | M3.7 | Active/unsupported output never triggers weaker sandbox permissions or silent truncation. |
+| M3.9 | Build durable named processing/failure UI. | M3.3–M3.8 | Refresh and reconnect recover server state; there is no indefinite generic spinner. |
+
+### M4 — Preview, publication, and public reading
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M4.1 | Build approved homepage, navigation, login, invitation, and honest empty states. | M0.10, M2 | No mock engagement; accessibility smoke tests pass at specified widths. |
+| M4.2 | Build staged draft details/source/processing/preview interface. | M3 | Expiring capability binds exact generation/render revision and shows candidate digests; stale preview cannot publish. |
+| M4.3 | Implement atomic publication, frozen handle/slug, accepted-original recovery proof, canonical/version URLs, and render activation. | M3, M2.5 | Concurrent/duplicate publish produces one immutable source/version; old URLs persist; security rerender uses visible audited activation. |
+| M4.4 | Build public notebook page with provenance, trust labels, anchors, and version lineage. | M4.3, M1.4 | Logged-out reader can inspect; labels never imply execution or correctness. |
+| M4.5 | Build safe raw notebook download. | M4.3 | Attachment headers, `nosniff`, digest, scoped restriction behavior, and content type pass tests. |
+| M4.6 | Implement unlist and version-aware metadata rules. | M4.3 | Unlisting removes discovery only; version-bound edits cannot mutate a published record. |
+
+### M5 — Contextual review loop
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M5.1 | Implement notebook- and cell-thread domain/API with cell-anchor validation. | M4.4, M2.7 | Thread targets exact version/cell; absent anchors fail instead of reattaching. |
+| M5.2 | Implement safe Markdown replies, 15-minute author edits/revisions, tombstones, and idempotency. | M5.1 | XSS, edit-window, different-payload replay, double-submit, session expiry, and ordered-reply tests pass. |
+| M5.3 | Implement document-first contextual review UI. | M0.10, M5.2 | Keyboard/pointer/mobile flows preserve reading position and announce state changes. |
+| M5.4 | Implement owner `addressed`, root-author resolve/reopen, and separate operator moderation-close. | M5.2 | Every capability/ownership/authorship combination and event label is covered; history remains visible. |
+| M5.5 | Implement fenced transactional notifications for assignment, thread, reply, address/resolve, and linked revision. | M0.9, M5.2 | Preference race, provider idempotency, crash-after-acceptance, possible duplicate delivery, bounded retry/dead letter, and deep links pass. |
+| M5.6 | Implement new-version lineage and prior-thread references. | M4.3, M5.1 | Version 1 discussion stays on version 1; version 2 can cite unresolved prior threads without moving them. |
+| M5.7 | Implement privacy-safe pilot event store/export. | M5.1–M5.6 | Versioned dictionary defines substantive review, address, reviewer resolution, revision, closed loop, repeat action, allowlisted properties, pseudonyms, and retention before cohort use. |
+
+### M6 — Discovery, portability, moderation, and recovery
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M6.1 | Build recent and exact-topic discovery with cursor pagination. | M4.3 | Stable pagination and empty/filter states pass concurrent-publication tests. |
+| M6.2 | Build profile/publication view without vanity metrics. | M4.3 | Public data only; no public email/provider tokens; no inactive controls. |
+| M6.3 | Build metadata and public-review JSON export. | M5 | Export schema, fixture, authorization, and digest linkage are documented and tested. |
+| M6.4 | Build report flow and operator queue. | M5.2 | Reporter identity is private; duplicate/report-abuse cases are bounded. |
+| M6.5 | Build scoped restriction/lift, audited render-revision activation, and job-retry controls. | M3.4, M6.4 | Staging drill stops new delivery within SLO, preserves source/recovery/audit, rejects cached/direct capability paths, then safely activates/restores. |
+| M6.6 | Build lifecycle cleanup for abandoned drafts and orphan derived objects. | M3 | Retention rules are policy-backed; published originals are excluded from cleanup. |
+| M6.7 | Complete operator runbooks and support-code lookup. | M6.4–M6.6 | A new operator can follow retry/fence, promotion, report, restriction/render activation, notification dead letter, and outage procedures in staging. |
+
+### M7 — Launch readiness
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M7.1 | Complete full browser security, dependency, secret, and threat-model review. | M1–M6 | No open P0/P1 launch blocker; accepted residual risks are named by owner. |
+| M7.2 | Complete WCAG 2.2 AA audit of application UI and remediate blockers. | M4–M6 | Automated checks plus keyboard/screen-reader/manual viewport evidence. |
+| M7.3 | Complete performance and resource-limit tests. | M3–M6 | Product SLO targets pass on staging fixtures; overload fails safely. |
+| M7.4 | Configure production deployment, DNS, isolated content origin, alerts, and rollback flags. | M1–M6 | Production smoke test runs with publishing disabled; credentials/environments are separated. |
+| M7.5 | Test point-in-time database and accepted-original recovery into an isolated environment. | M2–M6 | Approved RPO/RTO, recovery-copy RPO, relationships, restrictions, and sampled digests are verified; a render is regenerated. |
+| M7.6 | Publish approved terms, privacy, acceptable use, copyright/removal, retention, moderation, and license guidance. | M0.11 | Policies are linked in product and operations; escalation owner is named. |
+| M7.7 | Finalize and schedule the cohort recruited in M0.1a. | Owner | At least 6 participants, 8 confirmed real notebooks, assigned reviewers, consent/expectations, and interview slots are recorded. |
+| M7.8 | Run final release checklist and operator rehearsal. | M7.1–M7.7 | Every launch gate in `PRODUCT_SPEC.md` has linked evidence and an owner sign-off. |
+
+### M8 — Cohort pilot and decision
+
+| ID | Task | Depends on | Acceptance evidence |
+|---|---|---|---|
+| M8.1 | Onboard cohort and publish at least 8 real notebooks. | M7 | Funnel and support interventions are recorded without fabricating self-service success. |
+| M8.2 | Run assigned contextual reviews and owner follow-up. | M8.1 | Review, response, resolution, revision, and repeat-action events are exportable and auditable. |
+| M8.3 | Conduct structured owner and reviewer interviews. | M8.1 | At least 6 completed interviews cover current alternative, value, trust, friction, and willingness to return. |
+| M8.4 | Analyze results against predeclared success criteria. | M8.2, M8.3 | Written analysis separates observed behavior, participant statements, operator effort, and inference. |
+| M8.5 | Make proceed / iterate / stop-or-reframe decision. | M8.4 | Owner decision and rationale are recorded before expanding ingestion, execution, votes, forks, or private workspaces. |
+
+## 7. Proposed implementation slices and commits
+
+Each commit should be independently testable and leave the branch green. The list is sequencing guidance, not permission to commit.
+
+```text
+chore(baseline): remove conflicting scaffold routes and configs
+chore(tooling): add reproducible lint test build and Python checks
+test(security): prove app content and converter boundaries
+chore(renderer): scaffold fenced orchestrator and no-network converter
+feat(storage): add incoming promotion primary and recovery storage
+feat(auth): add GitHub identity sessions and verified contact
+feat(auth): add additive roles invitations linking and operator bootstrap
+feat(domain): add draft version render restriction and audit models
+feat(ingest): add source authorization verification and promotion
+feat(render): add fenced validation normalization and render revisions
+feat(render): add durable leases generation guards and failure states
+feat(publish): add capability preview recovery proof and immutable publication
+feat(read): add public notebook page provenance and downloads
+feat(review): add versioned notebook and cell threads
+feat(review): add replies address resolution and safe markdown
+feat(notify): add fenced review outbox preferences and dead letters
+feat(ops): add reports restrictions render activation and job recovery
+feat(discovery): add recent topic and profile views
+feat(export): add notebook metadata and review export
+chore(release): add staging gates runbooks policies and pilot flags
 ```
 
----
+Do not combine schema, auth, upload, renderer, and UI into a single “MVP” commit. Each domain behavior needs its own tests and rollback surface.
 
-## Open Source Strategy
+## 8. Validation ladder
 
-- Code is fully open source (MIT or Apache 2.0)
-- Hosted platform is free for individuals
-- Institutional plans later: private workspaces, team management, analytics
-- This follows the GitHub/GitLab/Posit model: open code, monetize the hosted service
-- Being open source is a trust signal for the scientific community — essential for the reproducibility use case
+At the end of every task, run the smallest relevant checks. At every milestone gate, run the full ladder:
 
----
+```text
+clean dependency install
+  -> formatting and lint
+  -> TypeScript typecheck
+  -> TypeScript unit tests
+  -> Python format/lint/type/unit tests
+  -> database/storage integration tests
+  -> production web build
+  -> Playwright functional and cross-origin security tests
+  -> documentation/link checks
+```
 
-## AI Pipeline (data-backed)
+M7 adds dependency/secret scans, accessibility audit, load/resource tests, backup/restore exercise, staging smoke tests, and manual browser/security review. Proposed exact commands live in [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md); they are not claimed to work until M0 implements them.
 
-*Based on two agent tournaments run 2026-06-01. Full results: `docs/agent-tournament.md`.*
+## 9. Scope controls
 
-| Role | Agent | Notes |
-|------|-------|-------|
-| Code generation (write tools) | **Claude Code** (`claude-opus-4-7`) | Only agent that shipped working code in both tournaments |
-| Code review | **Claude Code** | Most calibrated reviewer across all phases |
-| Plan / architecture | **Claude or Codex** (`gpt-5.5`) | Codex won plan phase in upgraded run; Claude wins on risk depth |
-| Second opinion on plans | **Codex** (`gpt-5.5`) | Flags different risks than Claude; useful for complex architectural decisions |
-| Grok Build | Not recommended (yet) | Terminal-echo failures in both runs; may need different invocation |
-| Gemini | Not recommended for implementation | Produced exploration logs, no builds, both runs |
+The following ideas require a new decision record and pilot evidence before entering this plan:
 
-### What the upgrade data showed
-- Codex `gpt-5` → `gpt-5.5`: measurable improvement in plan quality (won plan vote in upgraded run)
-- Gemini `2.0-pro-exp` → `2.5-flash`: no measurable change for implementation tasks
-- Open question: Codex produced no build output in either run — likely CLI/timeout issue, not model capability
+- browser or server notebook execution;
+- GitHub repository synchronization;
+- forking, editing, or notebook diffs;
+- votes, trending, reputation, or reviewer scores;
+- private/team/institutional workspaces;
+- DOI minting or platform-issued reproducibility badges;
+- dataset hosting or general compute capsules;
+- Redis, Kubernetes, a general event bus, or multi-region topology.
 
----
+## 10. Change and review protocol
 
-## Non-Goals (v1 + v2)
+1. A product behavior change starts in `PRODUCT_SPEC.md` and `DECISIONS.md`.
+2. A boundary/data/API change updates `ARCHITECTURE.md`, `docs/SECURITY.md`, and `docs/TEST_PLAN.md` before or with code.
+3. A user-flow change updates `UX_SPEC.md` and approved mockups before implementation.
+4. `TODO.md` tracks only approved work currently eligible to start; this plan keeps the complete sequence.
+5. Each milestone closes with a short evidence report linking tests, screenshots where relevant, migrations, runbooks, and unresolved risks.
+6. Claims use evidence labels: `verified locally`, `verified in staging`, `verified in production`, or `not yet verified`.
 
-- In-browser execution (v3 only)
-- Private notebooks (v1 is all-public)
-- Mobile-native app
-- Real-time collaborative editing (not a Google Docs replacement)
-- Replacing arXiv or peer review journals
+## 11. Owner approval request
+
+Approve this plan only if it matches the intended product. Approval means “begin M0,” not “build every later feature regardless of what the pilot teaches.” The M8 decision gate is intentionally binding.

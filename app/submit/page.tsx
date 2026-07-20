@@ -2,17 +2,38 @@ export default function SubmitPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <div className="mb-8">
-        <p className="text-sm font-semibold uppercase tracking-wide text-signal">Publish</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-ink">Submit a notebook</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+          Product demonstration
+        </p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-ink">
+          Submit a notebook
+        </h1>
         <p className="mt-4 text-base leading-7 text-slate-600">
-          Upload an `.ipynb` file or point Callysto at a public GitHub notebook URL. Processing and
-          storage will be wired in Phase 1.
+          Submission is unavailable during Milestone 0. The cohort audit will
+          choose direct upload or a GitHub exact-commit source; only the
+          selected path will be built.
         </p>
       </div>
 
-      <form className="space-y-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <fieldset
+        disabled
+        aria-describedby="submission-status"
+        className="space-y-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm opacity-75"
+      >
+        <legend className="sr-only">
+          Static submission form demonstration
+        </legend>
+        <p
+          id="submission-status"
+          className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900"
+        >
+          Static preview only. No file or form data is accepted or sent.
+        </p>
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-slate-800">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-slate-800"
+          >
             Title
           </label>
           <input
@@ -25,7 +46,10 @@ export default function SubmitPage() {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-slate-800">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-slate-800"
+          >
             Description
           </label>
           <textarea
@@ -38,7 +62,10 @@ export default function SubmitPage() {
         </div>
 
         <div>
-          <label htmlFor="notebook" className="block text-sm font-medium text-slate-800">
+          <label
+            htmlFor="notebook"
+            className="block text-sm font-medium text-slate-800"
+          >
             Notebook file
           </label>
           <input
@@ -51,7 +78,10 @@ export default function SubmitPage() {
         </div>
 
         <div>
-          <label htmlFor="githubUrl" className="block text-sm font-medium text-slate-800">
+          <label
+            htmlFor="githubUrl"
+            className="block text-sm font-medium text-slate-800"
+          >
             GitHub notebook URL
           </label>
           <input
@@ -64,7 +94,10 @@ export default function SubmitPage() {
         </div>
 
         <div>
-          <label htmlFor="studyUrl" className="block text-sm font-medium text-slate-800">
+          <label
+            htmlFor="studyUrl"
+            className="block text-sm font-medium text-slate-800"
+          >
             Original study URL
           </label>
           <input
@@ -78,13 +111,13 @@ export default function SubmitPage() {
 
         <div className="flex justify-end">
           <button
-            type="submit"
-            className="rounded-md bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+            type="button"
+            className="rounded-md bg-slate-400 px-4 py-2.5 text-sm font-semibold text-white"
           >
-            Save draft
+            Submission unavailable
           </button>
         </div>
-      </form>
+      </fieldset>
     </div>
   );
 }

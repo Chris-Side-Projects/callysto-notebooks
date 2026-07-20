@@ -1,0 +1,148 @@
+{
+  "schema_version": "callysto.cell-id-test-vectors.v1",
+  "algorithm": "callysto-cell-id-v1",
+  "normative_notes": [
+    "accepted_original_base64 decodes to the exact promoted original bytes",
+    "all SHA-256 values concatenated into payload are 32 binary bytes, never ASCII hex",
+    "cell ordinal is zero-based and unsigned 64-bit big-endian",
+    "cell source arrays concatenate in order with no separator",
+    "no Unicode or newline normalization is applied",
+    "generated collisions are terminal and have no retry counter"
+  ],
+  "vectors": [
+    {
+      "name": "ascii-code",
+      "accepted_original_base64": "eyJjZWxscyI6W3siY2VsbF90eXBlIjoiY29kZSIsIm1ldGFkYXRhIjp7fSwib3V0cHV0cyI6W10sInNvdXJjZSI6InByaW50KDEpXG4ifV0sIm1ldGFkYXRhIjp7fSwibmJmb3JtYXQiOjQsIm5iZm9ybWF0X21pbm9yIjo1fQo=",
+      "accepted_original_byte_length": 128,
+      "accepted_original_sha256_hex": "9b770c7a75d7efafef34928d625771965030b1a8372765b8e8dfee2d0e18d98d",
+      "cell_ordinal": 0,
+      "cell_type": "code",
+      "cell_source_input_kind": "string",
+      "cell_source_text": "print(1)\n",
+      "cell_source_utf8_hex": "7072696e742831290a",
+      "cell_source_sha256_hex": "cc42155088fca5730758db72b2a5bca33112a941dfaa2d43098ec422ce4ea213",
+      "payload_hex": "63616c6c7973746f2d63656c6c2d69642d7631009b770c7a75d7efafef34928d625771965030b1a8372765b8e8dfee2d0e18d98d000000000000000000636f646500cc42155088fca5730758db72b2a5bca33112a941dfaa2d43098ec422ce4ea213",
+      "id_digest_hex": "de0b705d4f1b254148b7f663cadfea5a3ec235e15c4d386ee3d1d2e4f250a2f4",
+      "cell_id": "cly_3yfxaxkpdmsucsfx6zr4vx7kli7menpblrgtq3xd2hjoj4squl2a"
+    },
+    {
+      "name": "unicode-nfc-markdown",
+      "accepted_original_base64": "eyJjZWxscyI6W3siY2VsbF90eXBlIjoibWFya2Rvd24iLCJtZXRhZGF0YSI6e30sInNvdXJjZSI6Is+AID0gY2Fmw6lcbiJ9XSwibWV0YWRhdGEiOnt9LCJuYmZvcm1hdCI6NCwibmJmb3JtYXRfbWlub3IiOjV9Cg==",
+      "accepted_original_byte_length": 121,
+      "accepted_original_sha256_hex": "507cb964f7bcce0abc825794a3ebc774e7632874e2e180d82ec7351e8c690f3d",
+      "cell_ordinal": 0,
+      "cell_type": "markdown",
+      "cell_source_input_kind": "string",
+      "cell_source_text": "π = café\n",
+      "cell_source_utf8_hex": "cf80203d20636166c3a90a",
+      "cell_source_sha256_hex": "0c71e23c56e8f28a4c52425a6bbbf4a0b20cc39ec8f79d9845a59fbf396b7abc",
+      "payload_hex": "63616c6c7973746f2d63656c6c2d69642d763100507cb964f7bcce0abc825794a3ebc774e7632874e2e180d82ec7351e8c690f3d0000000000000000006d61726b646f776e000c71e23c56e8f28a4c52425a6bbbf4a0b20cc39ec8f79d9845a59fbf396b7abc",
+      "id_digest_hex": "4afa5abc327462650d979dd16a1ce4f232a9766c55d3b9ad91175753d4cd277a",
+      "cell_id": "cly_jl5fvpbsorrgkdmxtxiwuhhe6izks5tmkxj3tlmrc5lvhvgne55a"
+    },
+    {
+      "name": "unicode-nfd-markdown",
+      "accepted_original_base64": "eyJjZWxscyI6W3siY2VsbF90eXBlIjoibWFya2Rvd24iLCJtZXRhZGF0YSI6e30sInNvdXJjZSI6Is+AID0gY2FmZcyBXG4ifV0sIm1ldGFkYXRhIjp7fSwibmJmb3JtYXQiOjQsIm5iZm9ybWF0X21pbm9yIjo1fQo=",
+      "accepted_original_byte_length": 122,
+      "accepted_original_sha256_hex": "23332a5fd2f5808fd563f00a75a4e46efb8077edc4c9ba06d92436c3d4f0598c",
+      "cell_ordinal": 0,
+      "cell_type": "markdown",
+      "cell_source_input_kind": "string",
+      "cell_source_text": "π = café\n",
+      "cell_source_utf8_hex": "cf80203d2063616665cc810a",
+      "cell_source_sha256_hex": "1749865915d85877e2b90b49ddbbb22bead275e66e3146bc6329318a9ee7e1af",
+      "payload_hex": "63616c6c7973746f2d63656c6c2d69642d76310023332a5fd2f5808fd563f00a75a4e46efb8077edc4c9ba06d92436c3d4f0598c0000000000000000006d61726b646f776e001749865915d85877e2b90b49ddbbb22bead275e66e3146bc6329318a9ee7e1af",
+      "id_digest_hex": "fe2b657c4ca689eaddb24c165f2c2a7d5f8bca1b32c244697942ab3a7cbec48c",
+      "cell_id": "cly_7yvwk7cmu2e6vxnsjqlf6lbkpvpyxsq3glbei2lzikvtu7f6ysga"
+    },
+    {
+      "name": "source-array",
+      "accepted_original_base64": "eyJjZWxscyI6W3siY2VsbF90eXBlIjoiY29kZSIsIm1ldGFkYXRhIjp7fSwib3V0cHV0cyI6W10sInNvdXJjZSI6WyJhXG4iLCJiXG4iXX1dLCJtZXRhZGF0YSI6e30sIm5iZm9ybWF0Ijo0LCJuYmZvcm1hdF9taW5vciI6NX0K",
+      "accepted_original_byte_length": 129,
+      "accepted_original_sha256_hex": "5eac0300b5148750b81fd23e84938e18bbf3665cd2a75374411f1ce6dbbcaf65",
+      "cell_ordinal": 0,
+      "cell_type": "code",
+      "cell_source_input_kind": "array",
+      "cell_source_text": "a\nb\n",
+      "cell_source_utf8_hex": "610a620a",
+      "cell_source_sha256_hex": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+      "payload_hex": "63616c6c7973746f2d63656c6c2d69642d7631005eac0300b5148750b81fd23e84938e18bbf3665cd2a75374411f1ce6dbbcaf65000000000000000000636f646500911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+      "id_digest_hex": "96591be1290fe3bec66df497a4450895b2c5207d60cd9a855ba267dc4e9e843c",
+      "cell_id": "cly_szmrxyjjb7r35rtn6sl2iriiswzmkid5mdgzvbk3ujt5ytu6qq6a"
+    },
+    {
+      "name": "source-string",
+      "accepted_original_base64": "eyJjZWxscyI6W3siY2VsbF90eXBlIjoiY29kZSIsIm1ldGFkYXRhIjp7fSwib3V0cHV0cyI6W10sInNvdXJjZSI6ImFcbmJcbiJ9XSwibWV0YWRhdGEiOnt9LCJuYmZvcm1hdCI6NCwibmJmb3JtYXRfbWlub3IiOjV9Cg==",
+      "accepted_original_byte_length": 124,
+      "accepted_original_sha256_hex": "ed804a3f614b665bdd1be6025d56eb64f4bf1f739024efc8ab62dafcc3f00b2e",
+      "cell_ordinal": 0,
+      "cell_type": "code",
+      "cell_source_input_kind": "string",
+      "cell_source_text": "a\nb\n",
+      "cell_source_utf8_hex": "610a620a",
+      "cell_source_sha256_hex": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+      "payload_hex": "63616c6c7973746f2d63656c6c2d69642d763100ed804a3f614b665bdd1be6025d56eb64f4bf1f739024efc8ab62dafcc3f00b2e000000000000000000636f646500911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+      "id_digest_hex": "751d3e2b2f4f27c1d0ad676bb117059ee6df96b5ad70cf8c173f85175d6c382c",
+      "cell_id": "cly_ouot4kzpj4t4dufnm5v3cfyft3tn7fvvvvym7daxh6croxlmhawa"
+    }
+  ],
+  "derivation_variants": {
+    "accepted_original_from_vector": "ascii-code",
+    "vectors": [
+      {
+        "name": "ordinal-0-code-source-x",
+        "cell_ordinal": 0,
+        "cell_type": "code",
+        "cell_source_text": "x",
+        "cell_source_utf8_hex": "78",
+        "cell_source_sha256_hex": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "payload_hex": "63616c6c7973746f2d63656c6c2d69642d7631009b770c7a75d7efafef34928d625771965030b1a8372765b8e8dfee2d0e18d98d000000000000000000636f6465002d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "id_digest_hex": "c362a98844f91a8f01ea98f2b05349878876501eed2a8bc564cb47f5dd008d28",
+        "cell_id": "cly_ynrktcce7eni6apktdzlau2jq6ehmua65uvixrleznd7lxiaruua"
+      },
+      {
+        "name": "ordinal-1-code-source-x",
+        "cell_ordinal": 1,
+        "cell_type": "code",
+        "cell_source_text": "x",
+        "cell_source_utf8_hex": "78",
+        "cell_source_sha256_hex": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "payload_hex": "63616c6c7973746f2d63656c6c2d69642d7631009b770c7a75d7efafef34928d625771965030b1a8372765b8e8dfee2d0e18d98d000000000000000100636f6465002d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "id_digest_hex": "a972299a4448400deaba8202d3c1420cff8b0e24b779811ab53a8c5023c79cab",
+        "cell_id": "cly_vfzctgsejbaa32v2qibnhqkcbt7ywdrew54ycgvvhkgfai6htsvq"
+      },
+      {
+        "name": "ordinal-0-markdown-source-x",
+        "cell_ordinal": 0,
+        "cell_type": "markdown",
+        "cell_source_text": "x",
+        "cell_source_utf8_hex": "78",
+        "cell_source_sha256_hex": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "payload_hex": "63616c6c7973746f2d63656c6c2d69642d7631009b770c7a75d7efafef34928d625771965030b1a8372765b8e8dfee2d0e18d98d0000000000000000006d61726b646f776e002d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "id_digest_hex": "34b9ed6173c4f8f5d795c4e5b84258cc8e009ff926243e6c9c94d09eb3d11355",
+        "cell_id": "cly_gs462yltyt4plv4vyts3qqsyzshabh7zeysd43e4stij5m6rcnkq"
+      },
+      {
+        "name": "ordinal-0-raw-source-x",
+        "cell_ordinal": 0,
+        "cell_type": "raw",
+        "cell_source_text": "x",
+        "cell_source_utf8_hex": "78",
+        "cell_source_sha256_hex": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "payload_hex": "63616c6c7973746f2d63656c6c2d69642d7631009b770c7a75d7efafef34928d625771965030b1a8372765b8e8dfee2d0e18d98d000000000000000000726177002d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+        "id_digest_hex": "ff1ef2ddb9e2f19fd33853def3168122945d40e7339095ff7439a84897049b0f",
+        "cell_id": "cly_74ppfxnz4lyz7uzykpppgfubekkf2qhhgoijl73uhguerfyetmhq"
+      }
+    ]
+  },
+  "negative_vectors": [
+    {
+      "name": "accepted-digest-as-ascii-hex-is-wrong",
+      "based_on_vector": "ascii-code",
+      "incorrect_payload_rule": "concatenate the 64 ASCII hex characters instead of the 32 digest bytes",
+      "incorrect_id_digest_hex": "bb2d80aaf6356aee81dc2d622be21586dba62a3211df4fcdd5adcc6e56fa111c",
+      "incorrect_cell_id": "cly_xmwybkxwgvvo5ao4fvrcxyqvq3n2mkrschpu7tovvxgg4vx2ceoa",
+      "correct_cell_id": "cly_3yfxaxkpdmsucsfx6zr4vx7kli7menpblrgtq3xd2hjoj4squl2a"
+    }
+  ]
+}

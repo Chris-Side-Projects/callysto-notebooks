@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product demonstration · Responsive homepage · Callysto</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="demo-banner" role="note" aria-label="Demonstration notice">
+      <div class="demo-banner__inner">
+        <strong>Product demonstration</strong>
+        Static responsive homepage artifact. No production notebook, person, review, metric, or platform claim appears here.
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="wordmark" href="index.html">Callysto</a>
+        <nav class="primary-nav" aria-label="Static product navigation preview">
+          <span class="static-nav-item" aria-disabled="true">Explore</span>
+          <a href="#trust-demo">What Callysto checks</a>
+          <span class="static-nav-item" aria-disabled="true">Sign in</span>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="page">
+      <section class="homepage-hero" aria-labelledby="homepage-heading">
+        <div class="homepage-hero__copy">
+          <span class="eyebrow">Open review for computational notebooks</span>
+          <h1 id="homepage-heading">Put the analysis behind a claim where people can question it in context.</h1>
+          <p class="lede">
+            Publish one immutable notebook version, let readers inspect the exact cells and saved outputs,
+            then keep the response or revision attached to that record.
+          </p>
+          <div class="homepage-actions" aria-label="Static homepage action preview">
+            <button class="button-primary" type="button" disabled>Explore notebooks · static</button>
+            <button type="button" disabled>Request a publisher invitation · static</button>
+          </div>
+          <a class="homepage-trust-link" href="#trust-demo">See what Callysto checks and what it does not</a>
+        </div>
+
+        <figure class="demo-excerpt" aria-labelledby="demo-excerpt-title">
+          <figcaption class="demo-excerpt__head">
+            <div>
+              <span class="demo-pill">Product demonstration</span>
+              <h2 id="demo-excerpt-title">A contextual review attached to one example cell</h2>
+            </div>
+            <span class="state-pill state-addressed">Owner addressed</span>
+          </figcaption>
+          <p class="demo-excerpt__trust">
+            <strong>Static example.</strong> Callysto did not run or verify this demonstration analysis.
+          </p>
+          <div class="demo-excerpt__cell">
+            <span class="cell__label">Methods · demonstration code cell</span>
+            <pre aria-label="Product demonstration Python code"><code>estimate = fit_model(
+  data=prepared_sample,
+  controls=selected_controls,
+)</code></pre>
+          </div>
+          <div class="demo-excerpt__thread" role="group" aria-label="Product demonstration review thread">
+            <div class="identity">
+              <span class="avatar" aria-hidden="true">DR</span>
+              <span><strong>Demo Reviewer</strong><small>Demonstration identity</small></span>
+            </div>
+            <p>Can the notebook show whether the estimate changes when the preparation rule changes?</p>
+            <div class="reply">
+              <strong>Demo Publisher</strong>
+              <p>Addressed in this demonstration revision with an alternate saved output.</p>
+            </div>
+            <span class="demo-thread-link">Static thread preview · no engagement record</span>
+          </div>
+        </figure>
+      </section>
+
+      <section class="homepage-section" aria-labelledby="loop-heading">
+        <header class="homepage-section__head">
+          <h2 id="loop-heading">One review loop</h2>
+          <p>
+            Callysto begins with the smallest sequence that can improve a computational claim.
+            It does not add execution, votes, forks, or ranking to the pilot.
+          </p>
+        </header>
+        <div class="review-loop" aria-label="Callysto review loop">
+          <div class="review-loop__step">
+            <strong>1 · Publish</strong>
+            <p>An invited owner publishes one immutable notebook version and a question for reviewers.</p>
+          </div>
+          <span class="review-loop__arrow" aria-hidden="true">→</span>
+          <div class="review-loop__step">
+            <strong>2 · Inspect and discuss</strong>
+            <p>A reviewer reads saved cells and outputs, then comments on the exact version and cell.</p>
+          </div>
+          <span class="review-loop__arrow" aria-hidden="true">→</span>
+          <div class="review-loop__step">
+            <strong>3 · Respond or revise</strong>
+            <p>The owner responds, marks the issue addressed, or publishes a linked new version.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="trust-demo" class="homepage-section" aria-labelledby="trust-heading">
+        <header class="homepage-section__head">
+          <h2 id="trust-heading">Trust is stated narrowly</h2>
+          <p>Rendering saved notebook content is not the same as running, reproducing, peer reviewing, or verifying an analysis.</p>
+        </header>
+        <table class="trust-table">
+          <caption class="sr-only">Product demonstration of Callysto trust language</caption>
+          <tbody>
+            <tr>
+              <th scope="row">Callysto may show</th>
+              <td>Format valid, render complete, immutable version identity, and the public review record.</td>
+            </tr>
+            <tr>
+              <th scope="row">Callysto does not claim</th>
+              <td>That the notebook ran successfully, reproduced a result, passed peer review, or is scientifically correct.</td>
+            </tr>
+            <tr>
+              <th scope="row">Reader boundary</th>
+              <td>Notebook content is author-supplied. Rich outputs are isolated and unsupported output remains visibly unsupported.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="homepage-section" aria-labelledby="recent-heading">
+        <header class="homepage-section__head">
+          <h2 id="recent-heading">Recent notebooks</h2>
+          <p>Only real published records may appear in this section when the pilot has them.</p>
+        </header>
+        <div class="empty-publications">
+          <div>
+            <h3>No production publications are represented in this mockup</h3>
+            <p>
+              The demonstration excerpt above is a separately labeled design fixture. It would never appear in discovery,
+              profiles, platform counts, analytics, or search metadata.
+            </p>
+          </div>
+          <button type="button" disabled>Request pilot information · static</button>
+        </div>
+      </section>
+
+      <p class="footer-note">
+        Product demonstration. All mutation controls are disabled; the trust anchor and mockup-set link are the only active navigation.
+        <a href="index.html">Return to the mockup set</a>.
+      </p>
+    </main>
+  </body>
+</html>

@@ -1,96 +1,101 @@
-# TODO.md - Callysto Notebooks
+# Callysto active queue
 
-*Single source of truth for active work. Update after every session.*
+- Status: **MILESTONE 0 ACTIVE**
+- Last reconciled: 2026-07-20
+- Complete sequence: [`PLAN.md`](./PLAN.md)
+- Rule: this file contains only work eligible to start next; it is not a second roadmap
 
----
+## Approval completed
 
-## 🔴 Active
+### T000 — Owner review and decision lock
 
-*Nothing in progress yet.*
+- Status: **COMPLETE — APPROVED 2026-07-20**
+- Implementation changes authorized: **T001-T010 / Milestone 0 only**
+- Inputs:
+  - [`INTENT.md`](./INTENT.md)
+  - [`DECISIONS.md`](./DECISIONS.md)
+  - [`PRODUCT_SPEC.md`](./PRODUCT_SPEC.md)
+  - [`UX_SPEC.md`](./UX_SPEC.md)
+  - [`ARCHITECTURE.md`](./ARCHITECTURE.md)
+  - [`PLAN.md`](./PLAN.md)
+  - [`docs/PLANNING_REVIEW.md`](./docs/PLANNING_REVIEW.md)
 
----
+Owner decisions:
 
-## 🟡 Up Next (Phase 0 — Foundation)
+- [x] Approve the narrower product wedge: public contextual review for computational claims.
+- [x] Approve notebook- and cell-level review in the MVP.
+- [x] Approve an early cohort-source audit and the 80% decision rule for direct upload versus GitHub exact-commit; build only the selected path.
+- [x] Approve invite-only publishing and an assigned-review cohort.
+- [x] Approve no notebook execution in the pilot.
+- [x] Approve immutable accepted/source versions, explicit drafts, audited render revisions, frozen public paths, and the exact cell-ID algorithm.
+- [x] Approve the app-owned cell shell plus isolated rich-output boundary.
+- [x] Approve GitHub + ORCID identity with the documented fallback.
+- [x] Approve additive non-possessory roles, verified private contact, and minimal transactional review email.
+- [x] Approve owner `addressed` versus reviewer `resolved`, plus the 15-minute comment edit window.
+- [x] Approve incoming-object promotion, stale-attempt fencing, short on-demand content capabilities/no-store, and recovery objectives.
+- [x] Approve the editorial visual direction and mandatory mockup gate.
+- [x] Identify the project owner as decision owner; T010 still assigns legal/policy approvers.
+- [x] Approve the proposed file/output limits and success criteria as M0 hypotheses to test.
 
-- [x] Scaffold Next.js project (`npx create-next-app@latest`)
-- [ ] Set up Railway project: app service + PostgreSQL add-on
-- [ ] Create R2 bucket: `callysto-notebooks`
-- [ ] Configure DNS: callysto.io → Railway deployment (Cloudflare)
-- [ ] Set up GitHub Actions: lint + build on push to main
-- [ ] Write DEVELOPER_NOTES.md (local dev setup, env vars, deploy)
-- [ ] Deploy empty shell (just homepage placeholder) to callysto.io
+Completion evidence:
 
----
+- Every entry in `DECISIONS.md` is marked `ACCEPTED`, `REJECTED`, or `SUPERSEDED`, with date and owner.
+- Any amendments are reflected in product, UX, architecture, security, testing, and plan documents.
+- T001–T010 are moved to Active/Up Next only after the above reconciliation.
 
-## 🟢 Backlog — Phase 1 (Read + Publish)
+## Active — Milestone 0 only
 
-### Notebook submission
-- [ ] Upload .ipynb file endpoint + R2 storage
-- [ ] GitHub URL fetch + store endpoint
-- [ ] GitHub OAuth repo connect (auto-sync)
-- [ ] nbconvert render pipeline (Python microservice or CLI step)
-- [ ] Notebook metadata form (title, description, tags, study link)
-- [ ] Draft / publish toggle
+| ID | Work item | Dependency | Done when |
+|---|---|---|---|
+| T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
+| T002 **IN PROGRESS — LOCAL ACCEPTANCE PASS** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, and development/production-mode browser suites pass locally; only committed Linux CI execution remains. |
+| T003 **PARTIAL LOCAL PROOF** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | Application headers and a header test exist; real two-origin hostile-browser/capability/expiry/restriction proof remains. |
+| T004 **PARTIAL LOCAL PROOF** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | Local converter/vector/SQLite cases pass; PostgreSQL and deployed egress/secret/sentinel evidence remain. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
+| T005 | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | 6–10 participants/8 notebooks have source-workflow evidence; decision and affected docs are reconciled before ingestion code. |
+| T006 | Prove incoming-object promotion and draft-generation integrity for the selected source path. | T002, T005 | Server stream/hash, distinct no-overwrite accepted key, overwrite/retry/crash/stale-generation tests pass against staging storage. |
+| T007 | Prove GitHub/ORCID, verified private email, additive roles/operator bootstrap, and fenced transactional delivery. | T002 | Provider/linking/contact/reauth, preference race, provider-accept crash, and dead-letter evidence recorded. |
+| T008 | Prove database/object recovery topology and objectives. | T002 | PITR meets approved database RPO/RTO; separately credentialed published-original recovery meets the approved RPO (proposed RPO 0) and preserves restrictions/digests. |
+| T009 **COMPLETE — OWNER APPROVED 2026-07-20** | Produce and approve responsive mockups. | T000 | Homepage, desktop review, mobile inline discussion, and draft failure/processing views in [`docs/design/m0`](./docs/design/m0/) were approved without amendment under D024. |
+| T010 | Resolve repository/content licensing and policy owners. | T000 | Decisions, owners, and pre-launch deadlines are documented. |
 
-### Auth
-- [ ] NextAuth setup: GitHub OAuth
-- [ ] NextAuth: Google OAuth
-- [ ] NextAuth: email magic link
-- [ ] ORCID OAuth provider (custom — ORCID uses OAuth 2.0)
-- [ ] User profile creation on first login
+Do not open M1 tasks until the Milestone 0 gate in `PLAN.md` is green.
 
-### Browsing
-- [ ] Notebook detail page (render stored HTML)
-- [ ] Homepage: recent + featured notebooks
-- [ ] Explore page with filters (tag, language, date)
-- [ ] User profile page
+## Current evidence boundary
 
-### Database
-- [ ] PostgreSQL schema (see PLAN.md data model)
-- [ ] Migration tooling (Drizzle ORM or Prisma)
+Resolved locally:
 
----
+- one canonical dynamic notebook route and one PostCSS configuration;
+- exact dependency/runtime declarations and strict install-script policy;
+- lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build;
+- local development and production-server Playwright baselines: canonical/invalid routes, exact
+  application headers in Chromium/Firefox, and serious/critical axe smoke checks through WCAG 2.2;
+- local proof-only cell-ID, non-execution/default-deny conversion, and stale-worker fencing semantics;
+- owner-approved responsive product-demonstration mockups.
 
-## 🟢 Backlog — Phase 2 (Comments + Votes)
+Still open:
 
-- [ ] Inline cell-level comment system
-- [ ] Threaded replies
-- [ ] Markdown rendering in comments
-- [ ] Notebook upvotes
-- [ ] Comment upvotes
-- [ ] Ranked feeds (Recent / Top / Trending)
-- [ ] Notification system (reply to your comment, fork of your notebook)
+- committed Linux GitHub Actions evidence for T002;
+- real content-origin/capability isolation and deployed converter/egress proof;
+- migrations, application APIs, authentication, storage, staging, production, and provider evidence;
+- cohort/source choice and legal/policy ownership.
 
----
+See [`CONTINUATION.md`](./CONTINUATION.md) for the exact restart sequence and why each step remains.
 
-## 🟢 Backlog — Phase 3 (Fork + Run)
+## Completed documentation work
 
-- [ ] Fork a notebook (copy + link back to parent)
-- [ ] Fork diff view (cell-level changes from parent)
-- [ ] Sandboxed execution container (Docker + Jupyter Server)
-- [ ] Execution queue (Redis + BullMQ)
-- [ ] Resource limits enforcement (CPU/RAM/timeout)
-- [ ] Python 3 kernel support
-- [ ] Save execution outputs to fork
+- [x] Audited the scaffold and conflicting legacy documents.
+- [x] Reframed the product intent around a closed contextual review loop.
+- [x] Defined testable product requirements and launch gates.
+- [x] Defined UX, revision, notification, accessibility, and failure states.
+- [x] Defined data, API, job, storage, render, isolation, and recovery architecture.
+- [x] Defined phased build, security, research, and validation plans.
 
----
+## Session update protocol
 
-## 📋 Design / Product
+At the end of an approved implementation session:
 
-- [ ] Wireframes: homepage, notebook detail, submit flow, profile, explore
-- [ ] Visual identity / logo (Callysto + moon motif)
-- [ ] Landing page copy (pre-launch)
-- [ ] Email capture for early access
-
----
-
-## ✅ Done
-
-- [x] Purchase callysto.io (2026-06-01, GoDaddy, $59.99/yr, order #4101768411)
-- [x] Create GitHub repo: Chris-Side-Projects/callysto-notebooks (2026-06-01)
-- [x] Write INTENT.md, PLAN.md, TODO.md, CLAUDE.md, CODING.md, README.md
-- [x] Decide stack: Next.js + PostgreSQL + R2 + nbconvert + NextAuth + Railway
-- [x] Decide execution model: read-only v1, sandboxed execution v3
-- [x] Decide open source: yes (MIT/Apache 2.0)
-- [x] Decide monetization: free for individuals, institutional plans later
-- [x] Scaffold Next.js app router project with TypeScript, Tailwind, Drizzle schema, and initial pages
+1. update the relevant task status and evidence link;
+2. record newly discovered work under the correct milestone in `PLAN.md` before adding it here;
+3. leave only one item `IN PROGRESS` per active owner unless parallel ownership is explicit;
+4. record validation as `verified locally`, `verified in staging`, `verified in production`, or `not verified`;
+5. never mark a task complete because code exists—its acceptance evidence must pass.

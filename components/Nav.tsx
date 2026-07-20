@@ -2,51 +2,53 @@ import Link from "next/link";
 
 export function Nav() {
   return (
-    <header className="border-b border-ink-800 bg-ink-950/80 backdrop-blur sticky top-0 z-30">
-      <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
+    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
+        <Link href="/" className="group flex items-center gap-2">
           <span
             aria-hidden
-            className="inline-block w-6 h-6 rounded-full bg-gradient-to-br from-moon-200 to-moon-400 ring-1 ring-moon-200/30"
+            className="inline-block h-6 w-6 rounded-full bg-signal ring-1 ring-blue-300"
           />
-          <span className="font-semibold tracking-tight text-moon-100 group-hover:text-white transition-colors">
+          <span className="font-semibold tracking-tight text-ink transition-colors group-hover:text-slate-700">
             Callysto
           </span>
-          <span className="text-xs text-ink-500 hidden sm:inline">notebooks</span>
+          <span className="hidden text-xs text-slate-500 sm:inline">
+            notebooks
+          </span>
         </Link>
 
         <nav className="flex items-center gap-1 text-sm">
           <Link
             href="/explore"
-            className="px-3 py-1.5 rounded-md text-moon-200 hover:text-white hover:bg-ink-800 transition-colors"
+            className="rounded-md px-3 py-1.5 text-slate-700 transition-colors hover:bg-slate-50 hover:text-ink"
           >
             Explore
           </Link>
           <Link
             href="/submit"
-            className="px-3 py-1.5 rounded-md text-moon-200 hover:text-white hover:bg-ink-800 transition-colors"
+            className="rounded-md px-3 py-1.5 text-slate-700 transition-colors hover:bg-slate-50 hover:text-ink"
           >
             Submit
           </Link>
-          <span className="mx-2 h-5 w-px bg-ink-700" aria-hidden />
+          <span className="mx-2 h-5 w-px bg-slate-200" aria-hidden />
           <Link
             href="/topics"
-            className="px-3 py-1.5 rounded-md text-moon-200 hover:text-white hover:bg-ink-800 transition-colors"
+            className="rounded-md px-3 py-1.5 text-slate-700 transition-colors hover:bg-slate-50 hover:text-ink"
           >
             Topics
           </Link>
-          <span className="mx-2 h-5 w-px bg-ink-700" aria-hidden />
+          <span className="mx-2 h-5 w-px bg-slate-200" aria-hidden />
           <Link
             href="/login"
-            className="px-3 py-1.5 rounded-md text-moon-200 hover:text-white hover:bg-ink-800 transition-colors"
+            className="rounded-md px-3 py-1.5 text-slate-700 transition-colors hover:bg-slate-50 hover:text-ink"
           >
             Sign in
           </Link>
           <Link
-            href="/login"
-            className="px-3 py-1.5 rounded-md bg-accent-500 text-ink-950 font-medium hover:bg-accent-600 transition-colors"
+            href="/submit"
+            className="rounded-md bg-ink px-3 py-1.5 font-medium text-white transition-colors hover:bg-slate-800"
           >
-            Sign up
+            Pilot status
           </Link>
         </nav>
       </div>

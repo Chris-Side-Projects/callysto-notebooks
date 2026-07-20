@@ -1,35 +1,56 @@
-# CLAUDE.md - Callysto Notebooks
+# CLAUDE.md — Callysto project context
 
-**Last reviewed:** 2026-06-01
+**Last reconciled:** 2026-07-20
 
-## Project Overview
+Follow [`AGENTS.md`](./AGENTS.md) for the complete contributor contract. This file is a concise orientation, not a competing source of truth.
 
-Callysto is an open platform for publishing, reviewing, and collaborating on Jupyter notebooks.
-Think GitHub for notebooks — public submissions, peer review, commentary, versioning, and improvement.
+## Project
 
-- **Domain:** callysto.io
-- **Org:** Chris-Side-Projects
-- **Status:** Early planning / pre-build
+Callysto is an approved public-review product direction for computational claims made in Jupyter notebooks. The pilot must prove that an invited owner can publish an immutable notebook version, a reviewer can discuss the notebook or exact cell, and the owner can respond/mark addressed while the reviewer resolves/reopens or the owner publishes a linked revision.
 
-## Stack (TBD — pending Chris decisions)
+It is not currently a working product. The repository contains a locally green Next.js scaffold, local M0 proofs, and an approved specification.
 
-- **Frontend:** TBD
-- **Backend:** TBD
-- **Storage:** TBD
-- **Notebook execution:** TBD (likely read-only rendering, no live execution)
+## Status
 
-## Key Docs
+**Milestone 0 is active. Repair/proof work and approved development dependencies are allowed; M1-M8 product features, production provisioning, and deployment are not.**
 
-- `INTENT.md` — What this is and why it exists
-- `PLAN.md` — Architecture and phased roadmap
-- `TODO.md` — Active task list
-- `CODING.md` — Coding standards (inherited from clawd)
-- `DEVELOPER_NOTES.md` — Setup, local dev, deployment (populate when stack is decided)
+T000 was approved on 2026-07-20. T001 is locally complete; T002 is active with browser and CI evidence remaining. See [`CONTINUATION.md`](./CONTINUATION.md) before any new work.
 
-## Rules for Coding Agents
+## Proposed pilot boundaries
 
-- Read `INTENT.md` and `PLAN.md` before touching anything
-- Read `DEVELOPER_NOTES.md` for environment details once it exists
-- No new dependencies without flagging to Chris
-- Match existing code style exactly
-- All commits: `edwardtheclaw / edward.the.claw@gmail.com`
+- Next.js web/API, PostgreSQL, private primary/recovery R2, fenced Python orchestrator, credential-free no-network converter, and short-capability isolated content gateway.
+- GitHub + ORCID authentication subject to feasibility gate.
+- Public reading; authenticated commenting; invite-only publishing.
+- An early cohort-source audit selects direct `.ipynb` upload (default) or GitHub exact-commit import using the approved 80% rule; only one is built.
+- App-owned cell shell with isolated rich output, immutable versions, stable cell-ID threads.
+- Verified private participation email, additive publisher/operator capabilities, and minimal fenced transactional review email.
+- No notebook execution, votes, ranking, forks, live editing, repository sync, or private workspaces.
+
+## Read first
+
+```text
+CONTINUATION.md
+INTENT.md
+DECISIONS.md
+PRODUCT_SPEC.md
+UX_SPEC.md
+ARCHITECTURE.md
+docs/SECURITY.md
+PLAN.md
+TODO.md
+docs/TEST_PLAN.md
+DEVELOPER_NOTES.md
+AGENTS.md
+CODING.md
+```
+
+Do not treat `docs/agent-tournament.md`, current placeholder pages, or old comments as current architecture.
+
+## Current verified state
+
+- Strict clean install, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production audit, and production build pass locally.
+- Four documented moderate development-only Drizzle Kit/esbuild findings remain; production audit is clean.
+- Playwright app-shell suites pass locally against development and production servers; hosted CI has not run.
+- Staging, providers, migrations, real product APIs, content-origin isolation, and deployment remain unverified.
+
+See [`CONTINUATION.md`](./CONTINUATION.md) and [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md) for the evidence boundary and exact restart sequence.

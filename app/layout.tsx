@@ -4,11 +4,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Callysto",
-  description: "An open platform for publishing, reviewing, and collaborating on Jupyter notebooks."
+  description:
+    "An open platform for publishing, reviewing, and collaborating on Jupyter notebooks.",
 };
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -27,9 +28,12 @@ export default function RootLayout({
               <Link href="/submit" className="hover:text-ink">
                 Submit
               </Link>
-              <button className="rounded-md border border-slate-300 px-3 py-2 text-slate-800 transition hover:border-slate-400 hover:bg-slate-50">
+              <Link
+                href="/login"
+                className="rounded-md border border-slate-300 px-3 py-2 text-slate-800 transition hover:border-slate-400 hover:bg-slate-50"
+              >
                 Sign in
-              </button>
+              </Link>
             </div>
           </nav>
         </header>

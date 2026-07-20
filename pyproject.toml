@@ -1,0 +1,10 @@
+[project]
+name = "callysto-m0-proof"
+version = "0.0.0"
+description = "Credential-free local proofs for Callysto Milestone 0 contracts"
+requires-python = "==3.14.6"
+dependencies = []
+
+[tool.callysto]
+status = "proof-only"
+product-code = false

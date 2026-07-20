@@ -1,5 +1,7 @@
 # Agent Tournament Results
 
+> **Historical planning artifact:** This June 2026 experiment evaluated agent behavior on a now-deferred vote-button task. It is not a product requirement, architecture decision, implementation plan, model-routing policy, or claim that the current scaffold works. Current authority begins with `INTENT.md`, `DECISIONS.md`, `PRODUCT_SPEC.md`, `ARCHITECTURE.md`, and `PLAN.md`.
+
 *Last updated: 2026-06-01*
 
 Two back-to-back tournaments on the same task (Task 1: notebook vote button), run overnight. Each tournament had three phases: Plan, Build, and Check. Each phase was scored by all four agents; majority vote picked the winner.

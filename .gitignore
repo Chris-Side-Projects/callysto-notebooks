@@ -8,6 +8,10 @@ dist/
 build/
 .next/
 .cache/
+playwright-report/
+test-results/
+blob-report/
+coverage/
 *.tsbuildinfo
 .next/types/
 __pycache__/

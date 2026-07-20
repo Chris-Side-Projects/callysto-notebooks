@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product demonstration · Mobile inline discussion · Callysto</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="mobile-canvas">
+    <a class="skip-link" href="#selected-cell">Skip to selected cell</a>
+    <div class="mobile-shell">
+      <div class="demo-banner" role="note" aria-label="Demonstration notice">
+        <div class="demo-banner__inner">
+          <strong>Product demonstration</strong>
+          Static mobile interface example.
+        </div>
+      </div>
+      <header class="site-header">
+        <div class="site-header__inner">
+        <a class="wordmark" href="index.html">Callysto</a>
+          <nav class="primary-nav" aria-label="Static product navigation preview">
+            <span class="static-nav-item" aria-disabled="true">Explore</span>
+            <span class="static-nav-item" aria-disabled="true">Trust</span>
+            <span class="static-nav-item" aria-disabled="true">Menu</span>
+          </nav>
+        </div>
+      </header>
+
+      <main class="page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Mockups</a><span aria-hidden="true">/</span><span aria-current="page">Version 2</span>
+        </nav>
+
+        <header class="notebook-head">
+          <span class="demo-pill">Product demonstration</span>
+          <h1>Classroom-outcomes sensitivity check</h1>
+          <p class="lede">A static mobile example, not a real study or scientific claim.</p>
+
+          <section class="review-question" aria-labelledby="mobile-question">
+            <span class="eyebrow" id="mobile-question">Question for reviewers</span>
+            <p>Does the analysis separate missing-data choices from model choices?</p>
+          </section>
+
+          <div class="trust-note" role="note">
+            <span class="trust-mark" aria-hidden="true">i</span>
+            <span><strong>Static render.</strong> Callysto did not run or verify this analysis.</span>
+          </div>
+
+          <div class="provenance" aria-label="Essential provenance">
+            <span><strong>Owner</strong> Demo Publisher</span>
+            <span><strong>Version</strong> 2</span>
+            <span><strong>License</strong> Demo CC BY</span>
+            <span><strong>Source</strong> Demo report</span>
+          </div>
+        </header>
+
+        <article aria-label="Product demonstration notebook">
+          <section class="cell" aria-labelledby="mobile-intro-label">
+            <div class="cell__head">
+              <span id="mobile-intro-label" class="cell__label">Purpose · Markdown cell 1</span>
+              <a class="discuss-link" href="#selected-cell">Discuss this cell</a>
+            </div>
+            <div class="cell__body">
+              <h2>Sensitivity analysis</h2>
+              <p>Three illustrative preprocessing choices are compared below.</p>
+            </div>
+          </section>
+
+          <section id="selected-cell" class="cell cell--selected" aria-labelledby="mobile-cell-label">
+            <div class="cell__head">
+              <div>
+                <span id="mobile-cell-label" class="cell__label">Methods · code cell 14</span>
+                <span class="cell__marker">Demonstration thread</span>
+              </div>
+              <a class="discuss-link" href="#inline-review" aria-current="location">Discussion open below</a>
+            </div>
+            <div class="cell__body">
+              <pre aria-label="Demonstration Python code"><code>models = compare(
+  complete_case,
+  median_impute,
+  group_impute,
+)</code></pre>
+            </div>
+          </section>
+
+          <section id="inline-review" class="inline-review" aria-labelledby="mobile-review-heading">
+            <div class="inline-review__head">
+              <span class="eyebrow">Inline contextual review</span>
+              <h2 id="mobile-review-heading">Methods · code cell 14</h2>
+              <p class="review-context">Version 2 · demo cell ID cly_demo14</p>
+            </div>
+
+            <article class="thread" aria-label="Product demonstration review thread">
+              <div class="thread__meta">
+                <div class="identity">
+                  <span class="avatar" aria-hidden="true">DR</span>
+                  <span><strong>Demo Reviewer</strong><small>Demonstration identity</small></span>
+                </div>
+                <span class="state-pill state-open">Open</span>
+              </div>
+              <div class="thread__body">
+                <p>What happens if the grouping variable is excluded from the final model?</p>
+                <time datetime="2026-01-01">Demonstration time</time>
+              </div>
+              <div class="thread__actions">
+                <a class="button" href="#inline-review">Thread permalink</a>
+                <button class="text-action" type="button" disabled>Report · static</button>
+              </div>
+            </article>
+
+            <div class="composer">
+              <label for="mobile-reply">Reply to this demonstration thread</label>
+              <textarea id="mobile-reply" placeholder="Static composer preview" readonly aria-describedby="mobile-static-note"></textarea>
+              <div class="composer__actions">
+                <button class="button-primary" type="button" disabled>Post reply · static</button>
+                <a class="button" href="#selected-cell">Close and return to cell</a>
+              </div>
+              <p class="mockup-note" id="mobile-static-note">Static mockup. Product mutation controls are disabled; text is not saved or submitted.</p>
+            </div>
+          </section>
+
+          <section class="cell" aria-labelledby="mobile-output-label">
+            <div class="cell__head">
+              <span id="mobile-output-label" class="cell__label">Results · output for code cell 14</span>
+              <a class="discuss-link" href="#inline-review">Discuss this cell</a>
+            </div>
+            <div class="cell__body">
+              <p><strong>Product demonstration output:</strong> three illustrative estimates fall within a narrow range.</p>
+            </div>
+          </section>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

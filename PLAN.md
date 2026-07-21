@@ -1,7 +1,7 @@
 # Callysto build plan
 
 - Status: **MILESTONE 0 AUTHORIZED — M1-M8 GATED**
-- Product stage: pre-build; an incomplete scaffold exists
+- Product stage: Milestone 0 feasibility; the product MVP is not implemented
 - Planning unit: one milestone must end in independently verifiable behavior
 - Product source of truth: [`PRODUCT_SPEC.md`](./PRODUCT_SPEC.md)
 - Technical source of truth: [`ARCHITECTURE.md`](./ARCHITECTURE.md)
@@ -112,14 +112,20 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 
 - M0.1: complete; D001-D024 and M0 authorization are recorded.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
-- M0.3/M0.4: complete on draft PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
+- M0.3/M0.4: complete and merged through PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
   Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
   baselines.
-- M0.5: application headers only; the real two-origin capability/isolation/revocation proof is open.
-- M0.6: exact cell-ID/default-deny conversion/SQLite fencing proof passes locally; PostgreSQL and
-  deployed secret/egress/sentinel evidence remain open.
+- M0.5: local feasibility complete. A gated two-host shell/gateway, per-request nonce CSP, Ed25519
+  capabilities, hostile HTML/SVG confinement, lazy refresh, preview/public expiry, and restriction
+  bound pass 14 production-server cases in Chromium and Firefox. Deployed hostname/CDN evidence is
+  still open.
+- M0.6: exact cell-ID/default-deny conversion, minimized secret-free child process, and SQLite plus
+  PostgreSQL 17.9 database-clock/`SKIP LOCKED`/generation fencing proofs pass locally. Deployed
+  network/process isolation and orchestrator DB/R2-only egress remain open.
 - M0.10: complete; four static responsive mockups were approved without amendment under D024.
-- M0.1a/M0.7-M0.9/M0.11-M0.12: no real participant/provider/staging/policy evidence yet.
+- M0.1a/M0.7-M0.9/M0.11-M0.12: no real participant/provider/staging/policy evidence yet. Read-only
+  provider inventory found CI but no Callysto deployment; exact owner/cloud inputs are recorded in
+  [`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).
 
 See [`CONTINUATION.md`](./CONTINUATION.md) and [`docs/evidence`](./docs/evidence/) for exact commands,
 environment labels, and the next sequence.
@@ -291,6 +297,8 @@ The following ideas require a new decision record and pilot evidence before ente
 5. Each milestone closes with a short evidence report linking tests, screenshots where relevant, migrations, runbooks, and unresolved risks.
 6. Claims use evidence labels: `verified locally`, `verified in staging`, `verified in production`, or `not yet verified`.
 
-## 11. Owner approval request
+## 11. Owner approval record
 
-Approve this plan only if it matches the intended product. Approval means “begin M0,” not “build every later feature regardless of what the pilot teaches.” The M8 decision gate is intentionally binding.
+The owner approved this plan on 2026-07-20. That approval means “complete T001-T010/M0,” not “build
+every later feature regardless of what the pilot teaches.” M1-M8 remain unauthorized, and the M8
+proceed/iterate/stop-or-reframe decision gate remains binding.

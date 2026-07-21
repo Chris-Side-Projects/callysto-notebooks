@@ -3,7 +3,8 @@
 - Status: **M0 OPERATING CONTRACT ACTIVE; M1-M8 NOT APPROVED**
 - Last verified against scaffold: 2026-07-20
 - Repository: `Chris-Side-Projects/callysto-notebooks`
-- Production deployment: **not verified**
+- Deployment: **none found; Cloudflare read-only inventory works through a root-only VPS bundle,
+  but no Callysto resource exists and staging write/isolation authority remains unverified**
 
 This document distinguishes the locally verified M0 scaffold/proofs from the system proposed in the specifications. Start every resumed session with [`CONTINUATION.md`](./CONTINUATION.md).
 
@@ -33,16 +34,17 @@ The scaffold is locally green raw material, not a working MVP.
 | `npm run audit:prod` | Pass: zero vulnerabilities. | No known moderate-or-higher production finding at verification time. |
 | `npm run audit:all` | Pass at `high`; reports 4 moderate Drizzle Kit/esbuild findings. | Accepted development-only exception in `docs/DEPENDENCY_RISKS.md`; do not expose the affected dev server. |
 | `npm run lint` / `npm run typecheck` | Pass. | Baseline static contract is green. |
-| Unit/integration | 11 unit and 3 repository-contract cases pass. | Route/configuration and utility baseline are covered; this is not product-domain coverage. |
-| `npm run test:python` | 24 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Local proof semantics pass on macOS arm64; deployed isolation remains unverified. |
-| `npm run docs:check` | Pass across 27 Markdown files. | Local links/required docs/trailing whitespace checks pass. |
+| Unit/integration | 18 unit and 3 repository-contract cases pass. | Includes canonical capability, authority, TTL, and tamper behavior; this is still not product-domain coverage. |
+| `npm run test:python` | 30 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, direct-child environment/descriptor/sentinel evidence, and a full transitive project-local converter-module audit; deployed OS/network isolation remains unverified. |
+| `npm run test:postgres:proof` | 4 cases pass against a disposable PostgreSQL 17.9 database. | Real local DB-clock, `SKIP LOCKED`, lease/generation/stale/duplicate/replacement semantics; proof DDL is not a migration. |
+| `npm run docs:check` | Pass across 29 Markdown files. | Local links/required docs/trailing whitespace checks pass. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect is repaired. |
-| Browser suites | Pass locally in development and CI-equivalent production modes: 2 E2E, 6 Chromium/Firefox header, 4 axe smoke tests. | This is an application-shell baseline, not the T003 cross-origin hostile-output proof or manual accessibility certification. |
-| GitHub Actions | Pass on Ubuntu 24.04 for baseline commit `558a4cb`; SHA-pinned actions, runtime assertions, strict install, core gate, and production browser suites ran in workflow `29780426457`. | T002 hosted evidence is complete; draft PR #1 still needs repository review/merge. |
+| Browser suites | Pass locally: 2 Chromium E2E, 14 Chromium/Firefox security, and 4 Chromium axe smoke cases. | T003 local two-host hostile-output/capability feasibility is proven; deployed content-domain behavior and manual accessibility certification remain open. |
+| GitHub Actions | Pass on Ubuntu 24.04 for baseline commit `558a4cb`; SHA-pinned actions, runtime assertions, strict install, core gate, and production browser suites ran in workflow `29780426457`. | T002 hosted evidence is complete and PR #1 was merged as `a7b0d85`. |
 | Database migrations/product APIs/auth/storage | Absent. | Product implementation has not started and is not implied by the green scaffold. |
-| Staging/production | No evidence. | Do not infer deployment from the domain or README. |
+| Staging/production | Read-only audit found no Callysto deployment. | GitHub/Railway/Vercel access exists but no Callysto resource; Cloudflare/R2 access is absent. Do not infer deployment from CI, the parked domain, or README. |
 
-See [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md) for commands and environment boundaries.
+See [`docs/evidence`](./docs/evidence/) for commands and environment boundaries.
 
 ## 3. Proposed runtime topology
 
@@ -77,6 +79,13 @@ Proposed deployment:
 - GitHub Actions for merge gates and deploy orchestration.
 - One transactional email provider selected after the Milestone 0 spike.
 - One notification-dispatch topology selected in M0.9: a dedicated Railway process is recommended; a bounded web-triggered job is acceptable only if deployed scheduling, concurrency, fencing, health, and shutdown behavior pass the same contract and are documented here before M1.
+
+This is a proposal, not current infrastructure. The 2026-07-20 inventory found no Callysto project
+or deployment in Railway or Vercel, no GitHub deployment/environment/Pages configuration, no usable
+Cloudflare account credentials, and a parked `callysto.io` domain. Do not create an ordinary cloud
+service merely to change that status: staging must be capable of the converter/orchestrator egress,
+private/recovery R2, content-host, and recovery proofs in M0. See
+[`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).
 
 Redis, BullMQ, Kubernetes, notebook execution, and a public renderer API are not part of the pilot.
 
@@ -122,6 +131,11 @@ npm run test:security
 npm run test:a11y
 ```
 
+`npm run test:postgres:proof` is separate from the ordinary gate because it deliberately requires a
+dedicated loopback database named `callysto_m0_proof`; set `CALLYSTO_TEST_DATABASE_URL` only for that
+disposable target. After a successful build, `npm run proof:m0` exposes the proof page locally and
+must be stopped with Ctrl-C.
+
 ### Future product setup contract — not yet implemented
 
 ```bash
@@ -150,6 +164,7 @@ npm run format:check        formatting check
 npm run typecheck           TypeScript check
 npm run test                JS/TS unit tests
 npm run test:integration    current repository contract tests
+npm run test:postgres:proof proof-only PostgreSQL lease/generation cases; dedicated DB required
 npm run test:e2e            Playwright product journeys
 npm run test:security       cross-origin and hostile-content browser tests
 npm run test:a11y           automated accessibility checks
@@ -160,6 +175,7 @@ npm run check               complete local merge gate
 npm run audit:prod          production dependency audit at moderate threshold
 npm run audit:all           full dependency audit at high threshold
 npm run browser:install     install Chromium and Firefox for Playwright
+npm run proof:m0            start built proof-only app/content servers on loopback
 ```
 
 `dev:renderer`, `db:generate`, and `db:migrate` are future commands, not current scripts. CI invokes
@@ -167,7 +183,10 @@ the same implemented project scripts rather than duplicating hidden shell logic.
 
 ## 7. Environment configuration
 
-`.env.example` documents the proposed configuration shape but is not wired. Milestone 0 must reconcile exact names with selected libraries, split variables by service identity, and make startup validation/tests authoritative.
+`.env.example` mostly documents the proposed configuration shape. The content-capability names are
+wired only by the disabled-by-default M0 proof harness; this is not general product startup
+validation. Later Milestone 0 work must reconcile exact names with selected libraries, split
+variables by service identity, and make startup validation/tests authoritative.
 
 Proposed configuration groups:
 
@@ -204,8 +223,10 @@ R2_RECOVERY_ACCESS_KEY_ID=...
 R2_RECOVERY_SECRET_ACCESS_KEY=...
 R2_RECOVERY_ENDPOINT=...
 
-# Content capability signing (server/gateway only)
-CONTENT_CAPABILITY_SECRET=...
+# Content capability signing (private key: application issuer only; public key: gateway only)
+CONTENT_CAPABILITY_KEY_ID=...
+CONTENT_CAPABILITY_PRIVATE_KEY_PEM=...
+CONTENT_CAPABILITY_PUBLIC_KEY_PEM=...
 CONTENT_PUBLIC_TTL_SECONDS=60
 CONTENT_PREVIEW_TTL_SECONDS=300
 

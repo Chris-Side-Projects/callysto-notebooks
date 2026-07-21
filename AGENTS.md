@@ -126,12 +126,17 @@ A task is complete only when:
 
 As of 2026-07-20:
 
-- T001 route/configuration repair and the complete local/hosted T002 acceptance gate pass on draft PR #1;
+- T001 route/configuration repair and the complete local/hosted T002 acceptance gate were merged through PR #1;
 - a strict clean install and production audit pass; four documented moderate development-only Drizzle Kit findings remain;
 - unit, repository-contract, exact-Python proof, cell-ID vector, documentation, typecheck, lint, and production-build checks pass locally;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;
-- migrations, product APIs, real auth/storage/rendering, staging, and deployment evidence are absent;
-- `CONTINUATION.md` is the restart authority for the pull-request branch and exact next step.
+- the active proof branch adds a passing local two-host nonce-CSP/Ed25519/hostile-output suite in
+  Chromium and Firefox, a minimized converter child process, and real local PostgreSQL fencing;
+- product migrations/APIs, real auth/storage/rendering, deployed converter/content isolation,
+  staging, and production remain absent;
+- GitHub/Railway/Vercel account access exists but no Callysto deployment was found; Cloudflare/R2
+  access is unavailable;
+- `CONTINUATION.md` is the restart authority for the active Milestone 0 branch and exact next step.
 
 Repair these through approved Milestone 0 tasks. Never hide them by lowering checks.

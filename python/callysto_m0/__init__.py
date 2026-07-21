@@ -1,18 +1,6 @@
-"""Proposal-only local proof contracts for Callysto M0."""
+"""Proposal-only local proof modules for Callysto M0.
 
-from .cell_ids import CellIdError, normalize_notebook_cell_ids
-from .conversion import ConversionError, ConversionPolicy, ConversionResult, convert_notebook_bytes
-from .state_machine import CompletionOutcome, Lease, StateStore, connect
-
-__all__ = [
-    "CellIdError",
-    "CompletionOutcome",
-    "ConversionError",
-    "ConversionPolicy",
-    "ConversionResult",
-    "Lease",
-    "StateStore",
-    "connect",
-    "convert_notebook_bytes",
-    "normalize_notebook_cell_ids",
-]
+Keep package initialization inert.  In particular, importing the converter's
+``conversion`` module must not pull the SQLite state proof or any future
+orchestrator-only dependency into the credential-free child process.
+"""

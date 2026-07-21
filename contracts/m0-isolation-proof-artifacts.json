@@ -1,0 +1,20 @@
+[
+  {
+    "id": "hostile-html",
+    "title": "Hostile HTML output",
+    "mime": "text/html; charset=utf-8",
+    "body": "<!doctype html><html><head><meta charset=\"utf-8\"><style>@import url('/canary/style');body{background-image:url('/canary/css-image')}</style></head><body data-script-ran=\"no\"><h1>Hostile HTML proof artifact</h1><p>This synthetic artifact must remain inert.</p><form action=\"/canary/form\" method=\"post\"><button id=\"hostile-form-submit\" type=\"submit\">Submit hostile form</button></form><a id=\"hostile-top-navigation\" href=\"http://127.0.0.1:3100/m0-proof-navigation-escaped\" target=\"_top\">Navigate top</a><a id=\"hostile-popup\" href=\"/canary/popup\" target=\"_blank\">Open popup</a><img src=\"/canary/image\" onerror=\"document.body.dataset.eventHandlerRan='yes'\"><script>document.body.dataset.scriptRan='yes';document.body.dataset.cookieValue=document.cookie;document.body.dataset.localValue=localStorage.getItem('callysto-app-secret')||'';document.body.dataset.sessionValue=sessionStorage.getItem('callysto-app-secret')||'';fetch('/canary/script-fetch');window.open('/canary/script-popup');window.top.location='http://127.0.0.1:3100/m0-proof-navigation-escaped';</script></body></html>"
+  },
+  {
+    "id": "hostile-svg",
+    "title": "Hostile SVG output",
+    "mime": "image/svg+xml",
+    "body": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"100%\" height=\"100%\" viewBox=\"0 0 640 180\" onload=\"document.documentElement.dataset.eventHandlerRan='yes'\"><title>Hostile SVG proof artifact</title><rect width=\"640\" height=\"180\" fill=\"#f7f7f4\"/><text x=\"24\" y=\"52\" font-size=\"22\">Synthetic SVG remains inert</text><image x=\"24\" y=\"72\" width=\"24\" height=\"24\" xlink:href=\"/canary/svg-image\"/><a xlink:href=\"javascript:document.documentElement.dataset.linkRan='yes'\"><text x=\"24\" y=\"132\">Unsafe link</text></a><script>document.documentElement.dataset.scriptRan='yes';fetch('/canary/svg-script')</script></svg>"
+  },
+  {
+    "id": "later-html",
+    "title": "Later lazy output",
+    "mime": "text/html; charset=utf-8",
+    "body": "<!doctype html><html><head><meta charset=\"utf-8\"></head><body data-script-ran=\"no\"><h1>Later output loaded on demand</h1><p>The first capability may expire before this cell approaches the viewport.</p><script>document.body.dataset.scriptRan='yes';fetch('/canary/later-script')</script></body></html>"
+  }
+]

@@ -21,6 +21,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "proof:m0": "node scripts/m0-proof-server.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
@@ -29,8 +30,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
+    "test:postgres:proof": "vitest run tests/postgres/lease-fencing-proof.test.ts",
     "test:e2e": "playwright test tests/e2e --project=chromium",
-    "test:security": "playwright test tests/security --project=chromium --project=firefox",
+    "test:security": "CALLYSTO_PLAYWRIGHT_PRODUCTION=1 playwright test tests/security --project=chromium --project=firefox --workers=1",
     "test:a11y": "playwright test tests/a11y --project=chromium",
     "test:python": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=python python3 -m unittest discover -s tests/python -v && node tests/python/cell_id_vectors.mjs",
     "docs:check": "node scripts/check-docs.mjs",

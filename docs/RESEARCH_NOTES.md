@@ -1,17 +1,19 @@
 # Callysto research notes
 
-- Status: **RESEARCH BASIS FOR PROPOSED SPECIFICATION**
-- Last reviewed: 2026-07-19
+- Status: **RESEARCH BASIS FOR APPROVED SPECIFICATION**
+- Last reviewed: 2026-07-20
 - Scope: product landscape and primary technical constraints for the invite-only pilot
 - Product decisions live in [`DECISIONS.md`](../DECISIONS.md); requirements live in [`PRODUCT_SPEC.md`](../PRODUCT_SPEC.md) and [`ARCHITECTURE.md`](../ARCHITECTURE.md)
 
-This is an evidence ledger, not a substitute for a product decision. It distinguishes what a source says from what the Callysto team infers and what the proposed specification chooses.
+This is an evidence ledger, not a substitute for a product decision. It preserves what a source says,
+what the Callysto team inferred, and what was proposed during planning. Current disposition lives in
+`DECISIONS.md`; D001-D024 were approved on 2026-07-20.
 
 ## 1. Evidence labels and method
 
 - **SOURCED FACT** — a statement supported directly by the linked primary or first-party documentation.
 - **PRODUCT INFERENCE** — a conclusion drawn from one or more facts for Callysto; it is not claimed by the source.
-- **PROPOSED DECISION** — a recommendation recorded in `DECISIONS.md` and awaiting owner approval.
+- **PROPOSED DECISION** — the historical recommendation that informed `DECISIONS.md`; consult that file for its approved or conditional current disposition.
 - **OPEN QUESTION** — a fact or choice that must be validated before implementation or launch.
 
 The research favored official project, platform, and product documentation over summaries. Product pages are evidence of documented capability, not independent evidence of adoption, quality, security, or market size. Links and platform behavior can change; implementation milestones must re-check integration-specific details against current documentation.

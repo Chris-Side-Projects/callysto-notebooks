@@ -345,13 +345,16 @@ Test at 320, 375, 768, 1024, and 1440 CSS pixels, with 200% browser zoom and lon
 - Error copy names what failed, whether data is safe, and what the user can do next.
 - Security details that aid abuse remain operator-only; user messages still include a support code.
 
-## 13. Design decisions awaiting owner approval
+## 13. Approved design decisions
 
-1. Approve the calm editorial direction and proposed font pairing.
-2. Approve a document-first notebook page with contextual review panel.
-3. Approve removing votes, forks, `Run`, and decorative moon motifs from the pilot UI.
-4. Approve honest empty states and one separately stored `Product demonstration`, never seeded social proof.
-5. Approve the staged single-page publishing flow with verified-contact onboarding and expiring exact-preview state.
-6. Approve owner `addressed` versus reviewer `resolved/reopened` language.
+On 2026-07-20 the owner approved the following direction and the complete responsive M0 reference
+without amendment under D024:
+
+1. Calm editorial direction and the proposed font pairing.
+2. A document-first notebook page with contextual review panel.
+3. No votes, forks, `Run`, or decorative moon motifs in the pilot UI.
+4. Honest empty states and one separately stored `Product demonstration`, never seeded social proof.
+5. A staged single-page publishing flow with verified-contact onboarding and expiring exact-preview state.
+6. Owner `addressed` versus reviewer `resolved/reopened` language.
 
 The approved M0 reference includes desktop notebook review, mobile inline cell discussion, and draft processing/failure mockups. Post-implementation, run visual QA against the live staging build at all specified viewports.

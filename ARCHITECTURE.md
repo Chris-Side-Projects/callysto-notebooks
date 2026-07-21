@@ -621,7 +621,9 @@ Alert when the oldest render job breaches the pilot SLO, terminal render failure
 
 - Local: Next.js, local PostgreSQL, filesystem-backed fake object storage, local mail sink, orchestrator, and a locally enforceable no-network converter sandbox.
 - Test: ephemeral database and deterministic fake storage; no public provider/network dependency.
-- Staging: real Railway PostgreSQL/service topology, separate R2 bucket, OAuth sandbox/test applications, staging content gateway.
+- Staging: a selected platform that passes D013's network/isolation proof (Railway only if it passes),
+  real PostgreSQL/service topology, a separate R2 bucket, OAuth sandbox/test applications, and a
+  staging content gateway.
 - Production: separate credentials, bucket, database, hostnames, and alert routes.
 
 ### Deployment order

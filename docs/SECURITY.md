@@ -280,6 +280,15 @@ Public capabilities expire within 60 seconds. Draft-preview capabilities expire 
 
 The application embeds each rich-output artifact in its own iframe with a `sandbox` attribute that omits `allow-scripts`, `allow-same-origin`, `allow-forms`, `allow-popups`, and every top-navigation permission. The iframe receives no credentialed requests or application tokens. Unsupported HTML, SVG, widget, multimedia, or MIME ambiguity produces a safe placeholder rather than a weaker sandbox.
 
+Local M0 evidence on 2026-07-20 implements this boundary behind a disabled-by-default proof gate:
+the application and content gateway bind distinct loopback addresses and the app-host gateway alias
+is unreachable; Ed25519 separates issuance from verification; the gateway starts under an exact
+public-verifier environment allowlist; the verifier requires canonical exact-field tokens, active
+render/draft authority, and the 60/300-second maxima; and 14 optimized-server cases pass across
+Chromium and Firefox. This is synthetic local feasibility evidence only. It does not satisfy the
+staging launch gates below or prove Cloudflare/R2, a registrable content domain, CDN cache behavior,
+key rotation, or provider propagation latency. See [`docs/evidence/M0.5.md`](./evidence/M0.5.md).
+
 Raw notebook downloads pass through an authorized gateway and are returned as `application/octet-stream`, `Content-Disposition: attachment`, and `X-Content-Type-Options: nosniff`. User filenames are safely encoded and never become response-header injection.
 
 ## 9. Comments and user-supplied metadata

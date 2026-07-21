@@ -69,11 +69,11 @@ Secondary users are educators and learners consuming reviewed notebook explanati
 If the pilot works, Callysto becomes a durable public record for executable analysis:
 
 ```text
-TODAY                    PILOT                         12-MONTH DIRECTION
-docs + broken mockup  -> immutable notebook review -> version lineage, forks,
-                                                    reproducibility evidence,
-                                                    portable review exports,
-                                                    selective execution links
+TODAY                         PILOT                         12-MONTH DIRECTION
+green scaffold + M0 proofs -> immutable notebook review -> version lineage, forks,
+                                                          reproducibility evidence,
+                                                          portable review exports,
+                                                          selective execution links
 ```
 
 The twelve-month direction is a trajectory, not current scope. Each added capability must strengthen the publishing and review record rather than turn Callysto into a generic notebook host.

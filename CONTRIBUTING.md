@@ -1,6 +1,8 @@
 # Contributing to Callysto
 
-Callysto is currently in specification review. The project is not accepting unsolicited implementation work until the owner approves the product decisions and Milestone 0 plan.
+Callysto's product decisions and Milestone 0 plan were approved on 2026-07-20. Milestone 0 is active,
+but M1-M8 and unsolicited product implementation remain gated. Contributions must map to an approved
+Active or Up Next task in `TODO.md`.
 
 ## Useful contributions now
 
@@ -36,7 +38,7 @@ Open a focused issue or discussion that states:
 
 Broad “build GitHub for notebooks” proposals are not actionable without a smaller behavior and validation method.
 
-## Implementation contributions after approval
+## Implementation contributions during Milestone 0
 
 Only work on an approved Active/Up Next item in `TODO.md`. A pull request should contain:
 

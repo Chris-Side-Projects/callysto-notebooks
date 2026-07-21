@@ -16,6 +16,20 @@ jobs:
   verify:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17.9-bookworm@sha256:47f917f7409eacd22fc5dfb1dee634e1b55cf0c01d1a7eb701be2227a03e0641
+        env:
+          POSTGRES_DB: callysto_m0_proof
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d callysto_m0_proof"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - name: Check out repository
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -50,6 +64,11 @@ jobs:
 
       - name: Run static, unit, integration, Python, docs, and build checks
         run: npm run check
+
+      - name: Prove PostgreSQL lease and generation fencing
+        env:
+          CALLYSTO_TEST_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/callysto_m0_proof
+        run: npm run test:postgres:proof
 
       - name: Install browser dependencies
         run: npm run browser:install -- --with-deps

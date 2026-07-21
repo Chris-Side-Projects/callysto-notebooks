@@ -3,7 +3,9 @@
 - Status: **APPROVED VALIDATION CONTRACT — M0 HARNESS ACTIVE**
 - Scope: invite-only publishing pilot
 - Requirement sources: `PRODUCT_SPEC.md`, `UX_SPEC.md`, `ARCHITECTURE.md`, `docs/SECURITY.md`
-- Current implementation status: local and hosted Linux core/application-shell browser harnesses pass; PostgreSQL, staging, content-isolation, and provider suites remain
+- Current implementation status: local core, PostgreSQL fencing, converter-process, and two-host
+  content-isolation harnesses pass; the merged baseline passes hosted Linux CI; the new proof branch,
+  staging topology, and providers remain unverified remotely
 
 ## 1. Test objective
 
@@ -38,17 +40,18 @@ untrusted notebook
 |---|---|
 | TypeScript unit/baseline | Vitest 4.1.10; utility and repository-contract suites pass locally. |
 | React/UI | No component-test library yet; select only when an active M0 proof needs it. |
-| Database/integration | No PostgreSQL harness yet; SQLite is proof-only reference semantics. |
-| Python | Standard-library `unittest` proof passes under exact local Python 3.14.6; deployed converter isolation is separate. |
-| Browser/E2E/security | Playwright 1.61.1 local app-shell baseline passes in development and production-server modes; hostile cross-origin T003 suite remains. |
+| Database/integration | A dedicated-loopback PostgreSQL 17.9 proof covers DB-clock leases, `SKIP LOCKED`, expiry/reclaim, token/generation, stale completion, duplicate completion, and draft replacement; it is not a product migration. |
+| Python | 30 standard-library cases pass under exact local Python 3.14.6, including a minimized converter subprocess/sentinel proof; deployed OS/network isolation is separate. |
+| Browser/E2E/security | Playwright 1.61.1 app-shell baselines pass; 14 production-server security cases across Chromium/Firefox cover exact headers plus the gated two-host hostile-output/capability lifecycle proof. |
 | Accessibility | axe Playwright 4.12.1 serious/critical smoke baseline passes on four routes through WCAG 2.2 tags; manual conformance evidence remains. |
-| API contracts | Proposed render-manifest JSON schema plus shared Python/Node cell-ID vectors. |
+| API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, and a proof-only canonical Ed25519 capability/gateway contract. |
 | Docs | Local-link, required-document, and trailing-whitespace checker passes. |
 | Supply chain | Exact lockfile, strict lifecycle-script denial, clean production audit, documented dev exception; secret/license/SBOM work remains. |
 
 Every claim remains environment-labeled. Current counts and commands are recorded in
-[`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md); deployment proofs cannot be replaced by the
-local harness.
+[`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md),
+[`docs/evidence/M0.5.md`](./evidence/M0.5.md), and [`docs/evidence/M0.6.md`](./evidence/M0.6.md);
+deployment proofs cannot be replaced by the local harness.
 
 ## 4. Assurance matrix
 
@@ -214,6 +217,11 @@ Run against an ephemeral PostgreSQL database with actual migrations.
 ## 9. Browser security suite
 
 Run the application and content gateway on genuinely distinct local/staging origins. A different port alone is useful for origin behavior but staging must prove the deployed cookie/domain configuration.
+
+The current local proof uses application host `127.0.0.1` and content host `localhost`, with the
+gateway bound to loopback. This distinguishes host-only cookies and origin authority without
+claiming a registrable-domain or CDN result. Its synthetic route/API is disabled unless the M0 proof
+harness explicitly enables it.
 
 For every hostile fixture, assert:
 

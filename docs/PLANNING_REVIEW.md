@@ -138,7 +138,8 @@ The pilot deliberately builds only steps 1–3 at notebook-file scope and the re
 | Pilot rigor | 9/10 | Cohort recruiting and analytics dictionary still need named owners. |
 | Operational viability | 8/10 | Legal policy, moderation staffing, email provider, and isolation must clear M0/M7 gates. |
 
-Product review disposition: **ready for owner decision, with ingestion source as an explicit taste/cohort choice**.
+Historical product-review disposition: **ready for owner decision, with ingestion source as an
+explicit taste/cohort choice**. The owner later approved the 80% cohort rule under D003 on 2026-07-20.
 
 ## 7. Independent design review
 
@@ -158,7 +159,8 @@ The specification was corrected to use an application-owned cell shell with isol
 | Responsive/accessibility | 7/10 | Chose one mobile pattern and added frame focus, forced colors, error summary, zoom, table/equation cases. |
 | Visual system | 8/10 | Kept calm editorial direction and required three mockups before UI implementation. |
 
-Design review disposition after remediation: **ready for engineering review; visual taste still requires owner and mockup approval**.
+Historical design-review disposition after remediation: **ready for engineering review; visual taste
+still requires owner and mockup approval**.
 
 Follow-up on 2026-07-20: the owner approved the complete responsive M0 mockup set without amendment.
 D024 and [`docs/design/m0/README.md`](./design/m0/README.md) are the current approval record; the
@@ -166,7 +168,11 @@ sentence above preserves the independent review's pre-approval disposition.
 
 ## 8. Engineering review
 
-The first independent engineering pass scored implementation readiness **6.5/10** and blocked approval on five integrity/lifecycle defects. The documents were corrected, then independently re-reviewed. Final specification readiness is **8.9/10**. Built-product readiness remains low because none of these contracts has been implemented or proven and the exploratory scaffold is still broken.
+The first independent engineering pass scored implementation readiness **6.5/10** and blocked
+approval on five integrity/lifecycle defects. The documents were corrected, then independently
+re-reviewed. Final specification readiness was **8.9/10**. Built-product readiness remains low: the
+baseline scaffold is repaired and selected T003/T004 contracts have local feasibility proofs, but
+publishing, review, identity, storage, recovery, and deployed isolation are not implemented.
 
 ### Blocking findings and remediation
 
@@ -187,7 +193,10 @@ The first independent engineering pass scored implementation readiness **6.5/10*
 - Reconciled owner-address versus reviewer-resolution, moderation close/restore, comment editing, notification settings, assignment acceptance, static demonstration, and removal of unsupported execution claims.
 - Added on-demand output capability refresh, incoming overwrite/promotion races, stale fencing, provider-ack ambiguity, restriction, fuzz, and recovery coverage.
 
-Engineering review disposition after final reconciliation: **no P0 engineering blocker remains; ready for owner approval to begin Milestone 0 only**. Promotion, converter isolation, capability/restriction, identity/contact, recovery, or provider feasibility failure in M0 is a redesign trigger—not permission to weaken the boundary.
+Historical engineering-review disposition after final reconciliation: **no P0 engineering blocker
+remains; ready for owner approval to begin Milestone 0 only**. The owner granted that M0-only approval
+on 2026-07-20. Promotion, converter isolation, capability/restriction, identity/contact, recovery, or
+provider feasibility failure in M0 remains a redesign trigger—not permission to weaken the boundary.
 
 ## 9. Failure and rescue review
 
@@ -233,7 +242,11 @@ Each path has a named state, user-safe message, operator detail, retry/containme
 | DOI/reproducibility badge | Requires preservation and evidence governance. | Retention/evidence partnerships and semantics approved. |
 | Dataset hosting | Rights, privacy, storage, environment scope. | Review is blocked repeatedly by unavailable data. |
 
-## 12. Owner decisions and recommendation
+## 12. Owner decision record
+
+The owner approved items 1-16 on 2026-07-20 through D001-D024, including their explicit M0
+feasibility conditions. Item 17 remains external T010 work: policy/legal owners and deadlines must be
+named before launch.
 
 ### Product and scope
 
@@ -261,7 +274,10 @@ Each path has a named state, user-safe message, operator detail, retry/containme
 16. Approve or amend the proposed file/output limits, RPO/RTO, success criteria, and launch gates.
 17. Name owners for repository license, notebook-license menu, terms/privacy/AUP/copyright/retention/moderation work.
 
-## 13. Approval semantics
+## 13. Historical approval semantics
+
+These were the choices presented at the approval gate; the owner selected **Approve all** on
+2026-07-20 for Milestone 0 only.
 
 - **Approve all:** mark accepted decisions and begin Milestone 0 only.
 - **Approve with amendments:** update every affected specification before implementation.

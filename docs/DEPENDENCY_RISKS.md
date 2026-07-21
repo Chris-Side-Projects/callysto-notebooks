@@ -8,8 +8,9 @@
 
 `strict-allow-scripts=true` and the root `allowScripts` map deny lifecycle scripts from
 `esbuild`, `fsevents`, `sharp`, and `unrs-resolver`. Locked prebuilt packages are used instead.
-An unreviewed lifecycle script makes `npm ci` fail. The policy is verified locally on macOS arm64;
-the Ubuntu proof remains pending until the committed workflow runs.
+An unreviewed lifecycle script makes `npm ci` fail. The policy is verified locally on macOS arm64 and
+in the successful Ubuntu baseline [workflow run 29780426457](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29780426457). Hosted execution of this proof branch's expanded workflow remains pending until a pull
+request is opened; feature-branch pushes do not trigger this workflow.
 
 On 2026-07-20 a disposable clean install added 443 packages, executed no dependency lifecycle
 script, and reported no unreviewed scripts pending. The dependency tree and production build then

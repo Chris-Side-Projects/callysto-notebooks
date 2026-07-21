@@ -49,8 +49,8 @@ Completion evidence:
 |---|---|---|---|
 | T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
 | T002 **COMPLETE — LOCAL + HOSTED CI 2026-07-20** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, browser suites, and the Ubuntu 24.04 workflow pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T003 **PARTIAL LOCAL PROOF** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | Application headers and a header test exist; real two-origin hostile-browser/capability/expiry/restriction proof remains. |
-| T004 **PARTIAL LOCAL PROOF** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | Local converter/vector/SQLite cases pass; PostgreSQL and deployed egress/secret/sentinel evidence remain. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
+| T003 **COMPLETE — LOCAL PROOF 2026-07-20** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | The gated two-host Ed25519/capability/nonce-CSP proof passes 14 production-server cases in Chromium and Firefox. Deployed content-host/provider evidence remains an M0 cloud gate. See [`docs/evidence/M0.5.md`](./docs/evidence/M0.5.md). |
+| T004 **PARTIAL — LOCAL POSTGRES + PROCESS PROOFS PASS** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | 4 PostgreSQL fencing and 30 Python converter/vector/state cases pass, including exact child-protocol, direct-child secret/descriptor, and transitive-module checks. Deployed OS egress/process isolation remains open. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
 | T005 | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | 6–10 participants/8 notebooks have source-workflow evidence; decision and affected docs are reconciled before ingestion code. |
 | T006 | Prove incoming-object promotion and draft-generation integrity for the selected source path. | T002, T005 | Server stream/hash, distinct no-overwrite accepted key, overwrite/retry/crash/stale-generation tests pass against staging storage. |
 | T007 | Prove GitHub/ORCID, verified private email, additive roles/operator bootstrap, and fenced transactional delivery. | T002 | Provider/linking/contact/reauth, preference race, provider-accept crash, and dead-letter evidence recorded. |
@@ -69,15 +69,20 @@ Resolved locally:
 - lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build;
 - local development and production-server Playwright baselines: canonical/invalid routes, exact
   application headers in Chromium/Firefox, and serious/critical axe smoke checks through WCAG 2.2;
-- local proof-only cell-ID, non-execution/default-deny conversion, and stale-worker fencing semantics;
+- local two-host app/content isolation, per-request nonce CSP, Ed25519 artifact capabilities,
+  hostile-output confinement, lazy refresh, and bounded restriction behavior in Chromium/Firefox;
+- local proof-only cell-ID/default-deny conversion plus a minimized child-process boundary and real
+  PostgreSQL database-clock/`SKIP LOCKED`/lease-generation fencing;
 - owner-approved responsive product-demonstration mockups.
 
 Still open:
 
-- review/merge of draft PR [#1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1); T002 acceptance evidence itself is complete;
-- real content-origin/capability isolation and deployed converter/egress proof;
+- pull-request execution of the new digest-pinned PostgreSQL and two-browser proof workflow; branch
+  pushes do not run CI except on `main`;
+- deployed content-origin/provider behavior and converter/orchestrator egress/process isolation;
 - migrations, application APIs, authentication, storage, staging, production, and provider evidence;
-- cohort/source choice and legal/policy ownership.
+- cohort/source choice and legal/policy ownership; exact missing inputs are recorded in
+  [`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).
 
 See [`CONTINUATION.md`](./CONTINUATION.md) for the exact restart sequence and why each step remains.
 

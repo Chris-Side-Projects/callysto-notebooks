@@ -12,7 +12,11 @@ The initial product is deliberately smaller than “GitHub for notebooks.” It 
 
 **Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green local scaffold plus feasibility proofs, not an MVP.**
 
-The baseline route/tooling repair now builds and passes local core and application-shell browser checks. Publishing, review APIs, authentication, storage, real rendering, provider integrations, staging, and deployment do not exist and must not be inferred from the pages or mockups.
+The baseline route/tooling repair builds and passes local core/application-shell checks. The active
+M0 branch also has local two-host rich-output isolation, minimized converter-process, and PostgreSQL
+fencing proofs. Publishing, review APIs, authentication, storage, a production renderer, provider
+integrations, staging, and deployment do not exist and must not be inferred from CI, the proof page,
+the parked domain, or the mockups.
 
 ## Documentation map
 
@@ -26,8 +30,8 @@ Read these in order:
 6. [`ARCHITECTURE.md`](./ARCHITECTURE.md) — system boundaries, data model, failures, and deployment.
 7. [`docs/SECURITY.md`](./docs/SECURITY.md) — threat model, controls, incident posture, and security gates.
 8. [`PLAN.md`](./PLAN.md) — ordered implementation milestones and approval gates.
-9. [`docs/TEST_PLAN.md`](./docs/TEST_PLAN.md) — verification contract.
-10. [`TODO.md`](./TODO.md) — the short operational queue.
+9. [`TODO.md`](./TODO.md) — the short operational queue.
+10. [`docs/TEST_PLAN.md`](./docs/TEST_PLAN.md) — verification contract.
 11. [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md) — current baseline and operating contract.
 12. [`docs/PLANNING_REVIEW.md`](./docs/PLANNING_REVIEW.md) — strategic, design, and engineering review record.
 13. [`docs/RESEARCH_NOTES.md`](./docs/RESEARCH_NOTES.md) — primary sources, inferences, and open validation questions.
@@ -51,6 +55,6 @@ The owner approved D001-D024 and authorized T001-T010/Milestone 0 on 2026-07-20.
 
 ## Project
 
-- Domain: [callysto.io](https://callysto.io)
+- Domain: [callysto.io](https://callysto.io) — registered and parked; no application is deployed there.
 - Repository: `Chris-Side-Projects/callysto-notebooks`
 - Platform-code license: awaiting owner/legal approval; Apache-2.0 is the current recommendation, separate from notebook content licenses.

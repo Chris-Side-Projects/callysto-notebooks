@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import "./globals.css";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Callysto",
@@ -8,11 +11,14 @@ export const metadata: Metadata = {
     "An open platform for publishing, reviewing, and collaborating on Jupyter notebooks.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Reading the nonce-bearing request headers forces per-request rendering so
+  // Next can attach the proxy-generated nonce to its own framework scripts.
+  await headers();
   return (
     <html lang="en">
       <body className="min-h-screen bg-paper text-ink antialiased">

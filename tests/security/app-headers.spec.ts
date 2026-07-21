@@ -1,18 +1,18 @@
 import { expect, test } from "@playwright/test";
 
-const contentSecurityPolicy = [
+const exactStaticDirectives = [
   "default-src 'self'",
   "base-uri 'none'",
   "connect-src 'self'",
   "font-src 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  "frame-src 'none'",
+  "frame-src http://localhost:3101",
   "img-src 'self' data:",
+  "media-src 'none'",
   "object-src 'none'",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-].join("; ");
+  "worker-src 'none'",
+];
 
 for (const { path, status } of [
   { path: "/", status: 200 },
@@ -26,7 +26,19 @@ for (const { path, status } of [
     const headers = response.headers();
 
     expect(response.status()).toBe(status);
-    expect(headers["content-security-policy"]).toBe(contentSecurityPolicy);
+    const contentSecurityPolicy = headers["content-security-policy"];
+    expect(contentSecurityPolicy).toBeTruthy();
+    for (const directive of exactStaticDirectives) {
+      expect(contentSecurityPolicy).toContain(directive);
+    }
+    expect(contentSecurityPolicy).toMatch(
+      /script-src 'self' 'nonce-[A-Za-z0-9+/=]+' 'strict-dynamic'/,
+    );
+    expect(contentSecurityPolicy).toMatch(
+      /style-src 'self' 'nonce-[A-Za-z0-9+/=]+'/,
+    );
+    expect(contentSecurityPolicy).not.toContain("'unsafe-inline'");
+    expect(contentSecurityPolicy).not.toContain("'unsafe-eval'");
     expect(headers["cross-origin-opener-policy"]).toBe("same-origin");
     expect(headers["origin-agent-cluster"]).toBe("?1");
     expect(headers["permissions-policy"]).toBe(

@@ -14,7 +14,7 @@ It is not currently a working product. The repository contains a locally green N
 
 **Milestone 0 is active. Repair/proof work and approved development dependencies are allowed; M1-M8 product features, production provisioning, and deployment are not.**
 
-T000 was approved on 2026-07-20. T001 and T002 are complete on draft PR #1; later product milestones remain gated. See [`CONTINUATION.md`](./CONTINUATION.md) before any new work.
+T000 was approved on 2026-07-20. T001 and T002 were merged through PR #1; later product milestones remain gated. See [`CONTINUATION.md`](./CONTINUATION.md) before any new work.
 
 ## Proposed pilot boundaries
 
@@ -51,6 +51,11 @@ Do not treat `docs/agent-tournament.md`, current placeholder pages, or old comme
 - Strict clean install, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production audit, and production build pass locally.
 - Four documented moderate development-only Drizzle Kit/esbuild findings remain; production audit is clean.
 - Playwright app-shell suites pass locally and in the Ubuntu 24.04 hosted workflow against the production server.
-- Staging, providers, migrations, real product APIs, content-origin isolation, and deployment remain unverified.
+- The active branch adds local two-host hostile-output/capability isolation, converter-process, and
+  PostgreSQL fencing proofs; its hosted workflow has not run yet.
+- No Callysto cloud deployment was found. Staging/providers, migrations, real product APIs, and
+  deployed content/converter isolation remain unverified. Read-only Cloudflare inventory is
+  available through a root-only VPS credential bundle, but its write scope and suitability for
+  Callysto staging are unverified and it supplies no separately credentialed recovery identity.
 
 See [`CONTINUATION.md`](./CONTINUATION.md) and [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md) for the evidence boundary and exact restart sequence.

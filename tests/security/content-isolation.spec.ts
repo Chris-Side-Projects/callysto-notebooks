@@ -131,7 +131,7 @@ test("strict nonce CSP protects an app-owned shell and confines hostile frames",
     await expect(frameElement).toHaveAttribute("sandbox", "");
     await expect(frameElement).toHaveAttribute("referrerpolicy", "no-referrer");
     expect(await frameElement.getAttribute("src")).toMatch(
-      /^http:\/\/localhost:3101\/artifact\?cap=/,
+      /^http:\/\/localhost:3101\/v0\/outputs\/(?:hostile-html|hostile-svg)\?cap=/,
     );
   }
 
@@ -188,7 +188,9 @@ test("strict nonce CSP protects an app-owned shell and confines hostile frames",
 
   const isolatedFrame = page
     .frames()
-    .find((frame) => frame.url().startsWith(`${contentOrigin}/artifact`));
+    .find((frame) =>
+      frame.url().startsWith(`${contentOrigin}/v0/outputs/hostile-html`),
+    );
   expect(isolatedFrame).toBeTruthy();
   const storageResult = await isolatedFrame?.evaluate(() => {
     try {

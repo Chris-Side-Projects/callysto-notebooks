@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 import re
+import resource
 import stat
 import sys
 from pathlib import Path
@@ -31,6 +32,8 @@ SAFE_ENVIRONMENT = {
 VERSION_ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 ERROR_CODE_PATTERN = re.compile(r"^[A-Z][A-Z0-9_]{1,63}$")
 ARTIFACT_ID_PATTERN = re.compile(r"^a_[0-9a-f]{32}$")
+ADDRESS_SPACE_LIMIT_BYTES = 512 * 1024 * 1024
+CPU_TIME_LIMIT_SECONDS = 30
 
 
 class ConverterCliError(ValueError):
@@ -81,6 +84,31 @@ def _sanitize_environment() -> tuple[str, ...]:
     os.environ.clear()
     os.environ.update(SAFE_ENVIRONMENT)
     return tuple(sorted(os.environ))
+
+
+def _apply_resource_limits() -> None:
+    """Apply hard process limits before reading any notebook bytes."""
+
+    if sys.platform != "linux":
+        return
+    try:
+        resource.setrlimit(
+            resource.RLIMIT_AS,
+            (ADDRESS_SPACE_LIMIT_BYTES, ADDRESS_SPACE_LIMIT_BYTES),
+        )
+        resource.setrlimit(
+            resource.RLIMIT_CPU,
+            (CPU_TIME_LIMIT_SECONDS, CPU_TIME_LIMIT_SECONDS),
+        )
+        address_space = resource.getrlimit(resource.RLIMIT_AS)
+        cpu_time = resource.getrlimit(resource.RLIMIT_CPU)
+    except (OSError, ValueError) as error:
+        raise ConverterCliError("RESOURCE_LIMIT_FAILED") from error
+    if address_space != (
+        ADDRESS_SPACE_LIMIT_BYTES,
+        ADDRESS_SPACE_LIMIT_BYTES,
+    ) or cpu_time != (CPU_TIME_LIMIT_SECONDS, CPU_TIME_LIMIT_SECONDS):
+        raise ConverterCliError("RESOURCE_LIMIT_FAILED")
 
 
 def _open_file_limit() -> int:
@@ -243,6 +271,7 @@ def _write_artifacts(output_directory: Path, artifacts: dict[str, bytes]) -> lis
 
 
 def _convert(arguments: argparse.Namespace) -> dict[str, Any]:
+    _apply_resource_limits()
     os.umask(0o077)
     environment_names = _sanitize_environment()
     _close_inherited_file_descriptors()

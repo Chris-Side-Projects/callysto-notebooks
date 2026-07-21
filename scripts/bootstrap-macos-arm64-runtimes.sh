@@ -9,6 +9,7 @@ CALLYSTO_PYTHON_DIR="$CALLYSTO_RUNTIME_ROOT/python"
 
 CALLYSTO_NODE_ARCHIVE="$CALLYSTO_DOWNLOAD_DIR/node-v24.18.0-darwin-arm64.tar.gz"
 CALLYSTO_NODE_SHA256="e1a97e14c99c803e96c7339403282ea05a499c32f8d83defe9ef5ec66f979ed1"
+CALLYSTO_NODE_BINARY_SHA256="ee6fb0e015284d83a91e8ec5213f43a157f8a392b58555301682892ba928c04a"
 CALLYSTO_NODE_URL="https://nodejs.org/dist/v24.18.0/node-v24.18.0-darwin-arm64.tar.gz"
 
 CALLYSTO_PYTHON_ARCHIVE="$CALLYSTO_DOWNLOAD_DIR/cpython-3.14.6+20260623-aarch64-apple-darwin-install_only_stripped.tar.gz"
@@ -40,9 +41,11 @@ download_and_verify() {
 download_and_verify "$CALLYSTO_NODE_URL" "$CALLYSTO_NODE_ARCHIVE" "$CALLYSTO_NODE_SHA256"
 download_and_verify "$CALLYSTO_PYTHON_URL" "$CALLYSTO_PYTHON_ARCHIVE" "$CALLYSTO_PYTHON_SHA256"
 
-if [ ! -x "$CALLYSTO_NODE_DIR/bin/node" ]; then
+if [ ! -e "$CALLYSTO_NODE_DIR/bin/node" ]; then
   tar -xzf "$CALLYSTO_NODE_ARCHIVE" -C "$CALLYSTO_NODE_DIR" --strip-components=1
 fi
+
+printf '%s  %s\n' "$CALLYSTO_NODE_BINARY_SHA256" "$CALLYSTO_NODE_DIR/bin/node" | shasum -a 256 -c -
 
 if [ ! -x "$CALLYSTO_PYTHON_DIR/bin/python3" ]; then
   tar -xzf "$CALLYSTO_PYTHON_ARCHIVE" -C "$CALLYSTO_PYTHON_DIR" --strip-components=1

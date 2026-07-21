@@ -1,4 +1,5 @@
 import proofArtifacts from "@/contracts/m0-isolation-proof-artifacts.json";
+export { M0_CONTENT_INDEX_SHA256 } from "./proof-content-index.mts";
 
 export const M0_RENDER_REVISION_ID = "rr-m0-isolation-v1";
 export const M0_PREVIEW_DRAFT_ID = "draft-m0-isolation";
@@ -69,6 +70,8 @@ export function requireProofEnvironment(): {
   const parsed = new URL(contentOrigin);
   if (
     !/^https?:$/.test(parsed.protocol) ||
+    parsed.username ||
+    parsed.password ||
     parsed.pathname !== "/" ||
     parsed.search ||
     parsed.hash

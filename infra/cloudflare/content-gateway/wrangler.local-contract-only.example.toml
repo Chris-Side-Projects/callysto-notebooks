@@ -1,0 +1,23 @@
+# LOCAL CONTRACT ONLY — NOT DEPLOYABLE AS THE ACCEPTED STAGING TOPOLOGY.
+#
+# This file intentionally contains no R2 binding. A normal Worker R2 binding can
+# carry broader authority than Callysto permits. Staging must instead use the
+# approved Get/Head-only broker or a provider-enforced SigV4 read identity, and
+# that deployed boundary still requires provider evidence.
+name = "callysto-m0-content-gateway-local-contract-only"
+main = "./worker.ts"
+compatibility_date = "2026-07-20"
+workers_dev = true
+preview_urls = false
+send_metrics = false
+
+# Public configuration only. The Ed25519 verification key is intentionally public;
+# the application issuer's private key must never enter this Worker.
+[vars]
+CONTENT_APP_ORIGIN = "https://staging.callysto.io"
+CONTENT_ARTIFACT_PREFIX = "staging/"
+CONTENT_CAPABILITY_KEY_ID = "replace-with-public-key-id"
+CONTENT_CAPABILITY_PUBLIC_KEY_SPKI_BASE64URL = "replace-with-public-spki-base64url"
+
+[observability]
+enabled = false

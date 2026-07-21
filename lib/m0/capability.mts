@@ -6,12 +6,13 @@ import {
   verify,
 } from "node:crypto";
 
-export const CAPABILITY_TYPE = "cly-content-capability-v1";
+export const CAPABILITY_TYPE = "cly-content-capability-v2";
 
 export type CapabilityAudience = "preview" | "public";
 
 export type ContentCapability = {
   audience: CapabilityAudience;
+  contentIndexSha256: string;
   draftGeneration?: number;
   draftId?: string;
   expiresAt: number;
@@ -31,6 +32,7 @@ type CapabilityHeader = {
 const opaqueIdPattern = /^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$/;
 const keyIdPattern = /^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/;
 const base64UrlPattern = /^[A-Za-z0-9_-]+$/;
+const sha256Pattern = /^[0-9a-f]{64}$/;
 const maximumTokenLength = 2_048;
 const maximumTtlByAudience = { preview: 300, public: 60 } as const;
 
@@ -53,6 +55,53 @@ export class CapabilityError extends Error {
     this.name = "CapabilityError";
     this.code = code;
   }
+}
+
+export function buildContentArtifactUrl({
+  contentOrigin,
+  outputId,
+  token,
+}: {
+  contentOrigin: string;
+  outputId: string;
+  token: string;
+}): string {
+  assertOpaqueId(outputId, "outputId");
+  if (
+    !token ||
+    token.length > maximumTokenLength ||
+    token.split(".").length !== 3
+  ) {
+    throw new CapabilityError(
+      "CAPABILITY_INVALID",
+      "capability token cannot be placed in an artifact URL",
+    );
+  }
+  let origin: URL;
+  try {
+    origin = new URL(contentOrigin);
+  } catch {
+    throw new CapabilityError(
+      "CAPABILITY_INVALID",
+      "content origin is invalid",
+    );
+  }
+  if (
+    !/^https?:$/.test(origin.protocol) ||
+    origin.username ||
+    origin.password ||
+    origin.pathname !== "/" ||
+    origin.search ||
+    origin.hash
+  ) {
+    throw new CapabilityError(
+      "CAPABILITY_INVALID",
+      "content origin must be an exact HTTP(S) origin",
+    );
+  }
+  const artifactUrl = new URL(`/v0/outputs/${outputId}`, origin.origin);
+  artifactUrl.searchParams.set("cap", token);
+  return artifactUrl.toString();
 }
 
 function encodeJson(value: object): string {
@@ -141,6 +190,15 @@ function parsePayload(value: unknown): ContentCapability {
   assertOpaqueId(payload.proofId, "proofId");
   assertOpaqueId(payload.outputId, "outputId");
   assertOpaqueId(payload.renderRevisionId, "renderRevisionId");
+  if (
+    typeof payload.contentIndexSha256 !== "string" ||
+    !sha256Pattern.test(payload.contentIndexSha256)
+  ) {
+    throw new CapabilityError(
+      "CAPABILITY_PAYLOAD_INVALID",
+      "contentIndexSha256 is not a lowercase SHA-256 digest",
+    );
+  }
   if (payload.audience !== "public" && payload.audience !== "preview") {
     throw new CapabilityError(
       "CAPABILITY_PAYLOAD_INVALID",
@@ -167,6 +225,7 @@ function parsePayload(value: unknown): ContentCapability {
     if (
       !exactKeys(payload, [
         "audience",
+        "contentIndexSha256",
         "draftGeneration",
         "draftId",
         "expiresAt",
@@ -196,6 +255,7 @@ function parsePayload(value: unknown): ContentCapability {
     if (
       !exactKeys(payload, [
         "audience",
+        "contentIndexSha256",
         "expiresAt",
         "issuedAt",
         "outputId",
@@ -215,6 +275,7 @@ function parsePayload(value: unknown): ContentCapability {
 
 export function issueContentCapability({
   audience,
+  contentIndexSha256,
   draftGeneration,
   draftId,
   keyId,
@@ -226,6 +287,7 @@ export function issueContentCapability({
   ttlSeconds,
 }: {
   audience: CapabilityAudience;
+  contentIndexSha256: string;
   draftGeneration?: number;
   draftId?: string;
   keyId: string;
@@ -239,6 +301,12 @@ export function issueContentCapability({
   assertOpaqueId(proofId, "proofId");
   assertOpaqueId(outputId, "outputId");
   assertOpaqueId(renderRevisionId, "renderRevisionId");
+  if (!sha256Pattern.test(contentIndexSha256)) {
+    throw new CapabilityError(
+      "CAPABILITY_PAYLOAD_INVALID",
+      "contentIndexSha256 is not a lowercase SHA-256 digest",
+    );
+  }
   if (!keyIdPattern.test(keyId)) {
     throw new CapabilityError(
       "CAPABILITY_KEY_INVALID",
@@ -273,6 +341,7 @@ export function issueContentCapability({
   const issuedAt = Math.floor(now / 1000);
   const payload: ContentCapability = {
     audience,
+    contentIndexSha256,
     ...(audience === "preview" ? { draftGeneration, draftId } : {}),
     expiresAt: issuedAt + ttlSeconds,
     issuedAt,
@@ -307,6 +376,7 @@ export function issueContentCapability({
 }
 
 export function verifyContentCapability({
+  expectedContentIndexSha256,
   expectedPreviewDraftGeneration,
   expectedPreviewDraftId,
   expectedKeyId,
@@ -315,6 +385,7 @@ export function verifyContentCapability({
   publicKeyPem,
   token,
 }: {
+  expectedContentIndexSha256: string;
   expectedPreviewDraftGeneration: number;
   expectedPreviewDraftId: string;
   expectedKeyId: string;
@@ -323,7 +394,11 @@ export function verifyContentCapability({
   publicKeyPem: string;
   token: string;
 }): ContentCapability {
-  if (token.length > maximumTokenLength || !keyIdPattern.test(expectedKeyId)) {
+  if (
+    token.length > maximumTokenLength ||
+    !keyIdPattern.test(expectedKeyId) ||
+    !sha256Pattern.test(expectedContentIndexSha256)
+  ) {
     throw new CapabilityError(
       "CAPABILITY_INVALID",
       "capability exceeds its format boundary",
@@ -392,6 +467,8 @@ export function verifyContentCapability({
     payload.issuedAt > nowSeconds + 5 ||
     payload.expiresAt - payload.issuedAt >
       maximumTtlByAudience[payload.audience] ||
+    payload.expiresAt > nowSeconds + maximumTtlByAudience[payload.audience] ||
+    payload.contentIndexSha256 !== expectedContentIndexSha256 ||
     payload.renderRevisionId !== expectedRenderRevisionId ||
     (payload.audience === "preview" &&
       (payload.draftId !== expectedPreviewDraftId ||

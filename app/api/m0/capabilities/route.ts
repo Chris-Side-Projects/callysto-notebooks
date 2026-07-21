@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import {
+  buildContentArtifactUrl,
   type CapabilityAudience,
   CapabilityError,
   issueContentCapability,
@@ -10,6 +11,7 @@ import {
   isM0ProofEnabled,
   isProofRestricted,
   isValidProofId,
+  M0_CONTENT_INDEX_SHA256,
   M0_PREVIEW_DRAFT_GENERATION,
   M0_PREVIEW_DRAFT_ID,
   M0_RENDER_REVISION_ID,
@@ -81,6 +83,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         : parseBoundedTtl("CONTENT_PREVIEW_TTL_SECONDS", 300);
     const { expiresAt, token } = issueContentCapability({
       audience: typedAudience,
+      contentIndexSha256: M0_CONTENT_INDEX_SHA256,
       ...(typedAudience === "preview"
         ? {
             draftGeneration: M0_PREVIEW_DRAFT_GENERATION,
@@ -94,10 +97,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       renderRevisionId: M0_RENDER_REVISION_ID,
       ttlSeconds,
     });
-    const artifactUrl = new URL("/artifact", contentOrigin);
-    artifactUrl.searchParams.set("cap", token);
     return noStoreJson({
-      artifactUrl: artifactUrl.toString(),
+      artifactUrl: buildContentArtifactUrl({ contentOrigin, outputId, token }),
       audience: typedAudience,
       expiresAt: expiresAt * 1000,
       outputId,

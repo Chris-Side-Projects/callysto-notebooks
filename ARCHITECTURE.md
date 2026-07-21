@@ -12,6 +12,14 @@ Present the notebook through an application-owned cell shell backed by a structu
 
 Do not add Redis, Kubernetes, a general event bus, or an execution cluster for the pilot. Milestone 0 must prove that the selected deployment can enforce the orchestrator/converter boundary; if Railway cannot, change the converter isolation technique or platform rather than weakening it.
 
+M0 provider evidence reconciled on 2026-07-21 applies this rule: Railway compute is rejected for
+lack of a documented destination allowlist. A nested Docker converter in ephemeral Vercel Sandbox
+passed one no-network/non-root/read-only/secret-free happy-path slice, but the strengthened full
+converter matrix has not run and the outer Vercel runtime reached link-local metadata under
+`deny-all`; it is rejected for the credential-bearing orchestrator. The pilot orchestrator
+platform/control plane remains unselected. See
+[`docs/evidence/M0-vercel-sandbox-converter.md`](./docs/evidence/M0-vercel-sandbox-converter.md).
+
 ## 2. System context
 
 ```text
@@ -267,12 +275,16 @@ The safe fallback for an unsupported rich output is a labeled placeholder plus a
 
 ### Content origin
 
-Use a Cloudflare Worker bound to private R2, deployed on a dedicated `workers.dev` hostname for staging. Before public launch, provision either that approved isolated hostname or a separate registrable content domain. Do not use an `r2.dev` public bucket endpoint for production.
+Use a Cloudflare Worker on a dedicated `workers.dev` hostname for staging. Give it access to private
+derived artifacts only through the approved Get/Head-only broker or a provider-enforced SigV4 read
+identity with no list, write, or delete authority; a direct Worker R2 binding is not accepted for
+this boundary. Before public launch, provision either that approved isolated hostname or a separate
+registrable content domain. Do not use an `r2.dev` public bucket endpoint for production.
 
-The application signs short-lived content capabilities containing only an opaque render revision/output ID, audience (`public` or exact draft preview), and expiry. The gateway verifies the signature/expiry, resolves only identifiers in the authorized manifest, and never accepts arbitrary R2 keys or user-controlled paths. It receives no application cookies.
+The application signs short-lived `cly-content-capability-v2` capabilities containing only an opaque render revision/output ID, the SHA-256 digest of the exact immutable content-index bytes, audience (`public` or exact draft preview), and expiry. The application sources that digest from the active server-authoritative render revision, never from the browser. The gateway verifies the signature, requires expiry to remain within the audience maximum relative to its own current time, derives `manifests/{render_revision_id}/{content_index_sha256}.json`, verifies the retrieved index bytes against the signed digest before parsing, and resolves only identifiers in that index. Content-index JSON must be the canonical compact serialization, with at most one terminal LF; byte-for-byte canonical reserialization rejects duplicate keys, alternate escapes, whitespace variants, and parser-differential inputs before schema validation. It never accepts arbitrary R2 keys or user-controlled paths and receives no application cookies.
 
-- Public capabilities live for at most 60 seconds in the pilot.
-- Draft-preview capabilities live for at most 5 minutes and bind draft ID + generation + render revision; they are bearer capabilities shown only after application authorization.
+- Public capabilities live for at most 60 seconds in the pilot, measured against gateway current time as well as signed issue/expiry timestamps.
+- Draft-preview capabilities live for at most 5 minutes and bind draft ID + generation + render revision + content-index digest; they are bearer capabilities shown only after application authorization.
 - The app shell requests an output capability on demand when a rich output approaches the viewport or when an expired request is retried. The public issuance endpoint rechecks that the output belongs to the version's current active unrestricted render; draft issuance rechecks owner authorization plus exact draft generation/revision. The manifest never contains a long-lived bearer URL.
 - User artifacts return `Cache-Control: private, no-store` during the pilot. CDN caching of revocable content is disabled until purge/revocation semantics have their own approved design.
 - A moderation restriction stops issuance of new capabilities; previously issued ones expire within the measured 60-second revocation SLO. Already downloaded bytes cannot be recalled.
@@ -345,7 +357,8 @@ ingest_jobs / render_jobs
 
 render_revisions
   id, accepted_original_id, source_sha256, normalized_sha256,
-  manifest_key, manifest_sha256, renderer_version, output_policy_version,
+  manifest_key, manifest_sha256, content_index_key, content_index_sha256,
+  renderer_version, output_policy_version,
   normalization_version, manifest_schema_version, status,
   created_at, revoked_at nullable
 
@@ -565,7 +578,8 @@ No catch-all failure is allowed to mark a job successful. Unexpected exceptions 
 | Cross-account draft mutation | Medium | High | Ownership-scoped queries and authorization matrix tests. |
 | Presigned upload abuse/overwrite | Medium | High | Unique incoming key, short expiry/quotas, server-side streaming hash, promotion to different no-overwrite accepted key, draft-generation CAS, lifecycle cleanup. |
 | Stale attempt commits | Medium | High | Lease token/generation fencing plus active upload/draft generation compare-and-set. |
-| Restricted artifact remains cached | Medium | High | Short signed capabilities, no-store user artifacts, measured ≤60-second issuance/expiry SLO; no recall claim for downloaded bytes. |
+| Restricted artifact remains cached | Medium | High | Short signed capabilities with gateway-current-time bounds, no-store user artifacts, measured ≤60-second issuance/expiry SLO; no recall claim for downloaded bytes. |
+| Content index or artifact substituted after capability issuance | Low-medium | High | Capability signs the exact content-index SHA-256; gateway derives its content-addressed key, re-hashes index bytes before parsing, and separately verifies artifact size/digest. |
 | Comment spam/harassment | High after launch | Medium | Authentication, rate limits, report flow, operator moderation, audit trail. |
 | Copyright/license violation | Medium | High | Required license/rights attestation, takedown policy, scoped restriction, retained audit. |
 | OAuth account takeover/link confusion | Low-medium | High | State/PKCE where supported, secure host-only cookies, explicit linking, no email-only merge. |
@@ -621,9 +635,10 @@ Alert when the oldest render job breaches the pilot SLO, terminal render failure
 
 - Local: Next.js, local PostgreSQL, filesystem-backed fake object storage, local mail sink, orchestrator, and a locally enforceable no-network converter sandbox.
 - Test: ephemeral database and deterministic fake storage; no public provider/network dependency.
-- Staging: a selected platform that passes D013's network/isolation proof (Railway only if it passes),
-  real PostgreSQL/service topology, a separate R2 bucket, OAuth sandbox/test applications, and a
-  staging content gateway.
+- Staging: a selected platform that passes D013's exact PostgreSQL/R2-only plus metadata-denial
+  proof, real PostgreSQL/service topology, separated primary/recovery R2 identities, OAuth
+  sandbox/test applications, and a staging content gateway. Current Railway and Vercel outer
+  compute candidates do not pass the orchestrator condition.
 - Production: separate credentials, bucket, database, hostnames, and alert routes.
 
 ### Deployment order

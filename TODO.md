@@ -1,7 +1,7 @@
 # Callysto active queue
 
 - Status: **MILESTONE 0 ACTIVE**
-- Last reconciled: 2026-07-20
+- Last reconciled: 2026-07-21
 - Complete sequence: [`PLAN.md`](./PLAN.md)
 - Rule: this file contains only work eligible to start next; it is not a second roadmap
 
@@ -49,16 +49,18 @@ Completion evidence:
 |---|---|---|---|
 | T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
 | T002 **COMPLETE — LOCAL + HOSTED CI 2026-07-20** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, browser suites, and the Ubuntu 24.04 workflow pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T003 **COMPLETE — LOCAL PROOF 2026-07-20** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | The gated two-host Ed25519/capability/nonce-CSP proof passes 14 production-server cases in Chromium and Firefox. Deployed content-host/provider evidence remains an M0 cloud gate. See [`docs/evidence/M0.5.md`](./docs/evidence/M0.5.md). |
-| T004 **PARTIAL — LOCAL POSTGRES + PROCESS PROOFS PASS** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | 4 PostgreSQL fencing and 30 Python converter/vector/state cases pass, including exact child-protocol, direct-child secret/descriptor, and transitive-module checks. Deployed OS egress/process isolation remains open. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
-| T005 | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | 6–10 participants/8 notebooks have source-workflow evidence; decision and affected docs are reconciled before ingestion code. |
+| T003 **COMPLETE — LOCAL FEASIBILITY 2026-07-20** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | The two-host browser proof passes 14 cases and the Worker source contract passes 8 local cases. Deployed Cloudflare/R2/CDN evidence remains a cloud gate. See [`docs/evidence/M0.5.md`](./docs/evidence/M0.5.md). |
+| T004 **PARTIAL — FENCING + PRIOR PROVIDER HAPPY PATH; FULL DEPLOYED GATE OPEN** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | PostgreSQL fencing and Python/vector proofs pass locally/CI; one nested converter happy path passed in ephemeral Vercel compute. The strengthened converter acceptance replay has not run, and outer metadata stayed reachable, so a DB/R2-only orchestrator platform remains unselected. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
+| T005 **EXTERNAL INPUT REQUIRED** | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | Repository work is exhausted; 6–10 participants/8 notebooks still need real source-workflow interviews, reviewers, and the non-gameable calculation. |
 | T006 | Prove incoming-object promotion and draft-generation integrity for the selected source path. | T002, T005 | Server stream/hash, distinct no-overwrite accepted key, overwrite/retry/crash/stale-generation tests pass against staging storage. |
-| T007 | Prove GitHub/ORCID, verified private email, additive roles/operator bootstrap, and fenced transactional delivery. | T002 | Provider/linking/contact/reauth, preference race, provider-accept crash, and dead-letter evidence recorded. |
+| T007 **EXTERNAL INPUT REQUIRED** | Prove GitHub/ORCID, verified private email, additive roles/operator bootstrap, and fenced transactional delivery. | T002 | The exact provider/owner matrix exists; real apps, identities, email decisions, sender/DNS, operators, and staging exercises remain absent. |
 | T008 | Prove database/object recovery topology and objectives. | T002 | PITR meets approved database RPO/RTO; separately credentialed published-original recovery meets the approved RPO (proposed RPO 0) and preserves restrictions/digests. |
 | T009 **COMPLETE — OWNER APPROVED 2026-07-20** | Produce and approve responsive mockups. | T000 | Homepage, desktop review, mobile inline discussion, and draft failure/processing views in [`docs/design/m0`](./docs/design/m0/) were approved without amendment under D024. |
-| T010 | Resolve repository/content licensing and policy owners. | T000 | Decisions, owners, and pre-launch deadlines are documented. |
+| T010 **EXTERNAL OWNER/APPROVER INPUT REQUIRED** | Resolve repository/content licensing and policy owners. | T000 | The complete decision matrix exists; actual decisions, owners, approvers, and pre-launch deadlines remain absent. |
 
-Do not open M1 tasks until the Milestone 0 gate in `PLAN.md` is green.
+**M1 NO-GO — 2026-07-21.** Do not open M1 tasks until every blocked Milestone 0 row in
+[`docs/evidence/M0-gate-reconciliation.md`](./docs/evidence/M0-gate-reconciliation.md) is green and
+the owner explicitly approves the gate.
 
 ## Current evidence boundary
 
@@ -67,6 +69,7 @@ Resolved locally:
 - one canonical dynamic notebook route and one PostCSS configuration;
 - exact dependency/runtime declarations and strict install-script policy;
 - lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build;
+- current reconciled local counts: 18 unit, 19 integration, 40 Python, and 35 Markdown checks;
 - local development and production-server Playwright baselines: canonical/invalid routes, exact
   application headers in Chromium/Firefox, and serious/critical axe smoke checks through WCAG 2.2;
 - local two-host app/content isolation, per-request nonce CSP, Ed25519 artifact capabilities,
@@ -77,9 +80,10 @@ Resolved locally:
 
 Still open:
 
-- pull-request execution of the new digest-pinned PostgreSQL and two-browser proof workflow; branch
-  pushes do not run CI except on `main`;
-- deployed content-origin/provider behavior and converter/orchestrator egress/process isolation;
+- final-head hosted CI after this reconciliation commit; prior PR #2 head `1384dde` passed;
+- deployed content-origin/provider behavior and DB/R2-only orchestrator enforcement; the prior
+  disposable nested converter happy path passed, its strengthened replay is pending, and outer
+  metadata denial failed;
 - migrations, application APIs, authentication, storage, staging, production, and provider evidence;
 - cohort/source choice and legal/policy ownership; exact missing inputs are recorded in
   [`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).

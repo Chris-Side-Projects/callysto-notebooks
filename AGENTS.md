@@ -4,7 +4,7 @@ These instructions apply to every human or automated contributor working in this
 
 ## Current phase
 
-**Milestone 0 is active. M1-M8 are not authorized.**
+**Milestone 0 is active. M1-M8 are not authorized. M1 is currently NO-GO.**
 
 The repository contains a locally green Next.js scaffold, local feasibility proofs, and an approved product/build specification. It is not a working MVP. The owner approved T000 on 2026-07-20; only T001-T010/Milestone 0 work named in `TODO.md` is currently permitted.
 
@@ -61,6 +61,10 @@ If any condition is false, stop and ask for the missing decision. Do not “get 
 - Never render notebook-controlled HTML with application-origin authority.
 - Never weaken iframe sandbox/CSP, sanitizer, capability expiry/no-store, lease fence, draft-generation CAS, or recovery-copy policy to make a fixture display.
 - Never expose R2 credentials, arbitrary keys, presigned URLs, OAuth tokens, raw email, session data, notebook source, or comment bodies in logs.
+- For credentials already stored on the VPS, use the global `use-vps-secrets-safely` skill and
+  `docs/VPS_CREDENTIAL_HANDOFF.md`. Paste a Cloudflare token only after the hidden
+  `Callysto Cloudflare token:` prompt appears; never paste it into script text or replace the literal
+  `$CALLYSTO_CF_TOKEN` variable reference.
 - All mutations need server-side authentication/authorization, schema validation, rate limits, and CSRF posture appropriate to the framework.
 - Ownership-scoped database queries are required; UI visibility is not authorization.
 - Security boundary changes require updates to `ARCHITECTURE.md`, `docs/SECURITY.md`, and hostile-content browser tests.
@@ -124,19 +128,31 @@ A task is complete only when:
 
 ## Known current baseline
 
-As of 2026-07-20:
+As of 2026-07-21:
 
 - T001 route/configuration repair and the complete local/hosted T002 acceptance gate were merged through PR #1;
-- a strict clean install and production audit pass; four documented moderate development-only Drizzle Kit findings remain;
-- unit, repository-contract, exact-Python proof, cell-ID vector, documentation, typecheck, lint, and production-build checks pass locally;
+- the recorded baseline passed a strict clean install and production audit; four documented
+  moderate development-only Drizzle Kit findings remain;
+- the current reconciled branch head passes the 2026-07-21 local core gate and audits: strict install,
+  formatting, lint, typecheck, 18 unit, 19 integration, 40 Python, 35-document, and production-build
+  checks; hosted CI for that final head remains pending;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;
+- prior PR #2 head `1384dde` passed hosted CI run `29797337843`; final-head hosted CI is pending;
 - the active proof branch adds a passing local two-host nonce-CSP/Ed25519/hostile-output suite in
-  Chromium and Firefox, a minimized converter child process, and real local PostgreSQL fencing;
+  Chromium and Firefox, a local-only Cloudflare Worker contract, a minimized converter child
+  process, and real local PostgreSQL fencing;
+- one bounded converter happy path ran in ephemeral Vercel Sandbox compute and its Sandbox/snapshot
+  were cleaned; the outer metadata-denial assertion failed, the credential-bearing orchestrator is
+  unselected, and the full hostile/limit/failure/content/R2/recovery matrix remains open, so T004 is
+  not complete;
 - product migrations/APIs, real auth/storage/rendering, deployed converter/content isolation,
   staging, and production remain absent;
-- GitHub/Railway/Vercel account access exists but no Callysto deployment was found; Cloudflare/R2
-  access is unavailable;
+- no live Callysto application is deployed; the only persistent new cloud record is an empty,
+  unlinked Vercel proof project, while Cloudflare Worker/R2 and Railway resources are absent;
+- dedicated Cloudflare and separate primary/recovery R2 identities, Railway spend/credentials, and
+  the external T005/T007/T010 inputs are absent;
+- all ephemeral provider-proof resources were cleaned and no proof process should remain running;
 - `CONTINUATION.md` is the restart authority for the active Milestone 0 branch and exact next step.
 
 Repair these through approved Milestone 0 tasks. Never hide them by lowering checks.

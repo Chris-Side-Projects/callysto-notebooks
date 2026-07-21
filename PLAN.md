@@ -108,24 +108,34 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 | M0.11 | Resolve license and policy ownership. | M0.1 | Repository license, notebook-license menu, contributor terms, privacy/terms/AUP/copyright owners, and launch deadlines are recorded. |
 | M0.12 | Prove recovery objectives and operator bootstrap. | M0.3 | Provider topology demonstrates proposed DB RPO/RTO, separate accepted-original recovery copy/no-delete credentials, isolated restore, offline operator grant, recent reauth, and MFA operating rule—or owner explicitly changes the objectives. |
 
-#### M0 progress snapshot — 2026-07-20
+#### M0 progress snapshot — 2026-07-21
 
 - M0.1: complete; D001-D024 and M0 authorization are recorded.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
 - M0.3/M0.4: complete and merged through PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
   Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
-  baselines.
+  baselines. The reconciled 2026-07-21 working tree also passes its local core gate and audits;
+  final-head hosted CI is pending until push.
 - M0.5: local feasibility complete. A gated two-host shell/gateway, per-request nonce CSP, Ed25519
   capabilities, hostile HTML/SVG confinement, lazy refresh, preview/public expiry, and restriction
-  bound pass 14 production-server cases in Chromium and Firefox. Deployed hostname/CDN evidence is
-  still open.
+  bound pass 14 production-server cases in Chromium and Firefox. An eight-case local Cloudflare
+  Worker contract also passes; deployed hostname/R2/CDN evidence is still open.
 - M0.6: exact cell-ID/default-deny conversion, minimized secret-free child process, and SQLite plus
-  PostgreSQL 17.9 database-clock/`SKIP LOCKED`/generation fencing proofs pass locally. Deployed
-  network/process isolation and orchestrator DB/R2-only egress remain open.
+  PostgreSQL 17.9 database-clock/`SKIP LOCKED`/generation fencing proofs pass locally and in hosted
+  CI. A prior ephemeral Vercel/nested-Docker happy-path slice passed and cleaned up. The outer
+  runtime still reaches link-local metadata, so Vercel is rejected for the secret-bearing
+  orchestrator. The strengthened converter replay and the exact DB/R2-only orchestrator boundary
+  remain open.
 - M0.10: complete; four static responsive mockups were approved without amendment under D024.
-- M0.1a/M0.7-M0.9/M0.11-M0.12: no real participant/provider/staging/policy evidence yet. Read-only
-  provider inventory found CI but no Callysto deployment; exact owner/cloud inputs are recorded in
-  [`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).
+- M0.1a/M0.7-M0.9/M0.11-M0.12: repository analysis and input packets are exhausted, but no real
+  participant/provider/storage/recovery/policy evidence exists. One empty Vercel proof project
+  persists; there is no live staging/production application. Exact blockers are recorded in
+  [`docs/evidence/M0-gate-reconciliation.md`](./docs/evidence/M0-gate-reconciliation.md).
+
+**M1 decision — 2026-07-21: NO-GO.** M1 remains closed until the cohort/source choice,
+Cloudflare/R2 least privilege, deployed content gateway, metadata-safe DB/R2-only orchestrator,
+promotion/recovery, identity/contact/delivery, and policy ownership gates have environment-labeled
+evidence and the owner explicitly approves the reconciled gate.
 
 See [`CONTINUATION.md`](./CONTINUATION.md) and [`docs/evidence`](./docs/evidence/) for exact commands,
 environment labels, and the next sequence.

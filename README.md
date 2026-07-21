@@ -10,13 +10,23 @@ The initial product is deliberately smaller than “GitHub for notebooks.” It 
 
 ## Status
 
-**Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green local scaffold plus feasibility proofs, not an MVP.**
+**Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green scaffold plus bounded feasibility proofs, not an MVP. M1 is currently NO-GO.**
 
-The baseline route/tooling repair builds and passes local core/application-shell checks. The active
-M0 branch also has local two-host rich-output isolation, minimized converter-process, and PostgreSQL
-fencing proofs. Publishing, review APIs, authentication, storage, a production renderer, provider
-integrations, staging, and deployment do not exist and must not be inferred from CI, the proof page,
-the parked domain, or the mockups.
+The baseline route/tooling repair, prior PR #2 head `1384dde`, and current reconciled local gate
+pass their labeled checks. The
+active M0 branch also has local two-host rich-output isolation, a local-only Cloudflare Worker
+contract, minimized converter-process and PostgreSQL fencing proofs, and one bounded converter run in
+ephemeral Vercel Sandbox compute. That provider proof does not complete T004: the outer Sandbox did
+not deny link-local metadata TCP access, the credential-bearing orchestrator remains unselected, and
+the full hostile/limit/failure matrix remains open. The final branch head still needs a fresh hosted
+CI run after push.
+
+No live Callysto application is deployed. The only persistent new cloud record is an empty,
+unlinked Vercel proof project; every ephemeral proof Sandbox and snapshot was cleaned. No
+Cloudflare Worker/R2 bucket, Railway service/database, integrated staging environment, or production
+environment exists. Publishing, review APIs, authentication, storage, provider integrations, and a
+production renderer remain absent and must not be inferred from CI, the proof page, the parked
+domain, or the mockups.
 
 ## Documentation map
 
@@ -37,6 +47,8 @@ Read these in order:
 13. [`docs/RESEARCH_NOTES.md`](./docs/RESEARCH_NOTES.md) — primary sources, inferences, and open validation questions.
 14. [`AGENTS.md`](./AGENTS.md) and [`CODING.md`](./CODING.md) — contributor and implementation rules.
 15. [`CONTRIBUTING.md`](./CONTRIBUTING.md) — contribution boundaries.
+16. [`docs/evidence/M0-gate-reconciliation.md`](./docs/evidence/M0-gate-reconciliation.md) — current seven-workstream gate and explicit M1 NO-GO.
+17. [`docs/VPS_CREDENTIAL_HANDOFF.md`](./docs/VPS_CREDENTIAL_HANDOFF.md) — hidden-prompt credential intake without disclosure.
 
 ## Proposed pilot
 

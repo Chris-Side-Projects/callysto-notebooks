@@ -52,10 +52,10 @@ Do not treat `docs/agent-tournament.md`, current placeholder pages, or old comme
 - Four documented moderate development-only Drizzle Kit/esbuild findings remain; production audit is clean.
 - Playwright app-shell suites pass locally and in the Ubuntu 24.04 hosted workflow against the production server.
 - The active branch adds local two-host hostile-output/capability isolation, converter-process, and
-  PostgreSQL fencing proofs; its hosted workflow has not run yet.
+  PostgreSQL fencing proofs; proof head `48805cc` passes hosted Ubuntu run `29846200710`.
 - No Callysto cloud deployment was found. Staging/providers, migrations, real product APIs, and
-  deployed content/converter isolation remain unverified. Read-only Cloudflare inventory is
-  available through a root-only VPS credential bundle, but its write scope and suitability for
-  Callysto staging are unverified and it supplies no separately credentialed recovery identity.
+  deployed content/converter isolation remain unverified. The shared root-only VPS Cloudflare
+  bundle is rejected for deployment; dedicated management and separate primary/recovery R2
+  identities remain absent.
 
 See [`CONTINUATION.md`](./CONTINUATION.md) and [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md) for the evidence boundary and exact restart sequence.

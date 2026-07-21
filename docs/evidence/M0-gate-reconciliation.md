@@ -13,7 +13,7 @@
 | M0.1a cohort/source | Repository evidence exhausted and a private-register/interview/calculation packet exists; no real cohort or notebook records were supplied | blocked on 6–10 real people, at least 8 real notebooks, outreach/consent, reviewers, and the 80% calculation |
 | M0.2 scaffold | Canonical route/configuration and build pass | complete |
 | M0.3 runtime/dependencies | Exact runtimes, lockfile, install policy, audits, and dependency register pass | complete |
-| M0.4 validation | Current final-head local core gate and audits pass; browser/database proofs and hosted Ubuntu CI pass on the prior PR head; final-head hosted CI must pass after push | complete after final hosted rerun |
+| M0.4 validation | Reconciled proof head `48805cc` passes the local core gate/audits plus hardened Ubuntu 24.04 run `29846200710`, including browser and database proofs | complete |
 | M0.5 content boundary | Local two-host browser proof passes; local Worker contract adds exact capability/index/digest/header/cookie behavior | partial; no deployed Cloudflare/R2/CDN/revocation proof |
 | M0.6 converter/orchestrator | Prior Vercel nested converter happy path passed and reconciled; outer metadata remained reachable; strengthened harness is locally tested but not replayed | partial; full converter acceptance matrix and credential-bearing orchestrator platform remain open |
 | M0.7 ingestion/promotion | Contract exists | blocked by M0.1a source choice and dedicated staging storage |
@@ -25,9 +25,8 @@
 
 ## Seven-workstream disposition
 
-1. **PR and hosted CI:** draft PR #2 is open; prior head `1384dde` passed hosted Ubuntu run
-   29797337843. The final reconciliation head must be pushed and rerun before this branch is called
-   green.
+1. **PR and hosted CI:** draft PR #2 is open, cleanly mergeable, and unmerged. Reconciled proof head
+   `48805cc` passed hosted Ubuntu run `29846200710`.
 2. **Cloudflare/R2 credentials:** secure intake skill/runbook complete. The shared VPS credential is
    rejected for deployment; the authenticated dashboard is blocked by the current browser security
    policy, so dedicated management, primary, and recovery credentials were not created.

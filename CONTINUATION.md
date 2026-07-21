@@ -4,6 +4,8 @@
 - Branch: `agent/m0-isolation-and-deployment-proofs`
 - Starting commit: `a7b0d859933b932884986ea4442d61f95df5e2be`
 - Baseline commit: `558a4cbd74e1ed02be7c0691220a5c64f8572cd5`
+- Validated proof commit: `48805ccefd7fa9fb600ac8c8daa75587ff0a8aca`
+- Hosted validation: [Ubuntu run 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710)
 - Baseline merge: [PR #1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1), merge commit `a7b0d859933b932884986ea4442d61f95df5e2be`
 - Worktree: **published Milestone 0 proof branch; inspect status and remote state before new work**
 - Authorized scope: **Milestone 0 / T001-T010 only**
@@ -15,12 +17,10 @@ When the owner says **“let's continue”**, resume in
 `/Users/christelles/Documents/Coding/EdTech/callysto-notebooks`, read this file, then follow the full
 required reading order in [`AGENTS.md`](./AGENTS.md) through `CODING.md`. Inspect `git status` before
 changing anything and preserve any later work. T001/T002 and the approved specification/mockup
-baseline were merged to `main` by PR #1. PR #2 head `1384dde` passed the hardened Ubuntu 24.04
-workflow in run `29797337843`. The reconciled working tree now passes the 2026-07-21 local gate and
-audits, but the final branch head still needs a commit/push and a fresh hosted-CI run. Resume by
-finishing that final-head publication gate,
-then close only the remaining deployed/external M0 gates below. Do not open M1 work: the current M0
-decision is NO-GO.
+baseline were merged to `main` by PR #1. PR #2 proof head `48805cc` passed the 2026-07-21 local gate,
+audits, and hardened Ubuntu 24.04 workflow in run `29846200710`. The PR remains draft and unmerged.
+Resume at the remaining deployed/external M0 gates below; do not merge without a new owner request
+and do not open M1 work. The current M0 decision is NO-GO.
 
 ## Why this project exists
 
@@ -117,8 +117,8 @@ pretending loopback is a deployed content domain or Cloudflare/R2 provider evide
 - Added a real PostgreSQL 17.9 proof for database-clock leases, `FOR UPDATE SKIP LOCKED`, concurrent
   workers, random tokens, monotonic generations, expiry/reclaim, stale completion, idempotent exact
   duplicate completion, and active-upload/draft replacement fencing.
-- Added a digest-pinned PostgreSQL service and proof step to CI; it passed on prior PR #2 head
-  `1384dde` and must pass again on the final pushed head.
+- Added a digest-pinned PostgreSQL service and proof step to CI; it passes on PR #2 proof head
+  `48805cc` in hosted run `29846200710`.
 - Ran one bounded happy-path converter feasibility slice in ephemeral Vercel Sandbox compute with a
   minimized nested converter container; the proof Sandbox and snapshot were cleaned afterward.
 - The outer Sandbox still connected to the link-local metadata address over TCP. Inner Docker
@@ -166,15 +166,14 @@ while the legacy scaffold remains outside the approved visual reference.
 
 ## Validation evidence and current gate
 
-Environment labels matter. The counts below are historical evidence for their named commits, not a
-claim about the unvalidated final working-tree head:
+Environment labels matter. The counts below are evidence for their named commits:
 
 - Baseline commit `558a4cb` passed exact runtime, clean install, audits, local core/browser checks,
   and [Ubuntu workflow run 29780426457](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29780426457).
-- Prior PR #2 head `1384dde` passed the then-current local gate and
-  [Ubuntu workflow run 29797337843](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29797337843).
-  The final branch head has changed since that run; its current check counts and hosted result must
-  be captured by a fresh validation run rather than inferred from either older pass.
+- PR #2 proof head `48805cc` passed the reconciled gate in
+  [Ubuntu workflow run 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710):
+  18 unit, 19 integration, 41 Python, 35-document, four PostgreSQL, two Chromium E2E, 14
+  Chromium/Firefox security, and four Chromium accessibility cases plus audits and production build.
 - The disposable Vercel provider run verifies only one converter happy path under the documented
   nested-container limits. The failed outer metadata-denial assertion and unselected orchestrator
   boundary prevent a complete T004 claim.
@@ -191,10 +190,9 @@ Detailed evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4
 
 ## Exact next sequence and why
 
-1. **Finish and publish the final-head gate.** The complete local check now passes with 18 unit, 19
-   integration, 41 Python, and 35-document cases plus the production build and audits. Commit/push
-   the reconciled branch and require a fresh PR #2 hosted-CI pass. The old
-   `1384dde` run is useful evidence but cannot certify a later head.
+1. **Preserve the green draft-PR boundary.** Proof head `48805cc` passes the complete local and
+   hosted gate in run `29846200710`. Do not merge PR #2 without a new owner request; rerun the gate
+   after any later change and keep evidence environment-labeled.
 2. **Create dedicated Cloudflare identities securely.** Supply a least-privilege Callysto management
    token plus separately scoped primary and recovery R2 identities through the VPS hidden-prompt
    handoff. Do not reuse the rejected shared token or disclose values to Codex output.
@@ -330,8 +328,8 @@ specific M0 task requires them.
   scripts), zero-finding production audit, the accepted four-moderate full audit, formatting, lint,
   typecheck, 18 unit, 19 integration, 41 Python, 35-document, and production-build checks.
 - Baseline commit `558a4cb` and hosted-CI evidence commit `bdcca47` were merged through PR #1 as
-  `a7b0d85`. PR #2 head `1384dde` passed hosted run `29797337843`; later final-head changes still
-  require commit/push and a fresh hosted run. No live application, integrated staging,
+  `a7b0d85`. PR #2 proof head `48805cc` passed hosted run `29846200710`; the PR remains draft and
+  unmerged. No live application, integrated staging,
   production environment, migration, public launch, or external outreach exists. The only
   persistent new cloud record is the empty, unlinked `callysto-m0-proof` Vercel project; no
   Cloudflare Worker/R2 or Railway resource exists.

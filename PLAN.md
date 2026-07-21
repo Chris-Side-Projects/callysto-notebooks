@@ -114,8 +114,8 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
 - M0.3/M0.4: complete and merged through PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
   Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
-  baselines. The reconciled 2026-07-21 working tree also passes its local core gate and audits;
-  final-head hosted CI is pending until push.
+  baselines. Reconciled PR #2 proof head `48805cc` also passes its local core gate/audits and hosted
+  run `29846200710`.
 - M0.5: local feasibility complete. A gated two-host shell/gateway, per-request nonce CSP, Ed25519
   capabilities, hostile HTML/SVG confinement, lazy refresh, preview/public expiry, and restriction
   bound pass 14 production-server cases in Chromium and Firefox. An eight-case local Cloudflare

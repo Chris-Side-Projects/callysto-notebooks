@@ -12,14 +12,14 @@ The initial product is deliberately smaller than “GitHub for notebooks.” It 
 
 **Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green scaffold plus bounded feasibility proofs, not an MVP. M1 is currently NO-GO.**
 
-The baseline route/tooling repair, prior PR #2 head `1384dde`, and current reconciled local gate
-pass their labeled checks. The
+The baseline route/tooling repair and current PR #2 proof head `48805cc` pass their labeled local
+checks and hardened Ubuntu 24.04 [Actions run
+29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710). The
 active M0 branch also has local two-host rich-output isolation, a local-only Cloudflare Worker
 contract, minimized converter-process and PostgreSQL fencing proofs, and one bounded converter run in
 ephemeral Vercel Sandbox compute. That provider proof does not complete T004: the outer Sandbox did
 not deny link-local metadata TCP access, the credential-bearing orchestrator remains unselected, and
-the full hostile/limit/failure matrix remains open. The final branch head still needs a fresh hosted
-CI run after push.
+the full hostile/limit/failure matrix remains open. Draft PR #2 remains open and unmerged.
 
 No live Callysto application is deployed. The only persistent new cloud record is an empty,
 unlinked Vercel proof project; every ephemeral proof Sandbox and snapshot was cleaned. No

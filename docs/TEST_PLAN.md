@@ -4,10 +4,10 @@
 - Scope: invite-only publishing pilot
 - Requirement sources: `PRODUCT_SPEC.md`, `UX_SPEC.md`, `ARCHITECTURE.md`, `docs/SECURITY.md`
 - Current implementation status: local core, PostgreSQL fencing, converter-process, two-host
-  content-isolation, and local Worker contracts pass; PR #2's prior head passes hosted Linux CI; a
-  prior disposable-provider nested converter happy path passes, while the strengthened converter
-  replay remains open and its outer metadata result rejects that runtime for the orchestrator.
-  Integrated staging and product providers remain unverified.
+  content-isolation, and local Worker contracts pass; PR #2 proof head `48805cc` passes hosted
+  Ubuntu run `29846200710`. A prior disposable-provider nested converter happy path passes, while
+  the strengthened converter replay remains open and its outer metadata result rejects that runtime
+  for the orchestrator. Integrated staging and product providers remain unverified.
 
 ## 1. Test objective
 

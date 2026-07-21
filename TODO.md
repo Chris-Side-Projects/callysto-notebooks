@@ -76,11 +76,11 @@ Resolved locally:
   hostile-output confinement, lazy refresh, and bounded restriction behavior in Chromium/Firefox;
 - local proof-only cell-ID/default-deny conversion plus a minimized child-process boundary and real
   PostgreSQL database-clock/`SKIP LOCKED`/lease-generation fencing;
+- reconciled PR #2 proof head `48805cc` passes hardened Ubuntu 24.04 hosted run `29846200710`;
 - owner-approved responsive product-demonstration mockups.
 
 Still open:
 
-- final-head hosted CI after this reconciliation commit; prior PR #2 head `1384dde` passed;
 - deployed content-origin/provider behavior and DB/R2-only orchestrator enforcement; the prior
   disposable nested converter happy path passed, its strengthened replay is pending, and outer
   metadata denial failed;

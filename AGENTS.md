@@ -135,10 +135,11 @@ As of 2026-07-21:
   moderate development-only Drizzle Kit findings remain;
 - the current reconciled branch head passes the 2026-07-21 local core gate and audits: strict install,
   formatting, lint, typecheck, 18 unit, 19 integration, 41 Python, 35-document, and production-build
-  checks; hosted CI for that final head remains pending;
+  checks;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;
-- prior PR #2 head `1384dde` passed hosted CI run `29797337843`; final-head hosted CI is pending;
+- PR #2 proof head `48805cc` passed hardened Ubuntu 24.04 hosted CI run `29846200710`; the PR remains
+  draft and unmerged;
 - the active proof branch adds a passing local two-host nonce-CSP/Ed25519/hostile-output suite in
   Chromium and Firefox, a local-only Cloudflare Worker contract, a minimized converter child
   process, and real local PostgreSQL fencing;

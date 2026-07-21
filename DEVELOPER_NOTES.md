@@ -27,8 +27,8 @@ If documents disagree, stop and reconcile the higher-authority product/decision 
 ## 2. Current scaffold health
 
 The scaffold is green raw material plus bounded proofs, not a working MVP. The local results below
-were rerun on the reconciled working tree on 2026-07-21. Hosted CI remains historical evidence for
-the named commits until the final branch head is pushed and passes again.
+were rerun on the reconciled working tree on 2026-07-21. Hosted CI evidence is tied to the exact
+named commit and run.
 
 | Prior evidence | Result | Interpretation |
 |---|---|---|
@@ -42,7 +42,7 @@ the named commits until the final branch head is pushed and passes again.
 | `npm run docs:check` | Pass across 35 Markdown files. | Restart, evidence, external-input, and security links are internally consistent. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect remains repaired; the build required normal outside-sandbox loopback process binding. |
 | Browser suites | Pass locally: 2 Chromium E2E, 14 Chromium/Firefox security, and 4 Chromium axe smoke cases. | T003 local two-host hostile-output/capability feasibility is proven; deployed content-domain behavior and manual accessibility certification remain open. |
-| GitHub Actions | Baseline `558a4cb` passed run `29780426457`; prior PR #2 head `1384dde` passed run `29797337843`. | T002 is complete, but final-head hosted CI is pending because reconciliation changes followed `1384dde`. |
+| GitHub Actions | Baseline `558a4cb` passed run `29780426457`; reconciled PR #2 proof head `48805cc` passed run `29846200710`. | The hardened Ubuntu 24.04 gate reproduces the current proof branch outside the development Mac; PR #2 remains draft and unmerged. |
 | Disposable provider converter | One bounded Vercel Sandbox converter happy path ran and its Sandbox/snapshot were cleaned. | The outer Sandbox connected to link-local metadata over TCP. Inner container isolation passed that slice, but T004 remains partial and the orchestrator/content/R2/recovery matrix is open. |
 | Database migrations/product APIs/auth/storage | Absent. | Product implementation has not started and is not implied by the green scaffold. |
 | Staging/production | No live application, integrated staging, or production deployment exists. | An empty, unlinked `callysto-m0-proof` Vercel control project remains; ephemeral proof resources were cleaned. No Cloudflare Worker/R2 or Railway resource exists. |

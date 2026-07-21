@@ -8,9 +8,12 @@
 
 `strict-allow-scripts=true` and the root `allowScripts` map deny lifecycle scripts from
 `esbuild`, `fsevents`, `sharp`, and `unrs-resolver`. Locked prebuilt packages are used instead.
-An unreviewed lifecycle script makes `npm ci` fail. The policy is verified locally on macOS arm64 and
-in the successful Ubuntu baseline [workflow run 29780426457](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29780426457). PR #2 workflow run 29797337843 passed the expanded gate on Ubuntu 24.04 for commit
-`1384dde`; the final reconciliation head still needs its own run.
+An unreviewed lifecycle script makes `npm ci` fail. The policy is verified locally on macOS arm64
+and in the successful Ubuntu baseline [workflow run
+29780426457](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29780426457).
+PR #2 workflow run 29797337843 passed the expanded gate on Ubuntu 24.04 for commit `1384dde`;
+reconciled proof head `48805cc` passed the current expanded gate in
+[run 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710).
 
 On 2026-07-21 a disposable strict install added 461 packages, executed no dependency lifecycle
 script, and reported no unreviewed scripts pending. The production audit reported zero

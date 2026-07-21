@@ -192,7 +192,7 @@ Detailed evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4
 ## Exact next sequence and why
 
 1. **Finish and publish the final-head gate.** The complete local check now passes with 18 unit, 19
-   integration, 40 Python, and 35-document cases plus the production build and audits. Commit/push
+   integration, 41 Python, and 35-document cases plus the production build and audits. Commit/push
    the reconciled branch and require a fresh PR #2 hosted-CI pass. The old
    `1384dde` run is useful evidence but cannot certify a later head.
 2. **Create dedicated Cloudflare identities securely.** Supply a least-privilege Callysto management
@@ -328,7 +328,7 @@ specific M0 task requires them.
   dedicated project credential are also absent.
 - The 2026-07-21 reconciled working tree passes strict `npm ci` (461 packages, no lifecycle
   scripts), zero-finding production audit, the accepted four-moderate full audit, formatting, lint,
-  typecheck, 18 unit, 19 integration, 40 Python, 35-document, and production-build checks.
+  typecheck, 18 unit, 19 integration, 41 Python, 35-document, and production-build checks.
 - Baseline commit `558a4cb` and hosted-CI evidence commit `bdcca47` were merged through PR #1 as
   `a7b0d85`. PR #2 head `1384dde` passed hosted run `29797337843`; later final-head changes still
   require commit/push and a fresh hosted run. No live application, integrated staging,

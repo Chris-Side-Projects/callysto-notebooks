@@ -69,7 +69,7 @@ Resolved locally:
 - one canonical dynamic notebook route and one PostCSS configuration;
 - exact dependency/runtime declarations and strict install-script policy;
 - lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build;
-- current reconciled local counts: 18 unit, 19 integration, 40 Python, and 35 Markdown checks;
+- current reconciled local counts: 18 unit, 19 integration, 41 Python, and 35 Markdown checks;
 - local development and production-server Playwright baselines: canonical/invalid routes, exact
   application headers in Chromium/Firefox, and serious/critical axe smoke checks through WCAG 2.2;
 - local two-host app/content isolation, per-request nonce CSP, Ed25519 artifact capabilities,

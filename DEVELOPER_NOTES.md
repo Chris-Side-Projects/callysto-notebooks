@@ -37,7 +37,7 @@ the named commits until the final branch head is pushed and passes again.
 | `npm run audit:all` | Pass at `high`; reports 4 moderate Drizzle Kit/esbuild findings. | Accepted development-only exception in `docs/DEPENDENCY_RISKS.md`; do not expose the affected dev server. |
 | `npm run lint` / `npm run typecheck` | Pass. | Baseline static contract is green. |
 | Unit/integration | 18 unit and 19 integration cases pass. | Includes repository, local Worker, Vercel harness, capability, authority, TTL, and tamper contracts; this is still not product-domain coverage. |
-| `npm run test:python` | 40 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, pinned-image provenance, direct-child environment/descriptor/sentinel evidence, and a transitive project-local converter-module audit. |
+| `npm run test:python` | 41 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, platform CA-store selection, pinned-image provenance, direct-child environment/descriptor/sentinel evidence, and a transitive project-local converter-module audit. |
 | `npm run test:postgres:proof` | 4 cases pass against a disposable PostgreSQL 17.9 database. | Real local DB-clock, `SKIP LOCKED`, lease/generation/stale/duplicate/replacement semantics; proof DDL is not a migration. |
 | `npm run docs:check` | Pass across 35 Markdown files. | Restart, evidence, external-input, and security links are internally consistent. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect remains repaired; the build required normal outside-sandbox loopback process binding. |

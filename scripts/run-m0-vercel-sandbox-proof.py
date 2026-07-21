@@ -54,7 +54,27 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-TLS_CONTEXT = ssl.create_default_context(cafile="/etc/ssl/cert.pem")
+def _platform_ca_locations() -> tuple[str | None, str | None]:
+    """Use OpenSSL's compiled trust paths, not ambient override variables."""
+
+    paths = ssl.get_default_verify_paths()
+    cafile = (
+        paths.openssl_cafile
+        if paths.openssl_cafile and Path(paths.openssl_cafile).is_file()
+        else None
+    )
+    capath = (
+        paths.openssl_capath
+        if paths.openssl_capath and Path(paths.openssl_capath).is_dir()
+        else None
+    )
+    if cafile is None and capath is None:
+        raise RuntimeError("platform CA store unavailable")
+    return cafile, capath
+
+
+TLS_CA_FILE, TLS_CA_PATH = _platform_ca_locations()
+TLS_CONTEXT = ssl.create_default_context(cafile=TLS_CA_FILE, capath=TLS_CA_PATH)
 
 
 def _url_opener() -> urllib.request.OpenerDirector:

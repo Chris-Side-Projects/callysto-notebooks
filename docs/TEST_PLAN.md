@@ -46,7 +46,7 @@ untrusted notebook
 | TypeScript unit/baseline | Vitest 4.1.10; utility and repository-contract suites pass locally. |
 | React/UI | No component-test library yet; select only when an active M0 proof needs it. |
 | Database/integration | A dedicated-loopback PostgreSQL 17.9 proof covers DB-clock leases, `SKIP LOCKED`, expiry/reclaim, token/generation, stale completion, duplicate completion, and draft replacement; it is not a product migration. |
-| Python | 40 standard-library cases pass under exact local Python 3.14.6. A prior real Vercel/nested-Docker happy path is bounded provider feasibility only; the strengthened deployed converter matrix and credential-bearing orchestrator remain unproven. |
+| Python | 41 standard-library cases pass under exact local Python 3.14.6, including platform CA-store selection without ambient proxy inheritance. A prior real Vercel/nested-Docker happy path is bounded provider feasibility only; the strengthened deployed converter matrix and credential-bearing orchestrator remain unproven. |
 | Browser/E2E/security | Playwright 1.61.1 app-shell baselines pass; 14 production-server security cases across Chromium/Firefox cover exact headers plus the gated two-host hostile-output/capability lifecycle proof. |
 | Accessibility | axe Playwright 4.12.1 serious/critical smoke baseline passes on four routes through WCAG 2.2 tags; manual conformance evidence remains. |
 | API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, an eight-case local Cloudflare Worker contract, and an eight-case Vercel harness contract. |

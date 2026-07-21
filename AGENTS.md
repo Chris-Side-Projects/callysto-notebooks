@@ -134,7 +134,7 @@ As of 2026-07-21:
 - the recorded baseline passed a strict clean install and production audit; four documented
   moderate development-only Drizzle Kit findings remain;
 - the current reconciled branch head passes the 2026-07-21 local core gate and audits: strict install,
-  formatting, lint, typecheck, 18 unit, 19 integration, 40 Python, 35-document, and production-build
+  formatting, lint, typecheck, 18 unit, 19 integration, 41 Python, 35-document, and production-build
   checks; hosted CI for that final head remains pending;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;

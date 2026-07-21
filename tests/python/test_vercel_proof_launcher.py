@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import os
+import ssl
 import subprocess
 import sys
 import unittest
@@ -26,6 +27,19 @@ def _load_launcher():
 
 
 class VercelProofLauncherTests(unittest.TestCase):
+    def test_tls_context_uses_existing_compiled_platform_trust_store(self) -> None:
+        launcher = _load_launcher()
+        selected_locations = [
+            path for path in (launcher.TLS_CA_FILE, launcher.TLS_CA_PATH) if path
+        ]
+        self.assertTrue(selected_locations)
+        if launcher.TLS_CA_FILE:
+            self.assertTrue(Path(launcher.TLS_CA_FILE).is_file())
+        if launcher.TLS_CA_PATH:
+            self.assertTrue(Path(launcher.TLS_CA_PATH).is_dir())
+        self.assertEqual(launcher.TLS_CONTEXT.verify_mode, ssl.CERT_REQUIRED)
+        self.assertTrue(launcher.TLS_CONTEXT.check_hostname)
+
     def test_url_opener_disables_ambient_proxies(self) -> None:
         launcher = _load_launcher()
         proxy_handlers = [

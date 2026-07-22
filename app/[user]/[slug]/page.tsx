@@ -5,9 +5,29 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { findMockNotebook } from "@/lib/mock-data";
+import { findNotebookByUsernameAndSlug } from "@/lib/notebooks";
 import { formatCount, formatRelativeTime } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 type Params = { user: string; slug: string };
+
+type NotebookView = {
+  slug: string;
+  title: string;
+  description: string | null;
+  tags: string[];
+  studyUrl: string | null;
+  studyTitle: string | null;
+  kernelLanguage: string;
+  cellCount: number;
+  publishedAt: string;
+  voteCount: number;
+  forkCount: number;
+  commentCount: number;
+  htmlPreviewUrl: string | null;
+  owner: { username: string; displayName: string };
+};
 
 export default async function NotebookPage({
   params,
@@ -19,12 +39,57 @@ export default async function NotebookPage({
   if (!user.startsWith("@")) notFound();
   const username = user.slice(1);
 
-  const notebook = findMockNotebook(username, slug);
+  let notebook: NotebookView | null = null;
+
+  const fromDb = await findNotebookByUsernameAndSlug(username, slug);
+  if (fromDb) {
+    notebook = {
+      slug: fromDb.slug,
+      title: fromDb.title,
+      description: fromDb.description,
+      tags: fromDb.tags,
+      studyUrl: fromDb.studyUrl,
+      studyTitle: fromDb.studyTitle,
+      kernelLanguage: fromDb.kernelLanguage,
+      cellCount: fromDb.cellCount,
+      publishedAt: (fromDb.publishedAt ?? new Date()).toISOString(),
+      voteCount: fromDb.voteCount,
+      forkCount: fromDb.forkCount,
+      commentCount: fromDb.commentCount,
+      htmlPreviewUrl: fromDb.htmlPreviewUrl,
+      owner: {
+        username: fromDb.owner.username,
+        displayName: fromDb.owner.displayName,
+      },
+    };
+  } else {
+    const mock = findMockNotebook(username, slug);
+    if (!mock) notFound();
+    notebook = {
+      slug: mock.slug,
+      title: mock.title,
+      description: mock.description,
+      tags: mock.tags,
+      studyUrl: mock.studyUrl,
+      studyTitle: mock.studyTitle,
+      kernelLanguage: mock.kernelLanguage,
+      cellCount: mock.cellCount,
+      publishedAt: mock.publishedAt,
+      voteCount: mock.voteCount,
+      forkCount: mock.forkCount,
+      commentCount: mock.commentCount,
+      htmlPreviewUrl: null,
+      owner: {
+        username: mock.owner.username,
+        displayName: mock.owner.displayName,
+      },
+    };
+  }
+
   if (!notebook) notFound();
 
   return (
     <article className="mx-auto max-w-4xl px-6 py-10">
-      {/* Header */}
       <header>
         <div className="flex items-center gap-2 text-sm text-ink-500">
           <Link
@@ -69,7 +134,6 @@ export default async function NotebookPage({
           <span className="font-mono">{notebook.kernelLanguage}</span>
         </div>
 
-        {/* Actions */}
         <div className="mt-5 flex flex-wrap gap-2">
           <button
             type="button"
@@ -106,32 +170,39 @@ export default async function NotebookPage({
         )}
       </header>
 
-      {/* Rendered notebook placeholder */}
       <section
         aria-label="Notebook preview"
-        className="mt-10 rounded-lg border border-ink-800 bg-ink-900"
+        className="mt-10 rounded-lg border border-ink-800 bg-ink-900 overflow-hidden"
       >
         <div className="border-b border-ink-800 px-5 py-3 text-xs text-ink-500 font-mono flex items-center justify-between">
           <span>{notebook.slug}.ipynb</span>
-          <span>placeholder render</span>
+          <span>{notebook.htmlPreviewUrl ? "rendered" : "placeholder render"}</span>
         </div>
-        <div className="p-10 text-center">
-          <div className="mx-auto w-12 h-12 rounded-full bg-ink-800 flex items-center justify-center text-moon-300">
-            📓
+        {notebook.htmlPreviewUrl ? (
+          <iframe
+            title={`${notebook.title} — rendered notebook`}
+            src={notebook.htmlPreviewUrl}
+            className="w-full min-h-[720px] bg-white"
+            sandbox="allow-scripts allow-same-origin"
+          />
+        ) : (
+          <div className="p-10 text-center">
+            <div className="mx-auto w-12 h-12 rounded-full bg-ink-800 flex items-center justify-center text-moon-300">
+              📓
+            </div>
+            <p className="mt-4 text-moon-200">
+              Rendered notebook HTML will appear here.
+            </p>
+            <p className="mt-2 text-sm text-ink-500 max-w-md mx-auto">
+              On submission, the raw <code className="font-mono">.ipynb</code> is
+              stored in R2 and a static HTML render (via{" "}
+              <code className="font-mono">nbconvert</code>) is served from this
+              slot.
+            </p>
           </div>
-          <p className="mt-4 text-moon-200">
-            Rendered notebook HTML will appear here.
-          </p>
-          <p className="mt-2 text-sm text-ink-500 max-w-md mx-auto">
-            On submission, the raw <code className="font-mono">.ipynb</code> is
-            stored in R2 and a static HTML render (via{" "}
-            <code className="font-mono">nbconvert</code>) is served from this
-            slot.
-          </p>
-        </div>
+        )}
       </section>
 
-      {/* Comments placeholder */}
       <section aria-labelledby="comments-heading" className="mt-12">
         <h2
           id="comments-heading"

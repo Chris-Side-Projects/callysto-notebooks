@@ -18,4 +18,6 @@ export function getDb() {
   return _db;
 }
 
+export type Db = ReturnType<typeof getDb>;
+
 export { schema };

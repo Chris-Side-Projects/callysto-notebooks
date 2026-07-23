@@ -1,10 +1,72 @@
 # M0 disposable Vercel Sandbox converter feasibility evidence
 
-- Status: **PRIOR HAPPY-PATH PROVIDER SLICE PASSED; STRENGTHENED REPLAY PENDING; ORCHESTRATOR REJECTED**
-- Last reconciled: 2026-07-21 America/New_York
+- Status: **STRENGTHENED PROVIDER CONVERTER PROOF PASSED; FULL T004 OPEN; ORCHESTRATOR REJECTED**
+- Last reconciled: 2026-07-22 22:32 -03 (2026-07-23T01:32Z)
 - Scope: synthetic T004 feasibility proof; not a Callysto application deployment
 
-## Result
+## Strengthened replay result — 2026-07-22 22:32 -03
+
+The owner approved transmitting only the pinned proof image, public proof harness, and synthetic
+hostile notebook fixture for one metered disposable replay. The converter result returned
+`status=ok`. The proof independently established all of the following:
+
+- compressed image SHA-256
+  `cf0f56ff2dc6e312b14a38824399a1dcb19dd04a7ae9db02f546f2b33efa1fb7`;
+- hostile fixture SHA-256
+  `b3d98d16d91ecf1216b81306745e4e2ee5b21777172e06bb715b90bd051cc137`;
+- public proof-harness SHA-256
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`;
+- exact converter runtime `python3.14.6`, non-root execution, dropped capabilities,
+  `no-new-privileges`, read-only root/input, bounded resources, and nested `--network none`;
+- literal execution marker absent, declared notebook non-execution preserved, injected sentinel
+  values absent, unexpected inherited descriptor closed, and deterministic retry/output checks
+  passed;
+- the controlled canary positive controls passed before and after the no-network attempt, while
+  the converter attempt was denied and generated zero canary hits; and
+- image/output/manifest identity, cell-ID uniqueness, result agreement, and the other strengthened
+  isolation assertions passed.
+
+The outer metadata probe still recorded
+`outer_metadata_endpoint_tcp_reachable=true`. The strengthened result therefore confirms only the
+credential-free nested converter slice; it does not rehabilitate Vercel Sandbox for the
+credential-bearing orchestrator.
+
+The execution Sandbox, bootstrap Sandbox, and snapshot cleanup flags all returned `true`. A
+separate post-run reconciliation returned `status=ok`, `project_exclusive=true`, zero Sandboxes,
+zero created snapshots, and `cleanup_succeeded=true`. The dedicated empty proof project remains
+unlinked and serves no traffic.
+
+The invocation began from repository base commit
+`c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus the then-uncommitted launcher, pagination, and
+cleanup hardening. The transmitted public harness digest above uniquely binds the provider run to
+the actual harness bytes. Post-run commit `f03de012526520ada807523f3177c32d1a953a76`
+captures that hardening logic and the exact harness/launcher bytes. Prettier reflowed only the local,
+non-transmitted cleanup helper after execution: its invocation SHA-256 was
+`e6c949746b0acad6716c3c5a85d1735430504442287e125a0347c8a1996549c6`, while the committed
+format-only equivalent is
+`e7d7702d3083433d498b471d66b36fe1e98b000b64f90fcd769bf02f53e2bd2d`. The run must not be
+described as an exact clean checkout of the later commit.
+
+Docker `25.0.14` was installed in the outer bootstrap from the provider runtime's mutable live
+`dnf` repository. That layer was not pinned to an owner-approved immutable package artifact, so
+the result remains **feasibility-only**, not a reproducible enforcement-runtime measurement,
+provider attestation, or security certification.
+
+## Pre-run launcher failure and correction
+
+Two reconciliation attempts before the successful run exited locally with code 137 and emitted no
+allowlisted provider result. Investigation identified a macOS `EXC_GUARD` termination: the Python
+launcher used a broad `os.closerange` beginning at descriptor 3 and attempted to close an app-owned
+guarded descriptor. The corrected launcher enumerates open descriptors, marks inherited
+descriptors close-on-exec, and fails closed if inheritance cannot be cleared. Provider pagination
+was also changed from unbounded `toArray()` calls to bounded page/item/cursor collection with
+request timeouts and repeated-cursor rejection. Regression tests cover both boundaries.
+
+Because those failed attempts returned no safe result, their provider state was treated as unknown
+until the corrected reconciler verified zero Sandboxes and snapshots. They are not counted as
+provider proof executions.
+
+## Prior provider result — 2026-07-20
 
 On 2026-07-20, an ephemeral Vercel Sandbox executed a digest-pinned Callysto converter image. The execution
 Sandbox was created with provider `deny-all` before the notebook fixture or image was uploaded. The
@@ -61,14 +123,15 @@ under provider `deny-all`. That negative finding matters:
   contract. A DB/R2 hostname allowlist cannot be described as exclusive while link-local metadata
   remains reachable.
 
-This is one operator-observed, disposable-provider feasibility slice, not provider attestation or a
-security certification. It does not close T004. A complete converter gate still needs the current
-literal execution-marker and controlled zero-hit canary replay, unexpected-FD assertion, hostile
-MIME/limit/timeout/failure matrix, and evidence tied to the exact harness/runtime identity. A
-production-capable orchestrator boundary that reaches only PostgreSQL/R2 also remains unselected
-and unproven.
+The 2026-07-22 replay closes the earlier literal execution-marker, controlled zero-hit canary,
+unexpected-FD, fixture-identity, and proof-harness-identity gaps for this synthetic happy path. It
+is still one operator-observed, disposable-provider feasibility slice, not provider attestation or
+a security certification. It does not close T004. A complete converter gate still needs the full
+hostile MIME, size/limit, timeout, deterministic-failure, retry/idempotency, recovery, and cleanup
+acceptance matrix on the selected deployment boundary. A production-capable orchestrator boundary
+that reaches only PostgreSQL/R2 also remains unselected and unproven.
 
-## Strengthened replay state
+## Strengthened replay controls
 
 The checked-in harness now pins the hostile fixture digest, writes a literal marker before any
 credential access, starts a controlled outer canary, proves the canary is live from a normal nested
@@ -87,14 +150,15 @@ filter, and verifies that no Sandbox or created snapshot remains. Cleanup never 
 object merely because create/get returned it: the Sandbox name and the snapshot list/ID/source
 session are independently re-fetched and matched first, with executable mismatch tests proving no
 stop/delete call occurs. A created project snapshot left after those name-scoped deletions is unowned: reconciliation fails with
-`RECONCILE_UNOWNED_SNAPSHOTS_PRESENT` and never deletes it. Eight local source-contract cases and
-seven launcher cases cover these controls. The dedicated proof project must not be used
-concurrently by another operator during reconciliation.
+`RECONCILE_UNOWNED_SNAPSHOTS_PRESENT` and never deletes it. Local source-contract and launcher
+regression cases cover these controls, including bounded pagination and close-on-exec descriptor
+handling. The dedicated proof project must not be used concurrently by another operator during
+reconciliation.
 
-Those strengthened assertions have **not** run in Vercel. On 2026-07-21 the local safe launcher
-reached the external-upload approval boundary before any Sandbox was created. Replaying requires
-explicit approval to transmit the proof image, public harness, and synthetic hostile fixture to
-Vercel. Until that replay succeeds, none of the new fields may be presented as provider evidence.
+Those strengthened assertions ran in Vercel on 2026-07-22 under the explicit bounded upload
+approval and passed for the synthetic converter slice described above. They may be cited only with
+the three retained digests and the feasibility-only boundary. They are not evidence for the
+unexecuted hostile/failure matrix or an orchestrator.
 
 ## Safe replay
 
@@ -118,4 +182,4 @@ This is not evidence for a web/API deployment, Cloudflare Worker/R2, real notebo
 production renderer, database/storage operations, recovery, OAuth/email, or a safe Vercel
 orchestrator. The mutable live-`dnf` Docker bootstrap also prevents security-certification claims
 until the enforcement runtime is pinned to an owner-approved immutable artifact or exact package
-provenance. It neither authorizes M1 nor relaxes the no-metadata requirement.
+provenance. It does not make T004 complete, authorize M1, or relax the no-metadata requirement.

@@ -108,7 +108,7 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 | M0.11 | Resolve license and policy ownership. | M0.1 | Repository license, notebook-license menu, contributor terms, privacy/terms/AUP/copyright owners, and launch deadlines are recorded. |
 | M0.12 | Prove recovery objectives and operator bootstrap. | M0.3 | Provider topology demonstrates proposed DB RPO/RTO, separate accepted-original recovery copy/no-delete credentials, isolated restore, offline operator grant, recent reauth, and MFA operating rule—or owner explicitly changes the objectives. |
 
-#### M0 progress snapshot — 2026-07-21
+#### M0 progress snapshot — 2026-07-22
 
 - M0.1: complete; D001-D024 and M0 authorization are recorded.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
@@ -122,10 +122,14 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
   Worker contract also passes; deployed hostname/R2/CDN evidence is still open.
 - M0.6: exact cell-ID/default-deny conversion, minimized secret-free child process, and SQLite plus
   PostgreSQL 17.9 database-clock/`SKIP LOCKED`/generation fencing proofs pass locally and in hosted
-  CI. A prior ephemeral Vercel/nested-Docker happy-path slice passed and cleaned up. The outer
-  runtime still reaches link-local metadata, so Vercel is rejected for the secret-bearing
-  orchestrator. The strengthened converter replay and the exact DB/R2-only orchestrator boundary
-  remain open.
+  CI. The owner-approved strengthened Vercel/nested-Docker converter replay passed its deterministic
+  hostile-fixture, non-execution/canary, isolation, and resource-limit slice; all reported cleanup
+  completed, and independent reconciliation found zero Sandboxes/snapshots. The run is bound to
+  invocation base `c2cdbac` plus harness SHA-256
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`. Its mutable live `dnf`
+  bootstrap limits this to feasibility evidence. The outer runtime still reaches link-local
+  metadata, so Vercel is rejected for the secret-bearing orchestrator; the exact DB/R2-only
+  orchestrator and integrated content/R2/recovery gates remain open.
 - M0.10: complete; four static responsive mockups were approved without amendment under D024.
 - M0.1a/M0.7-M0.9/M0.11-M0.12: repository analysis and input packets are exhausted, but no real
   participant/provider/storage/recovery/policy evidence exists. One empty Vercel proof project

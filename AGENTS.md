@@ -128,14 +128,14 @@ A task is complete only when:
 
 ## Known current baseline
 
-As of 2026-07-21:
+As of 2026-07-22:
 
 - T001 route/configuration repair and the complete local/hosted T002 acceptance gate were merged through PR #1;
 - the recorded baseline passed a strict clean install and production audit; four documented
   moderate development-only Drizzle Kit findings remain;
-- the current reconciled branch head passes the 2026-07-21 local core gate and audits: strict install,
-  formatting, lint, typecheck, 18 unit, 19 integration, 41 Python, 35-document, and production-build
-  checks;
+- the 2026-07-22 working tree passes the current local core gate: formatting, lint, typecheck, 18
+  unit, 21 integration, 42 Python, 35-document, and production-build checks; the unchanged lockfile
+  retains the separately recorded strict-install and online-audit evidence;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;
 - PR #2 proof head `48805cc` passed hardened Ubuntu 24.04 hosted CI run `29846200710`; the PR remains
@@ -143,17 +143,30 @@ As of 2026-07-21:
 - the active proof branch adds a passing local two-host nonce-CSP/Ed25519/hostile-output suite in
   Chromium and Firefox, a local-only Cloudflare Worker contract, a minimized converter child
   process, and real local PostgreSQL fencing;
-- one bounded converter happy path ran in ephemeral Vercel Sandbox compute and its Sandbox/snapshot
-  were cleaned; the outer metadata-denial assertion failed, the credential-bearing orchestrator is
-  unselected, and the full hostile/limit/failure/content/R2/recovery matrix remains open, so T004 is
-  not complete;
+- the owner-approved strengthened converter proof passed its deterministic hostile-fixture,
+  non-execution/canary, isolation, and resource-limit matrix slice in ephemeral Vercel Sandbox
+  compute; converter/bootstrap/snapshot cleanup all reported complete, and independent post-run
+  reconciliation found zero Sandbox/snapshot resources;
+- the proof is bound to invocation base `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus
+  working-tree hardening with harness SHA-256
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`; it remains
+  feasibility-only because the live `dnf` bootstrap is mutable;
+- the outer metadata-denial assertion still failed, the credential-bearing orchestrator remains
+  unselected, and the exact DB/R2-only orchestrator plus content/R2/recovery and remaining integrated
+  matrix are open, so T004 is not complete;
+- two pre-run local reconciliation exits 137 were macOS `EXC_GUARD` failures caused by closing
+  Codex's guarded descriptor 3; the launcher now marks inherited descriptors close-on-exec, and
+  pagination is bounded/time-limited with regression coverage;
+- the complete local core gate passes for the strengthened working tree; hosted CI still must pass
+  for the eventual committed head before merge;
 - product migrations/APIs, real auth/storage/rendering, deployed converter/content isolation,
   staging, and production remain absent;
 - no live Callysto application is deployed; the only persistent new cloud record is an empty,
   unlinked Vercel proof project, while Cloudflare Worker/R2 and Railway resources are absent;
 - dedicated Cloudflare and separate primary/recovery R2 identities, Railway spend/credentials, and
   the external T005/T007/T010 inputs are absent;
-- all ephemeral provider-proof resources were cleaned and no proof process should remain running;
+- all ephemeral provider-proof resources were cleaned, independent reconciliation found zero
+  Sandboxes/snapshots, and no proof process should remain running;
 - `CONTINUATION.md` is the restart authority for the active Milestone 0 branch and exact next step.
 
 Repair these through approved Milestone 0 tasks. Never hide them by lowering checks.

@@ -1,10 +1,14 @@
 # Callysto continuation handoff
 
-- Handoff prepared: **2026-07-21**
+- Handoff prepared: **2026-07-22**
 - Branch: `agent/m0-isolation-and-deployment-proofs`
 - Starting commit: `a7b0d859933b932884986ea4442d61f95df5e2be`
 - Baseline commit: `558a4cbd74e1ed02be7c0691220a5c64f8572cd5`
 - Validated proof commit: `48805ccefd7fa9fb600ac8c8daa75587ff0a8aca`
+- Strengthened provider-proof invocation base: `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206`
+- Provider-proof hardening commit: `f03de012526520ada807523f3177c32d1a953a76`
+- Strengthened provider-proof harness SHA-256:
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`
 - Hosted validation: [Ubuntu run 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710)
 - Baseline merge: [PR #1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1), merge commit `a7b0d859933b932884986ea4442d61f95df5e2be`
 - Worktree: **published Milestone 0 proof branch; inspect status and remote state before new work**
@@ -19,8 +23,10 @@ required reading order in [`AGENTS.md`](./AGENTS.md) through `CODING.md`. Inspec
 changing anything and preserve any later work. T001/T002 and the approved specification/mockup
 baseline were merged to `main` by PR #1. PR #2 proof head `48805cc` passed the 2026-07-21 local gate,
 audits, and hardened Ubuntu 24.04 workflow in run `29846200710`. The PR remains draft and unmerged.
-Resume at the remaining deployed/external M0 gates below; do not merge without a new owner request
-and do not open M1 work. The current M0 decision is NO-GO.
+The owner-approved strengthened Vercel converter replay passed on 2026-07-22 and was independently
+reconciled to zero ephemeral Sandbox/snapshot resources. Resume at the remaining deployed/external
+M0 gates below; do not merge without a new owner request and do not open M1 work. The current M0
+decision is NO-GO.
 
 ## Why this project exists
 
@@ -103,7 +109,7 @@ Why: application-origin rendering of notebook-controlled rich content is the hig
 boundary. The local proof and local Cloudflare Worker contract establish the design without
 pretending loopback is a deployed content domain or Cloudflare/R2 provider evidence.
 
-### T004 converter/orchestrator proof — partial local and provider evidence
+### T004 converter/orchestrator proof — partial local and strengthened provider evidence
 
 - Clarified the exact binary `callysto-cell-id-v1` algorithm in `ARCHITECTURE.md`.
 - Added normative Python/Node golden vectors, including Unicode, array/string source, ordinal/type,
@@ -119,13 +125,28 @@ pretending loopback is a deployed content domain or Cloudflare/R2 provider evide
   duplicate completion, and active-upload/draft replacement fencing.
 - Added a digest-pinned PostgreSQL service and proof step to CI; it passes on PR #2 proof head
   `48805cc` in hosted run `29846200710`.
-- Ran one bounded happy-path converter feasibility slice in ephemeral Vercel Sandbox compute with a
-  minimized nested converter container; the proof Sandbox and snapshot were cleaned afterward.
+- Ran the owner-approved strengthened converter feasibility slice in ephemeral Vercel Sandbox
+  compute. The deterministic hostile fixture, non-execution marker, no-network canary, isolation,
+  and resource-limit matrix slice passed in the minimized nested converter container.
+- The provider result reported converter, bootstrap, and snapshot cleanup complete. An independent
+  post-run reconciliation then found zero proof Sandboxes and zero proof snapshots.
+- The successful invocation used base commit
+  `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus the working-tree launcher/harness hardening,
+  bound by harness SHA-256
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
+- Commit `f03de012526520ada807523f3177c32d1a953a76` subsequently captured the hardening. It
+  contains the exact harness/launcher bytes; only the non-transmitted cleanup helper received a
+  Prettier-only reflow after execution, recorded with both digests in the provider evidence file.
 - The outer Sandbox still connected to the link-local metadata address over TCP. Inner Docker
   `--network none` blocked that route, but this failed the required outer metadata-denial assertion.
-- Rejected Vercel Sandbox as the credential-bearing orchestrator boundary. The full hostile,
-  resource-limit, timeout, partial-write, failure, retry, content/R2, and recovery matrix remains
-  open, so T004 is not complete.
+- Rejected Vercel Sandbox as the credential-bearing orchestrator boundary. The live `dnf`
+  bootstrap is mutable, so even the passing strengthened converter slice is feasibility evidence,
+  not security certification. The exact DB/R2-only orchestrator, content/R2, recovery, and remaining
+  failure/retry/integrated matrix are open, so T004 is not complete.
+- Diagnosed two pre-run local reconciliation exits with code 137 as macOS `EXC_GUARD`: the launcher
+  used `os.closerange` and attempted to close Codex's guarded inherited descriptor 3. The launcher
+  now marks inherited descriptors close-on-exec, and Sandbox/snapshot pagination is bounded and
+  time-limited. Regression tests cover both repairs.
 
 Why: cell anchors and stale-worker rejection must be deterministic before review records or render
 state are persisted. PostgreSQL semantics and child-process minimization are real local evidence,
@@ -174,9 +195,15 @@ Environment labels matter. The counts below are evidence for their named commits
   [Ubuntu workflow run 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710):
   18 unit, 19 integration, 41 Python, 35-document, four PostgreSQL, two Chromium E2E, 14
   Chromium/Firefox security, and four Chromium accessibility cases plus audits and production build.
-- The disposable Vercel provider run verifies only one converter happy path under the documented
-  nested-container limits. The failed outer metadata-denial assertion and unselected orchestrator
-  boundary prevent a complete T004 claim.
+- The 2026-07-22 strengthened working tree passes formatting, lint, typecheck, 18 unit, 21
+  integration, 42 Python plus shared vectors, the 35-document contract, and the production build.
+  The build required its known outside-sandbox loopback allowance. The unchanged lockfile retains
+  the separately recorded strict-install and online-audit evidence; current offline audits also pass.
+- The 2026-07-22 disposable Vercel replay passed the deterministic hostile-fixture,
+  non-execution/canary, isolation, and resource-limit converter slice and cleaned/reconciled all
+  ephemeral resources. It remains feasibility-only because its live `dnf` bootstrap is mutable.
+  The failed outer metadata-denial assertion and unselected orchestrator boundary prevent a complete
+  T004 claim.
 - The local Cloudflare Worker tests are contract evidence, not a deployed content hostname or R2
   integration.
 - No integrated staging, production, provider-backed content/R2, real-user, or recovery evidence
@@ -190,9 +217,11 @@ Detailed evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4
 
 ## Exact next sequence and why
 
-1. **Preserve the green draft-PR boundary.** Proof head `48805cc` passes the complete local and
-   hosted gate in run `29846200710`. Do not merge PR #2 without a new owner request; rerun the gate
-   after any later change and keep evidence environment-labeled.
+1. **Publish and host-validate the strengthened draft-PR boundary.** Proof head `48805cc` retains its
+   complete hosted gate in run `29846200710`; the 2026-07-22 provider replay is separately bound to
+   base `c2cdbac` plus harness SHA-256 `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
+   The complete local core gate now passes; commit/push the exact tree and obtain hosted CI for that
+   committed head. Do not merge PR #2 without a new owner request.
 2. **Create dedicated Cloudflare identities securely.** Supply a least-privilege Callysto management
    token plus separately scoped primary and recovery R2 identities through the VPS hidden-prompt
    handoff. Do not reuse the rejected shared token or disclose values to Codex output.
@@ -212,10 +241,10 @@ Detailed evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4
    identity/contact, recovery, and manual evidence. The owner may consider M1 only after every M0
    acceptance item has environment-labeled proof; until then M1 remains NO-GO.
 
-The strengthened Vercel converter replay is locally ready but crosses an external-upload gate. Do
-not run it until the owner explicitly authorizes transmitting the pinned proof image, public
-harness, and synthetic hostile notebook fixture to Vercel. That approval does not authorize a live
-application deployment or the rejected secret-bearing orchestrator mode.
+The owner's one-run approval to transmit the pinned proof image, public harness, and synthetic
+hostile notebook fixture to Vercel was consumed by the successful 2026-07-22 replay. It did not
+authorize a live application deployment or the rejected secret-bearing orchestrator mode. Any
+future metered replay requires fresh explicit authority.
 
 ## Restart commands
 
@@ -244,10 +273,10 @@ git diff --check
 
 ### Secure provider-proof wrapper
 
-The only approved replay surface for the bounded Vercel proof is the checked-in Python wrapper. It
+The only approved replay surface for a bounded Vercel proof is the checked-in Python wrapper. It
 validates the fixed runtime and credential boundary without requiring a copied or printed
-`VERCEL_TOKEN`. Replays are metered external actions and require explicit authority. The converter
-mode also requires the expected image archive at
+`VERCEL_TOKEN`. Replays are metered external actions and require fresh explicit authority; the
+approval used on 2026-07-22 is consumed. The converter mode also requires the expected image archive at
 `/private/tmp/callysto-m0-converter-image.tar.gz`.
 
 ```bash
@@ -263,8 +292,10 @@ python3 scripts/run-m0-vercel-sandbox-proof.py reconcile \
 
 Do not replay the orchestrator mode until a provider and exact egress/metadata targets are approved.
 Do not set or print provider-token environment variables manually.
-The wrapper refuses a linked, environment-bearing, or deployment-bearing proof project. Reconcile
-mode removes only exact-name proof Sandboxes and their name-filtered snapshots. If a created
+The wrapper refuses a linked, environment-bearing, or deployment-bearing proof project. It marks
+inherited descriptors close-on-exec instead of explicitly closing Codex's guarded descriptors.
+Reconcile mode uses bounded, time-limited pagination and removes only exact-name proof Sandboxes and
+their name-filtered snapshots. If a created
 snapshot remains without an owned proof Sandbox, reconciliation reports it and refuses to delete
 it; do not run another Sandbox job in that project concurrently. The current live
 `dnf` Docker bootstrap is recorded as feasibility-only and cannot support a security-certification
@@ -314,7 +345,8 @@ specific M0 task requires them.
 ## Restart-safe state
 
 - No server, browser, watcher, database, Vercel Sandbox, or proof process was intentionally left
-  running. Every ephemeral provider-proof Sandbox and snapshot was cleaned.
+  running. The strengthened result reported converter/bootstrap/snapshot cleanup complete, and the
+  independent post-run reconciliation found zero Sandbox and zero snapshot resources.
 - Temporary runtimes and browser binaries are under `/private/tmp` and may disappear on restart;
   their exact URLs/checksums are encoded in `scripts/bootstrap-macos-arm64-runtimes.sh`, not treated
   as hidden project inputs.
@@ -324,17 +356,21 @@ specific M0 task requires them.
   credential work. The earlier shared Cloudflare token is rejected; dedicated Cloudflare and
   separate primary/recovery R2 identities have not been supplied. Railway spend authority and a
   dedicated project credential are also absent.
-- The 2026-07-21 reconciled working tree passes strict `npm ci` (461 packages, no lifecycle
-  scripts), zero-finding production audit, the accepted four-moderate full audit, formatting, lint,
-  typecheck, 18 unit, 19 integration, 41 Python, 35-document, and production-build checks.
+- The strengthened 2026-07-22 working tree passes the complete local core gate: formatting, lint,
+  typecheck, 18 unit, 21 integration, 42 Python plus shared vectors, 35-document, and
+  production-build checks. The provider proof also passed. Hosted CI remains required for the
+  eventual committed head before merge. The unchanged lockfile retains the prior strict `npm ci`
+  (461 packages, no lifecycle scripts), zero-finding production audit, and accepted four-moderate
+  full-audit evidence; current offline audits pass as well.
 - Baseline commit `558a4cb` and hosted-CI evidence commit `bdcca47` were merged through PR #1 as
   `a7b0d85`. PR #2 proof head `48805cc` passed hosted run `29846200710`; the PR remains draft and
   unmerged. No live application, integrated staging,
   production environment, migration, public launch, or external outreach exists. The only
   persistent new cloud record is the empty, unlinked `callysto-m0-proof` Vercel project; no
   Cloudflare Worker/R2 or Railway resource exists.
-- External T005, T007, and T010 inputs remain absent. The bounded Vercel converter happy path, local
-  Worker contract, and earlier local proofs do not close T004 or the M0 gate. M1 remains NO-GO.
+- External T005, T007, and T010 inputs remain absent. The strengthened but feasibility-only Vercel
+  converter matrix slice, local Worker contract, and earlier local proofs do not close T004 or the
+  M0 gate. M1 remains NO-GO.
 - The pre-final-check ignored `.next` cache was moved intact to
   `/private/tmp/callysto-next-cache-20260720-172458`; it is disposable and not part of the project.
 - A later generated `.next` cache that accumulated numbered file-provider conflict copies was moved

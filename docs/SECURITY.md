@@ -93,12 +93,18 @@ Boundary rules:
 - The converter receives only server-selected local input/output paths. It has no public listener, database/storage/session credential, cloud metadata route, or network namespace.
 - Operator access is an authorization role, not a hidden route or UI condition.
 
-M0 evidence reconciled on 2026-07-21 established one disposable-provider converter happy-path
-slice only after adding an independent nested Docker `--network none` layer. The strengthened
-marker/canary/FD/hostile-limit replay remains open. The outer provider `deny-all` runtime still
-accepted TCP to `169.254.169.254:80`; it is not approved to hold orchestrator credentials.
-Railway compute also remains rejected for lack of a documented destination allowlist. These
-findings preserve, rather than weaken, the normative metadata and DB/R2-only requirements. See
+M0 evidence reconciled on 2026-07-22 established a passing strengthened disposable-provider
+converter slice behind an independent nested Docker `--network none` layer. The deterministic
+hostile fixture, non-execution marker, no-network canary, isolation, and resource-limit cases passed;
+converter/bootstrap/snapshot cleanup reported complete, and an independent reconciliation found
+zero ephemeral Sandboxes/snapshots. The live `dnf` bootstrap is mutable, so the result is
+feasibility evidence rather than security certification. The outer provider `deny-all` runtime
+still accepted TCP to `169.254.169.254:80`; it is not approved to hold orchestrator credentials.
+Railway compute also remains rejected for lack of a documented destination allowlist. Two local
+pre-run exit-137 failures were traced to macOS `EXC_GUARD` when the launcher tried to close Codex's
+guarded descriptor 3; inherited descriptors are now marked close-on-exec, and provider pagination
+is bounded/time-limited with regression tests. These findings preserve, rather than weaken, the
+normative metadata and DB/R2-only requirements. See
 [`docs/evidence/M0-vercel-sandbox-converter.md`](./evidence/M0-vercel-sandbox-converter.md).
 
 ## 5. Threat model and control ownership

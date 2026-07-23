@@ -1,7 +1,7 @@
 # Callysto developer notes
 
 - Status: **M0 OPERATING CONTRACT ACTIVE; M1 NO-GO; M1-M8 NOT APPROVED**
-- Last reconciled against working tree: 2026-07-21
+- Last reconciled against working tree: 2026-07-22
 - Repository: `Chris-Side-Projects/callysto-notebooks`
 - Deployment: **no live application, integrated staging, or production environment; the only
   persistent new cloud record is an empty, unlinked Vercel proof project**
@@ -26,9 +26,10 @@ If documents disagree, stop and reconcile the higher-authority product/decision 
 
 ## 2. Current scaffold health
 
-The scaffold is green raw material plus bounded proofs, not a working MVP. The local results below
-were rerun on the reconciled working tree on 2026-07-21. Hosted CI evidence is tied to the exact
-named commit and run.
+The scaffold is green raw material plus bounded proofs, not a working MVP. The complete hosted
+baseline below remains tied to its exact 2026-07-21 commit and run. The strengthened
+launcher/harness tree and disposable-provider proof were reconciled on 2026-07-22; its complete
+local core gate passes, while hosted CI is still required for the eventual committed head.
 
 | Prior evidence | Result | Interpretation |
 |---|---|---|
@@ -36,14 +37,14 @@ named commit and run.
 | `npm run audit:prod` | Pass: zero vulnerabilities. | No known moderate-or-higher production finding at verification time. |
 | `npm run audit:all` | Pass at `high`; reports 4 moderate Drizzle Kit/esbuild findings. | Accepted development-only exception in `docs/DEPENDENCY_RISKS.md`; do not expose the affected dev server. |
 | `npm run lint` / `npm run typecheck` | Pass. | Baseline static contract is green. |
-| Unit/integration | 18 unit and 19 integration cases pass. | Includes repository, local Worker, Vercel harness, capability, authority, TTL, and tamper contracts; this is still not product-domain coverage. |
-| `npm run test:python` | 41 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, platform CA-store selection, pinned-image provenance, direct-child environment/descriptor/sentinel evidence, and a transitive project-local converter-module audit. |
+| Unit/integration | The strengthened working tree passes 18 unit and 21 integration cases, including two bounded-pagination regressions. | Includes repository, local Worker, Vercel harness, capability, authority, TTL, and tamper contracts; this is still not product-domain coverage. |
+| `npm run test:python` | 42 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, platform CA-store selection, pinned-image provenance, close-on-exec handling, direct-child environment/descriptor/sentinel evidence, and a transitive project-local converter-module audit. |
 | `npm run test:postgres:proof` | 4 cases pass against a disposable PostgreSQL 17.9 database. | Real local DB-clock, `SKIP LOCKED`, lease/generation/stale/duplicate/replacement semantics; proof DDL is not a migration. |
 | `npm run docs:check` | Pass across 35 Markdown files. | Restart, evidence, external-input, and security links are internally consistent. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect remains repaired; the build required normal outside-sandbox loopback process binding. |
 | Browser suites | Pass locally: 2 Chromium E2E, 14 Chromium/Firefox security, and 4 Chromium axe smoke cases. | T003 local two-host hostile-output/capability feasibility is proven; deployed content-domain behavior and manual accessibility certification remain open. |
 | GitHub Actions | Baseline `558a4cb` passed run `29780426457`; reconciled PR #2 proof head `48805cc` passed run `29846200710`. | The hardened Ubuntu 24.04 gate reproduces the current proof branch outside the development Mac; PR #2 remains draft and unmerged. |
-| Disposable provider converter | One bounded Vercel Sandbox converter happy path ran and its Sandbox/snapshot were cleaned. | The outer Sandbox connected to link-local metadata over TCP. Inner container isolation passed that slice, but T004 remains partial and the orchestrator/content/R2/recovery matrix is open. |
+| Disposable provider converter | The strengthened Vercel Sandbox converter slice passed its deterministic hostile fixture, non-execution/canary, isolation, and resource-limit cases; converter/bootstrap/snapshot cleanup reported complete and independent reconciliation found zero resources. | The mutable live `dnf` bootstrap makes this feasibility-only. The outer Sandbox remained TCP-reachable to link-local metadata, so Vercel is rejected for the secret-bearing orchestrator; T004 remains partial. |
 | Database migrations/product APIs/auth/storage | Absent. | Product implementation has not started and is not implied by the green scaffold. |
 | Staging/production | No live application, integrated staging, or production deployment exists. | An empty, unlinked `callysto-m0-proof` Vercel control project remains; ephemeral proof resources were cleaned. No Cloudflare Worker/R2 or Railway resource exists. |
 
@@ -79,8 +80,9 @@ Proposed deployment:
 - Railway is not accepted as the converter/orchestrator compute boundary from the current evidence.
   It remains a possible web/API or PostgreSQL provider only after explicit spend authority, dedicated
   credentials, and the relevant database/recovery proof.
-- Vercel Sandbox established one bounded nested-container converter happy path only. Its outer
-  metadata route was reachable, so it is rejected for the credential-bearing orchestrator.
+- Vercel Sandbox established a strengthened bounded nested-container converter matrix slice. Its
+  mutable live `dnf` bootstrap prevents security-certification claims, and its outer metadata route
+  remained reachable, so it is rejected for the credential-bearing orchestrator.
 - The metadata-safe orchestrator platform remains unselected; D013 applies until a provider proves
   exact PostgreSQL/private-R2-only egress and metadata denial.
 - Private Cloudflare R2 primary and separately credentialed recovery locations, separate by environment.
@@ -89,7 +91,7 @@ Proposed deployment:
 - One transactional email provider selected after the Milestone 0 spike.
 - One notification-dispatch topology selected in M0.9: a dedicated Railway process is recommended; a bounded web-triggered job is acceptable only if deployed scheduling, concurrency, fencing, health, and shutdown behavior pass the same contract and are documented here before M1.
 
-This is a proposal, not current infrastructure. As of 2026-07-21 there is no live application,
+This is a proposal, not current infrastructure. As of 2026-07-22 there is no live application,
 integrated staging, or production environment. The only persistent new control-plane record is an
 empty, unlinked Vercel project; all ephemeral proof Sandboxes/snapshots were cleaned. No Cloudflare
 Worker/R2 or Railway resource exists, and the earlier shared Cloudflare token is rejected. Do not
@@ -197,10 +199,11 @@ the same implemented project scripts rather than duplicating hidden shell logic.
 
 ### Metered Vercel proof wrapper
 
-Use only the checked-in Python wrapper for the bounded provider proof. It validates the fixed
-runtime and existing credential boundary; never copy, print, or manually export a `VERCEL_TOKEN`.
-The converter command requires `/private/tmp/callysto-m0-converter-image.tar.gz`. Both commands are
-metered external actions and require explicit authority:
+Use only the checked-in Python wrapper for a bounded provider proof. It validates the fixed runtime
+and existing credential boundary; never copy, print, or manually export a `VERCEL_TOKEN`. The
+converter command requires `/private/tmp/callysto-m0-converter-image.tar.gz`. Both commands are
+metered external actions and require fresh explicit authority. The one-run approval used on
+2026-07-22 is consumed:
 
 ```bash
 python3 scripts/run-m0-vercel-sandbox-proof.py converter \
@@ -215,6 +218,10 @@ python3 scripts/run-m0-vercel-sandbox-proof.py reconcile \
 
 Do not run orchestrator mode until the provider and exact egress/metadata targets are approved. The
 provider run is labeled **verified in a disposable provider proof**, not staging or production.
+The launcher marks inherited descriptors close-on-exec instead of explicitly closing Codex's
+guarded descriptors. Resource listing is page/item bounded, rejects repeated cursors, and has a
+wall-clock timeout. These are permanent regression contracts after two macOS `EXC_GUARD` exit-137
+failures caused by attempting to close guarded descriptor 3.
 
 ### VPS credential intake
 
@@ -378,8 +385,10 @@ A handoff must say exactly where evidence was obtained:
 - **not verified** — implementation or access boundary remains.
 
 Do not call mocked R2, fake OAuth, synthetic notebooks, or local mail delivery production verification.
-The external inputs for T005, T007, and T010 are absent. The local Worker contract and bounded
-Vercel converter run do not complete T004 or authorize M1.
+The external inputs for T005, T007, and T010 are absent. The local Worker contract and strengthened
+but feasibility-only Vercel converter slice do not complete T004 or authorize M1. The provider run
+used invocation base `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus working-tree hardening bound
+by harness SHA-256 `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
 
 ## 12. Deployment and operations
 

@@ -1,7 +1,7 @@
 # Milestone 0 gate reconciliation
 
 - Decision: **M1 NO-GO**
-- Reconciled: 2026-07-21
+- Reconciled: 2026-07-22 22:32 -03 (2026-07-23T01:32Z)
 - Branch: `agent/m0-isolation-and-deployment-proofs`
 - Scope: evidence state after the seven requested M0 workstreams
 
@@ -15,7 +15,7 @@
 | M0.3 runtime/dependencies | Exact runtimes, lockfile, install policy, audits, and dependency register pass | complete |
 | M0.4 validation | Reconciled proof head `48805cc` passes the local core gate/audits plus hardened Ubuntu 24.04 run `29846200710`, including browser and database proofs | complete |
 | M0.5 content boundary | Local two-host browser proof passes; local Worker contract adds exact capability/index/digest/header/cookie behavior | partial; no deployed Cloudflare/R2/CDN/revocation proof |
-| M0.6 converter/orchestrator | Prior Vercel nested converter happy path passed and reconciled; outer metadata remained reachable; strengthened harness is locally tested but not replayed | partial; full converter acceptance matrix and credential-bearing orchestrator platform remain open |
+| M0.6 converter/orchestrator | Strengthened Vercel nested converter synthetic slice passed and reconciled to zero resources; marker, canary, inherited-FD, deterministic, identity, and isolation assertions passed; outer metadata remained reachable and Docker came from mutable live `dnf` | partial; full converter acceptance matrix and credential-bearing orchestrator platform remain open |
 | M0.7 ingestion/promotion | Contract exists | blocked by M0.1a source choice and dedicated staging storage |
 | M0.8 identity | Missing-input matrix exists | blocked by staging URL, GitHub OAuth app, ORCID sandbox app/fallback decision, test identities, and administrators |
 | M0.9 contact/delivery | Missing-input matrix exists | blocked by verified-email decision, sender/provider/DNS, recipients, dispatcher, and operators |
@@ -30,17 +30,19 @@
 2. **Cloudflare/R2 credentials:** secure intake skill/runbook complete. The shared VPS credential is
    rejected for deployment; the authenticated dashboard is blocked by the current browser security
    policy, so dedicated management, primary, and recovery credentials were not created.
-3. **Deployment boundary:** one converter happy path passed in real Vercel cloud execution. Vercel Sandbox is
-   rejected for the orchestrator because outer link-local metadata remained TCP reachable under
-   deny-all. Railway compute remains rejected because no provider-enforced destination allowlist is
-   documented.
-4. **Disposable topology:** one empty Vercel proof project exists; every Sandbox/snapshot and every
-   unintended temporary deployment is gone. Cloudflare/R2 and Railway staging resources were not
-   provisioned because their credential/spend gates are unresolved.
-5. **Deployed proofs:** the prior converter happy path and cleanup passed. The strengthened
-   canary/marker/FD/runtime-identity replay requires explicit external-upload approval and has not
-   run. Content/R2 promotion, DB fencing in a deployed worker, recovery, and browser/CDN proofs
-   remain blocked by missing resources and the platform boundary.
+3. **Deployment boundary:** the owner-approved strengthened synthetic converter slice passed in real
+   Vercel cloud execution. Vercel Sandbox is rejected for the orchestrator because outer link-local
+   metadata remained TCP reachable under deny-all. Railway compute remains rejected because no
+   provider-enforced destination allowlist is documented.
+4. **Disposable topology:** one empty Vercel proof project exists; the strengthened post-run
+   reconciler confirmed project exclusivity and zero Sandboxes/snapshots. Every unintended temporary
+   deployment is also gone. Cloudflare/R2 and Railway staging resources were not provisioned
+   because their credential/spend gates are unresolved.
+5. **Deployed proofs:** the strengthened converter marker/canary/FD/runtime-and-input-identity slice
+   and cleanup passed. Its image, fixture, and harness SHA-256 values are retained in
+   [`M0-vercel-sandbox-converter.md`](./M0-vercel-sandbox-converter.md). The full hostile/limit/
+   failure matrix, content/R2 promotion, DB fencing in a deployed worker, recovery, and browser/CDN
+   proofs remain blocked by missing resources and the platform boundary.
 6. **External inputs:** the repository was exhaustively converted into non-gameable T005, T007, and
    T010 packets. Real people, provider apps, ownership, and legal/policy decisions cannot be
    fabricated and remain owner inputs.
@@ -51,6 +53,10 @@
 
 There is no live Callysto application in local staging, cloud staging, or production. The repository
 runs locally and in GitHub Actions. The only persistent new cloud record is the empty Vercel proof
-project; it serves no traffic. Ephemeral Vercel converter compute ran successfully and was deleted.
-No Cloudflare Worker/R2 bucket, Railway database, OAuth app, email service, custom DNS, or public
-Callysto endpoint was created.
+project; it serves no traffic. Ephemeral strengthened Vercel converter compute ran successfully and
+was deleted; reconciliation found zero Sandboxes and snapshots. No Cloudflare Worker/R2 bucket,
+Railway database, OAuth app, email service, custom DNS, or public Callysto endpoint was created.
+
+The provider result is feasibility-only because the outer bootstrap installed Docker 25.0.14 from
+mutable live `dnf`. The converter used Python 3.14.6. Its outer metadata TCP probe remained
+reachable, so the result neither selects an orchestrator nor changes the **M1 NO-GO** decision.

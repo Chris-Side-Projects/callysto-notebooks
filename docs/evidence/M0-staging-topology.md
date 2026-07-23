@@ -1,8 +1,8 @@
 # Milestone 0 disposable staging topology
 
-**Status:** partial disposable-provider execution; converter passed, integrated staging blocked
+**Status:** strengthened disposable-provider converter pass; integrated staging blocked
 
-**Last reconciled:** 2026-07-21
+**Last reconciled:** 2026-07-22 22:32 -03 (2026-07-23T01:32Z)
 
 **Scope:** T004/T008 feasibility evidence only; this document does not authorize M1 implementation
 
@@ -11,13 +11,13 @@
 The original disposable split-rig proposal produced one useful pass and one decisive platform
 rejection. The current evidence is:
 
-| Boundary | Planned | Observed on 2026-07-20 |
+| Boundary | Planned | Observed through 2026-07-22 |
 |---|---|---|
 | Application/issuer | Vercel Preview | Not deployed. Two accidental temporary Vercel build deployments were deleted immediately and their former URLs returned 404. |
 | Content gateway | Worker on dedicated `workers.dev` | Source-level eight-case contract passes locally; no Worker or hostname exists. |
 | Object storage | Four private, separately credentialed R2 buckets | No bucket or dedicated credential exists. |
 | Orchestrator | Default-deny compute allowing exact PostgreSQL/R2 only | Vercel outer runtime rejected: link-local metadata accepted TCP under `deny-all`. Railway compute remains rejected for lack of a documented destination allowlist. No orchestrator proof ran with credentials. |
-| Converter | Vercel `deny-all` plus nested hardened no-network container | Prior happy-path slice passed in ephemeral Vercel compute; outer public IP denied, inner public IP/metadata denied, deterministic conversion/cleanup evidence recorded. Strengthened canary/marker/FD/runtime-identity replay has not run. |
+| Converter | Vercel `deny-all` plus nested hardened no-network container | Strengthened synthetic slice passed in ephemeral Vercel compute; outer public IP denied, inner public IP/metadata denied, deterministic conversion, marker, canary, inherited-FD, identity, and cleanup evidence recorded. The outer metadata TCP probe still connected, and the mutable live-`dnf` Docker bootstrap limits the result to feasibility evidence. |
 | Database/recovery | Disposable Railway PostgreSQL/PITR/isolated restore | Read-only account/cost/PITR preflight only; no project or database created. |
 | Controller | Trusted one-off local process | Used a fail-closed local launcher and official Vercel client; only allowlisted output left the process. |
 
@@ -61,7 +61,7 @@ trusted disposable proof controller
   |-- credential-bearing orchestrator [PLATFORM UNSELECTED]
   |     required = exact PostgreSQL/R2 only + metadata denial
   |
-  `-- Vercel Sandbox: converter probe [PASSED, THEN DELETED]
+  `-- Vercel Sandbox: strengthened converter probe [PASSED, THEN DELETED]
         network = deny-all from creation, including DNS
         credentials = none
         nested container = --network none, read-only, non-root, bounded
@@ -170,15 +170,24 @@ const orchestrator = await Sandbox.create({
 
 The `token`, `teamId`, and `projectId` authenticate the controller to Vercel; they are not environment variables inside the Sandbox. Inject only the minimum staging DB/R2 runtime credentials into the orchestrator command.
 
-### Prior passed happy-path experiment: converter proof
+### Passed strengthened synthetic experiment: converter proof
 
-The 2026-07-20 proof created `networkPolicy: "deny-all"` with an empty application environment, then uploaded
-the checksum-verified image and fixture. A separate secret-free bootstrap installed Docker, was
-snapshotted, and was deleted without receiving notebook input or Callysto runtime secrets.
+The 2026-07-22 owner-approved replay created `networkPolicy: "deny-all"` with an empty application
+environment, then uploaded only the checksum-verified image, public harness, and synthetic hostile
+fixture. A separate secret-free bootstrap installed Docker, was snapshotted, and was deleted
+without receiving notebook input or Callysto runtime secrets.
 That Docker install came from the provider runtime's live `dnf` repository and was not pinned to an
 owner-approved NEVRA or immutable package digest before execution. The checked-in replay records
 the resulting package plus client/server versions and explicitly labels the result
 `feasibility-only`; it cannot certify the enforcement runtime.
+
+The replay used Python 3.14.6 and Docker 25.0.14. Its image, fixture, and public harness SHA-256
+values were respectively
+`cf0f56ff2dc6e312b14a38824399a1dcb19dd04a7ae9db02f546f2b33efa1fb7`,
+`b3d98d16d91ecf1216b81306745e4e2ee5b21777172e06bb715b90bd051cc137`, and
+`3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
+Non-execution, deterministic retry, controlled canary, inherited-descriptor, nested isolation, and
+identity checks passed. The outer metadata TCP probe remained reachable.
 
 Run the uploaded image with an equivalent of:
 
@@ -295,24 +304,21 @@ The valid-capability test must obtain and consume the capability inside one brow
 ### C. Converter boundary proof — **partial pass in disposable provider compute**
 
 1. Created the execution Sandbox with `deny-all` at creation and no secret environment.
-2. Upload the SHA-verified OCI image and fixtures from the trusted controller.
-3. Launch the nested container with the hardened flags in section 5.
-4. The prior run asserted non-root UID, no effective capabilities, read-only root, bounded output/tmp
-   mounts, and the allowlisted environment. Unexpected inherited-FD enforcement is in the current
-   harness but awaits provider replay.
-5. The prior run asserted nested DNS/public-IP/metadata denial. The current harness adds a controlled
-   canary with a pre-attempt positive control/reset, an explicit connection attempt under
-   `--network none`, an immediate zero-hit assertion, and a post-attempt positive control/reset. It
-   awaits provider replay.
-6. Output schema, cell IDs, digests, deterministic retry, and sentinel-value absence passed in the
-   prior run. Literal marker, hostile MIME/limit/timeout, and deterministic-failure coverage remain
-   required for the complete deployed gate.
-7. The prior run stopped/deleted execution/bootstrap Sandboxes and snapshot; independent
-   reconciliation found zero matching resources. The current launcher additionally requires the
-   exact proof project to be unlinked, environment-empty, and deployment-empty. Its reconciler
-   aborts on foreign Sandbox names, removes only exact-name proof resources, refuses to delete any
-   remaining unowned created snapshot, and verifies the project has no Sandbox or created snapshot.
-   This strengthened reconciliation awaits provider replay and requires no concurrent project use.
+2. Uploaded the SHA-verified OCI image, public harness, and synthetic fixture from the trusted
+   controller under the owner's bounded approval.
+3. Launched the nested container with the hardened flags in section 5.
+4. Proved non-root UID, no effective capabilities, read-only root, bounded output/tmp mounts, the
+   allowlisted environment, and closure of the unexpected inherited descriptor.
+5. Proved nested DNS/public-IP/metadata denial. The controlled canary passed its pre-attempt positive
+   control/reset, recorded zero hits from the explicit `--network none` attempt, and passed the
+   post-attempt positive control/reset.
+6. Output schema, cell IDs, image/fixture/harness digests, deterministic retry, sentinel-value
+   absence, and literal marker absence passed. Hostile MIME/size/limit/timeout and
+   deterministic-failure coverage remain required for the complete deployed gate.
+7. Stopped/deleted execution/bootstrap Sandboxes and snapshot. Independent strengthened
+   reconciliation returned `status=ok`, `project_exclusive=true`, zero Sandboxes, zero created
+   snapshots, and cleanup true. The reconciler uses bounded provider pagination/timeouts and still
+   requires no concurrent proof-project use.
 
 ### D. Recovery proof
 
@@ -354,10 +360,10 @@ As of the reconciled execution:
 - the gateway's S3 SigV4 implementation/dependency and temporary-credential rotation path are not approved;
 - the pinned converter OCI image, nested hardening, one real cloud happy path, and cleanup passed;
 - the strengthened provider replay for literal marker, controlled canary, unexpected FD, Docker
-  identity, project-exclusivity reconciliation, and harness identity requires explicit permission
-  to upload the proof bundle and has not run;
-- the outer Docker bootstrap still resolves from a live `dnf` repository, so even a successful
-  strengthened replay remains feasibility evidence rather than a security certification until the
+  identity, project-exclusivity reconciliation, and harness identity passed on the synthetic
+  fixture and all ephemeral provider resources reconciled to zero;
+- the outer Docker bootstrap resolved from a live `dnf` repository, so the successful strengthened
+  replay remains feasibility evidence rather than a security certification until the
   enforcement runtime is immutable and owner-approved;
 - a production orchestrator-to-converter handoff that preserves the accepted egress contract has not been selected;
 - Railway compute remains rejected unless a documented and tested enforcement primitive becomes available;
@@ -365,7 +371,8 @@ As of the reconciled execution:
   metadata remained TCP reachable;
 - Railway PITR and the second-stage isolated restore have not been provisioned or timed;
 - Cloudflare/R2 capability delivery, lock behavior, no-list identity, cache/revocation bound, and hostile-browser suite are not cloud-verified; and
-- T004 and T008 remain open. Local and hosted CI evidence does not close either deployed boundary.
+- T004 remains partial and T008 remains open. The provider converter slice does not close either
+  the complete deployed converter matrix or the orchestrator/recovery boundaries.
 
 Do not describe this record as a deployment, staging launch, security certification, production architecture approval, or successful recovery drill.
 

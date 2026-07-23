@@ -12,12 +12,15 @@ Present the notebook through an application-owned cell shell backed by a structu
 
 Do not add Redis, Kubernetes, a general event bus, or an execution cluster for the pilot. Milestone 0 must prove that the selected deployment can enforce the orchestrator/converter boundary; if Railway cannot, change the converter isolation technique or platform rather than weakening it.
 
-M0 provider evidence reconciled on 2026-07-21 applies this rule: Railway compute is rejected for
-lack of a documented destination allowlist. A nested Docker converter in ephemeral Vercel Sandbox
-passed one no-network/non-root/read-only/secret-free happy-path slice, but the strengthened full
-converter matrix has not run and the outer Vercel runtime reached link-local metadata under
-`deny-all`; it is rejected for the credential-bearing orchestrator. The pilot orchestrator
-platform/control plane remains unselected. See
+M0 provider evidence reconciled on 2026-07-22 applies this rule: Railway compute is rejected for
+lack of a documented destination allowlist. The owner-approved strengthened nested-Docker converter
+proof in ephemeral Vercel Sandbox passed its deterministic hostile-fixture, non-execution/canary,
+isolation, and resource-limit slice; its result and an independent reconciliation establish cleanup
+to zero ephemeral Sandboxes/snapshots. Because the bootstrap uses mutable live `dnf`, this is
+feasibility evidence rather than a security-certified runtime. The outer Vercel runtime still
+reached link-local metadata under `deny-all`, so it remains rejected for the credential-bearing
+orchestrator. The pilot orchestrator platform/control plane remains unselected. No integrated
+staging or production application exists. See
 [`docs/evidence/M0-vercel-sandbox-converter.md`](./docs/evidence/M0-vercel-sandbox-converter.md).
 
 ## 2. System context

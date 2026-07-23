@@ -1,7 +1,7 @@
 # M0 cloud inventory and external-input gates
 
-- Status: **NO LIVE DEPLOYMENT; DISPOSABLE CONVERTER PROOF RAN; CLOUD/EXTERNAL GATES REMAIN**
-- Last reconciled: 2026-07-21
+- Status: **NO LIVE DEPLOYMENT; STRENGTHENED DISPOSABLE CONVERTER PROOF PASSED; CLOUD/EXTERNAL GATES REMAIN**
+- Last reconciled: 2026-07-22 22:32 -03 (2026-07-23T01:32Z)
 - Scope: read-only provider inventory plus T005-T010 dependency reconciliation
 
 ## Deployment inventory
@@ -13,7 +13,7 @@ to a verified staging or production application environment.
 |---|---:|---:|---|
 | GitHub repository and Actions | yes | repository and CI only | Public repository, one CI workflow, zero environments, zero deployments, zero Actions secrets/variables, and no GitHub Pages site. The latest audited `main` check was the passing `verify` workflow for merge commit `a7b0d859`. |
 | Railway | yes | no | The account preflight found nine existing projects, no Callysto project, no repository link, and no configured workspace compute limit. The credential is a broad interactive user identity, not a dedicated project token. No service/database was created because plan tier, shared-workspace spend impact, dedicated credential, and dashboard-driven PITR authority remain unresolved. |
-| Vercel | yes | proof project only | One empty, unlinked `callysto-m0-proof` control project now exists in the selected team. A prior converter happy-path slice ran; its Sandboxes/snapshots were deleted and reconciliation found zero proof resources. The strengthened replay was not externally authorized. No live app, alias, domain, or Git connection exists. |
+| Vercel | yes | proof project only | One empty, unlinked proof control project exists in the selected team. The owner-approved strengthened synthetic converter slice passed; its execution/bootstrap/snapshot cleanup flags were true, and separate project-exclusive reconciliation found zero Sandboxes/snapshots. No live app, alias, domain, or Git connection exists. |
 | Cloudflare Workers/R2 | historical read only | no | Earlier in-place inventory through a shared VPS bundle found no Callysto resource. The bundle is now rejected for deployment: it is shared, its parent boundary does not satisfy the new credential skill, its token cannot create/list the required scoped credentials (provider code `9109`), and one R2 identity cannot establish primary/recovery separation. |
 | Domain/DNS | public DNS only | parked domain | `callysto.io` resolves to GoDaddy parking infrastructure. `staging.callysto.io` has no A or CNAME record. DNS authority was not demonstrated or changed. |
 
@@ -42,12 +42,14 @@ substitute for an isolation proof. The proposed topology requires:
 - a content gateway on a distinct deployed hostname with exact capability, cache, cookie, and
   revocation behavior.
 
-The real Vercel converter experiment established one nested no-network happy-path slice but also showed that the
-outer Sandbox could connect to link-local metadata under provider `deny-all`. It is therefore not
-accepted for the credential-bearing orchestrator. Railway documentation still does not establish a
-destination allowlist for compute, and the account preflight cannot safely start billable PITR work
-without a plan/spend boundary and dedicated credential. Cloudflare's required credential set is
-absent. Creating an ordinary web service would consume resources without closing the gate.
+The strengthened Vercel converter experiment established one nested no-network synthetic slice but
+also confirmed that the outer Sandbox could connect to link-local metadata under provider
+`deny-all`. It is therefore not accepted for the credential-bearing orchestrator. Its Docker
+25.0.14 bootstrap came from mutable live `dnf`, so even the passing converter result remains
+feasibility-only. Railway documentation still does not establish a destination allowlist for
+compute, and the account preflight cannot safely start billable PITR work without a plan/spend
+boundary and dedicated credential. Cloudflare's required credential set is absent. Creating an
+ordinary web service would consume resources without closing the gate.
 
 ## External-input gate by active task
 
@@ -64,9 +66,9 @@ absent. Creating an ordinary web service would consume resources without closing
 
 After Callysto-specific Cloudflare/R2 credentials, an explicit Railway proof spend boundary, and a
 metadata-safe DB/R2-only orchestrator platform are available, create an explicitly disposable
-staging topology. The prior converter result is labeled `verified in disposable provider proof`
-only for its recorded assertions; the strengthened replay and all other cloud gates remain local or
-not verified. Run promotion, content-host, revocation,
+staging topology. The strengthened converter result is labeled `verified in disposable provider
+proof` only for its digest-bound synthetic assertions; the full hostile/failure matrix and all
+other cloud gates remain local or not verified. Run promotion, content-host, revocation,
 orchestrator, and recovery probes before any M1 authorization.
 
 The exact safe-to-share fields and secret-handling boundary are prepared in

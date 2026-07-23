@@ -5,9 +5,11 @@
 - Requirement sources: `PRODUCT_SPEC.md`, `UX_SPEC.md`, `ARCHITECTURE.md`, `docs/SECURITY.md`
 - Current implementation status: local core, PostgreSQL fencing, converter-process, two-host
   content-isolation, and local Worker contracts pass; PR #2 proof head `48805cc` passes hosted
-  Ubuntu run `29846200710`. A prior disposable-provider nested converter happy path passes, while
-  the strengthened converter replay remains open and its outer metadata result rejects that runtime
-  for the orchestrator. Integrated staging and product providers remain unverified.
+  Ubuntu run `29846200710`. The owner-approved strengthened disposable-provider converter replay
+  passed its deterministic hostile-fixture, non-execution/canary, isolation, and resource-limit
+  slice, then reconciled to zero ephemeral resources. Its mutable live `dnf` bootstrap limits it to
+  feasibility evidence, and its outer metadata result still rejects that runtime for the
+  credential-bearing orchestrator. Integrated staging and product providers remain unverified.
 
 ## 1. Test objective
 
@@ -46,10 +48,10 @@ untrusted notebook
 | TypeScript unit/baseline | Vitest 4.1.10; utility and repository-contract suites pass locally. |
 | React/UI | No component-test library yet; select only when an active M0 proof needs it. |
 | Database/integration | A dedicated-loopback PostgreSQL 17.9 proof covers DB-clock leases, `SKIP LOCKED`, expiry/reclaim, token/generation, stale completion, duplicate completion, and draft replacement; it is not a product migration. |
-| Python | 41 standard-library cases pass under exact local Python 3.14.6, including platform CA-store selection without ambient proxy inheritance. A prior real Vercel/nested-Docker happy path is bounded provider feasibility only; the strengthened deployed converter matrix and credential-bearing orchestrator remain unproven. |
+| Python | 42 standard-library cases pass under exact local Python 3.14.6, including platform CA-store selection without ambient proxy inheritance and close-on-exec handling for inherited guarded descriptors. The strengthened real Vercel/nested-Docker converter slice passed as bounded provider feasibility only; the credential-bearing orchestrator remains unproven. |
 | Browser/E2E/security | Playwright 1.61.1 app-shell baselines pass; 14 production-server security cases across Chromium/Firefox cover exact headers plus the gated two-host hostile-output/capability lifecycle proof. |
 | Accessibility | axe Playwright 4.12.1 serious/critical smoke baseline passes on four routes through WCAG 2.2 tags; manual conformance evidence remains. |
-| API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, an eight-case local Cloudflare Worker contract, and an eight-case Vercel harness contract. |
+| API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, an eight-case local Cloudflare Worker contract, and a ten-case Vercel harness contract within the passing 21-case integration suite, including repeated-cursor, page-count, and retained-item pagination bounds. |
 | Docs | Local-link, required-document, and trailing-whitespace checker passes. |
 | Supply chain | Exact lockfile, strict lifecycle-script denial, clean production audit, documented dev exception; secret/license/SBOM work remains. |
 
@@ -57,7 +59,10 @@ Every claim remains environment-labeled. Current counts and commands are recorde
 [`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md),
 [`docs/evidence/M0.5.md`](./evidence/M0.5.md), [`docs/evidence/M0.6.md`](./evidence/M0.6.md), and
 [`docs/evidence/M0-vercel-sandbox-converter.md`](./evidence/M0-vercel-sandbox-converter.md);
-disposable-provider evidence cannot be generalized into staging or production evidence.
+disposable-provider evidence cannot be generalized into staging or production evidence. The
+strengthened run is bound to invocation base
+`c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus harness SHA-256
+`3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
 
 ## 4. Assurance matrix
 
@@ -67,7 +72,7 @@ disposable-provider evidence cannot be generalized into staging or production ev
 | Roles/ownership | full decision table | ownership-scoped queries | denied UI/API journeys | operator invitation drill |
 | Upload/integrity | validation/advisory digest | finalize/generation/fake promotion | progress/retry/reconnect | real R2 expiry/overwrite/server hash/no-overwrite promotion |
 | Notebook validation | Python fixtures | job-to-state contract | named failure UI | orchestrator/converter resource limits |
-| Non-execution | converter fixture | orchestrator/converter contract | sentinel/canary absence | prior nested no-network happy path passed in disposable provider proof; strengthened marker/canary/FD/limit/failure replay and DB/R2-only orchestrator still required |
+| Non-execution | converter fixture | orchestrator/converter contract | sentinel/canary absence | strengthened marker/canary/isolation/resource-limit slice passed in disposable provider proof; mutable bootstrap, DB/R2-only orchestrator, and remaining integrated failure/retry evidence still required |
 | Cell manifest | schema and stable IDs | TS/Python contract | anchors/outline/selection | representative real notebooks |
 | Rich-output isolation | MIME policy | artifact/gateway contract | hostile cross-origin suite | real Cloudflare headers/origins |
 | Publication/versioning | domain transitions | concurrent transactions | preview/publish/version switch | production-disabled smoke |

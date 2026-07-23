@@ -146,8 +146,10 @@ As of 2026-07-22:
 - the complete remediated local gate passes formatting, lint, typecheck, 18 unit, 21 integration, 42
   Python plus vectors, the 35-document contract, the Next.js `16.2.11` production build, PostgreSQL
   17.9 proof 4/4 with `POSTGRES_STOPPED=yes`, production Chromium E2E 2/2,
-  Chromium/Firefox security 14/14, and Chromium accessibility 4/4; hosted CI remains pending for
-  the eventual committed head;
+  Chromium/Firefox security 14/14, and Chromium accessibility 4/4;
+- remediation commit `c8f7c57` passed hardened Ubuntu 24.04 CI run `29975232336`, including the
+  zero-finding production audit, accepted four-moderate full audit, scripted Linux-native
+  Sharp/libvips transform, PostgreSQL proof, browser, security, accessibility, and cleanup steps;
 - remove the temporary Sharp override only after a stable Next.js release declares a patched Sharp
   range and a clean no-override install resolves `sharp>=0.35.3` while the live audits,
   image-optimizer smoke, complete local gate, and hosted CI remain green;
@@ -172,9 +174,8 @@ As of 2026-07-22:
 - two pre-run local reconciliation exits 137 were macOS `EXC_GUARD` failures caused by closing
   Codex's guarded descriptor 3; the launcher now marks inherited descriptors close-on-exec, and
   pagination is bounded/time-limited with regression coverage;
-- the complete local gate passes for the remediated working tree; hosted CI must still pass for the
-  eventual committed head before merge, because historical green evidence does not satisfy that
-  current-head gate;
+- the complete local and hosted gates pass for remediation commit `c8f7c57`; PR #2 remains draft
+  and unmerged;
 - product migrations/APIs, real auth/storage/rendering, deployed converter/content isolation,
   staging, and production remain absent;
 - no live Callysto application is deployed; the only persistent new cloud record is an empty,

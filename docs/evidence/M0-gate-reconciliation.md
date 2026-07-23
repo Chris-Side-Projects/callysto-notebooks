@@ -1,7 +1,7 @@
 # Milestone 0 gate reconciliation
 
 - Decision: **M1 NO-GO**
-- Reconciled: 2026-07-22; dependency remediation local-green, hosted CI pending
+- Reconciled: 2026-07-22; dependency remediation local + hosted green
 - Branch: `agent/m0-isolation-and-deployment-proofs`
 - Scope: evidence state after the seven requested M0 workstreams and the approved dependency remediation
 
@@ -12,8 +12,8 @@
 | M0.1 decisions | D001-D024 accepted; M0-only authorization recorded | complete |
 | M0.1a cohort/source | Repository evidence exhausted and a private-register/interview/calculation packet exists; no real cohort or notebook records were supplied | blocked on 6–10 real people, at least 8 real notebooks, outreach/consent, reviewers, and the 80% calculation |
 | M0.2 scaffold | Canonical route/configuration and build pass | complete |
-| M0.3 runtime/dependencies | The accepted baseline remains recorded. Pre-remediation head `caee50b` failed hosted run `29972476045` at production audit after new Next.js/Sharp advisories appeared. The owner-approved Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` working tree passes strict clean install, live audits, one-version dependency-tree assertion, native image-optimizer smoke, and the complete local gate. | local green; hosted CI for eventual committed head pending |
-| M0.4 validation | Reconciled proof head `48805cc` passes the local core gate/audits plus hardened Ubuntu 24.04 run `29846200710`, including browser and database proofs. The dependency-remediated working tree now passes the complete local core/browser/PostgreSQL matrix, but historical hosted evidence does not validate its eventual commit. | local green; hosted CI for eventual committed head pending |
+| M0.3 runtime/dependencies | The accepted baseline remains recorded. Pre-remediation head `caee50b` failed hosted run `29972476045` at production audit after new Next.js/Sharp advisories appeared. Exact remediation commit `c8f7c57` uses Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` and passes strict clean install, live audits, one-version tree, native image smoke, complete local gate, and hardened Ubuntu run `29975232336`. | complete for the remediated head |
+| M0.4 validation | Reconciled proof head `48805cc` passes run `29846200710`. Dependency-remediation commit `c8f7c57` passes the complete local core/browser/PostgreSQL matrix and every hardened Ubuntu 24.04 step in run `29975232336`. | complete for the remediated head |
 | M0.5 content boundary | Local two-host browser proof passes; local Worker contract adds exact capability/index/digest/header/cookie behavior | partial; no deployed Cloudflare/R2/CDN/revocation proof |
 | M0.6 converter/orchestrator | Strengthened Vercel nested converter synthetic slice passed and reconciled to zero resources; marker, canary, inherited-FD, deterministic, identity, and isolation assertions passed; outer metadata remained reachable and Docker came from mutable live `dnf` | partial; full converter acceptance matrix and credential-bearing orchestrator platform remain open |
 | M0.7 ingestion/promotion | Contract exists | blocked by M0.1a source choice and dedicated staging storage |
@@ -28,8 +28,8 @@
 1. **PR and hosted CI:** draft PR #2 is open and unmerged. Reconciled proof head `48805cc` passed
    hosted Ubuntu run `29846200710`. Later pre-remediation head `caee50b` failed run `29972476045`
    only at the production audit after new Next.js/Sharp advisories appeared. The approved
-   dependency-remediation working tree now passes the complete local gate; its eventual committed
-   head must still pass hosted CI before this current-head row can return to green.
+   exact dependency-remediation commit `c8f7c57` now passes the complete local gate and hosted run
+   `29975232336`.
 2. **Cloudflare/R2 credentials:** secure intake skill/runbook complete. The shared VPS credential is
    rejected for deployment; the authenticated dashboard is blocked by the current browser security
    policy, so dedicated management, primary, and recovery credentials were not created.
@@ -75,11 +75,11 @@ Verified locally for the remediated dependency tree:
   accessibility 4/4 passed;
 - shutdown reconciliation: no listeners remained on ports `3100`, `3101`, or `55439`.
 
-Not yet verified at this reconciliation: hosted CI for the eventual committed remediated head. Do
-not generalize historical green runs to that future commit. Remove the Sharp override only after a
-stable Next.js release declares a patched Sharp range and a clean no-override install resolves
-`sharp>=0.35.3` while both live audits, the one-version tree assertion, image-optimizer smoke,
-complete local gate, and hosted CI all remain green.
+Hosted run `29975232336` verifies remediation commit `c8f7c57`; do not generalize it to a later
+dependency head. Remove the Sharp override only after a stable Next.js release declares a patched
+Sharp range and a clean no-override install resolves `sharp>=0.35.3` while both live audits, the
+one-version tree assertion, image-optimizer smoke, complete local gate, and hosted CI all remain
+green.
 
 ## Deployment status
 

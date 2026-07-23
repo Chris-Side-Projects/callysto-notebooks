@@ -8,12 +8,14 @@
 - Strengthened provider-proof invocation base: `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206`
 - Provider-proof hardening commit: `f03de012526520ada807523f3177c32d1a953a76`
 - Pre-remediation branch head: `caee50b5908fe3e5a316b416239fca4910474dd7`
+- Dependency-remediation commit: `c8f7c57e137a3d272006a8b0d47df2e17c0e932f`
 - Strengthened provider-proof harness SHA-256:
   `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`
 - Hosted validation: [Ubuntu run 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710)
 - Pre-remediation hosted failure: [Ubuntu run 29972476045](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29972476045) — production dependency audit only
+- Dependency-remediation validation: [Ubuntu run 29975232336](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29975232336) — complete gate passed
 - Baseline merge: [PR #1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1), merge commit `a7b0d859933b932884986ea4442d61f95df5e2be`
-- Worktree: **approved dependency-remediation tree is local-green but uncommitted; inspect status and remote state before new work**
+- Worktree: **dependency remediation is committed, pushed, and local/hosted green; inspect status and remote state before new work**
 - Authorized scope: **Milestone 0 / T001-T010 only**
 - Product milestones M1-M8: **not authorized; M1 is NO-GO**
 
@@ -31,9 +33,9 @@ hosted run `29972476045` only because newly published Next.js/Sharp advisories m
 audit red. The owner approved the narrow dependency remediation now present in the working tree:
 Next.js `16.2.11` plus a temporary Next-scoped exact `sharp@0.35.3` override. Its strict clean
 install, live audits, dependency-tree assertion, complete local core/browser/PostgreSQL gate, and
-image-optimizer smoke have passed locally; hosted CI for the eventual committed head is still
-pending. Resume with step 1 below. Do not merge without a new owner request and do not open M1 work.
-The current M0 decision is NO-GO.
+image-optimizer smoke passed locally. Commit `c8f7c57` then passed every hardened Ubuntu 24.04 step
+in run `29975232336`, including Linux-native Sharp loading and cleanup. Resume with step 2 below. Do
+not merge without a new owner request and do not open M1 work. The current M0 decision is NO-GO.
 
 ## Why this project exists
 
@@ -74,7 +76,7 @@ target notebooks already have a suitable GitHub workflow.
 Why: the original scaffold could not build and advertised votes, forks, auth, upload, and rendering
 behavior that the approved pilot either removed or has not implemented.
 
-### T002 tooling baseline — accepted baseline; remediation local-green and hosted-CI pending
+### T002 tooling baseline — accepted baseline; remediation local + hosted green
 
 - Pinned Node `24.18.0`, npm `11.16.0`, Python `3.14.6`, and exact JavaScript dependencies.
 - Initially upgraded Next to `16.2.10`, React to `19.2.7`, Drizzle ORM to `0.45.2`, added Drizzle
@@ -229,7 +231,7 @@ Environment labels matter. The counts below are evidence for their named commits
   vectors, the 35-document contract, and the Next.js `16.2.11` production build. The dedicated
   PostgreSQL 17.9 proof passes 4/4 and stopped cleanly; production E2E passes 2/2 in Chromium,
   security passes 14/14 across Chromium and Firefox, and accessibility passes 4/4 in Chromium.
-  Hosted CI for the eventual committed remediation head is not yet verified.
+  Remediation commit `c8f7c57` passed all hardened Ubuntu 24.04 steps in hosted run `29975232336`.
 - The 2026-07-22 disposable Vercel replay passed the deterministic hostile-fixture,
   non-execution/canary, isolation, and resource-limit converter slice and cleaned/reconciled all
   ephemeral resources. It remains feasibility-only because its live `dnf` bootstrap is mutable.
@@ -248,15 +250,14 @@ Detailed evidence is in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4
 
 ## Exact next sequence and why
 
-1. **Finish and host-validate the approved dependency remediation.** Historical proof head
+1. **Dependency remediation complete — preserve its exact gate.** Historical proof head
    `48805cc` retains its complete hosted gate in run `29846200710`; pre-remediation head `caee50b`
-   failed run `29972476045` only at the newly red production audit. The complete remediated local
-   core/browser/PostgreSQL gate now passes on exact Next.js `16.2.11` plus the temporary Next-scoped
-   `sharp@0.35.3` override. Review the diff, commit and push the exact tree, then require a green
-   hosted run for that committed head. Keep `eslint-config-next@16.2.10`. Do not merge PR #2 without
-   a new owner request. Remove the Sharp override only when a stable Next.js release declares a
-   patched Sharp range and a clean no-override install, live audits, optimizer smoke, full local
-   gate, and hosted CI all pass.
+   failed run `29972476045` only at the newly red production audit. Exact remediation commit
+   `c8f7c57` passes the complete local gate and hosted run `29975232336` on Next.js `16.2.11` plus
+   the temporary Next-scoped `sharp@0.35.3` override. Keep `eslint-config-next@16.2.10`. Do not merge
+   PR #2 without a new owner request. Remove the Sharp override only when a stable Next.js release
+   declares a patched Sharp range and a clean no-override install, live audits, optimizer smoke,
+   full local gate, and hosted CI all pass.
 2. **Create dedicated Cloudflare identities securely.** Supply a least-privilege Callysto management
    token plus separately scoped primary and recovery R2 identities through the VPS hidden-prompt
    handoff. Do not reuse the rejected shared token or disclose values to Codex output.
@@ -300,9 +301,9 @@ npm run audit:all
 npm run check
 export PLAYWRIGHT_BROWSERS_PATH="/private/tmp/callysto-runtime-v24.18.0-py3.14.6/playwright-browsers"
 npm run browser:install
-npm run test:e2e
+CALLYSTO_PLAYWRIGHT_PRODUCTION=1 npm run test:e2e
 npm run test:security
-npm run test:a11y
+CALLYSTO_PLAYWRIGHT_PRODUCTION=1 npm run test:a11y
 git diff --check
 ```
 
@@ -406,7 +407,8 @@ specific M0 task requires them.
   local gate passes: formatting, lint, typecheck, 18 unit, 21 integration, 42 Python plus vectors,
   35-document contract, Next.js `16.2.11` production build, PostgreSQL 17.9 proof 4/4 with clean
   shutdown, production Chromium E2E 2/2, Chromium/Firefox security 14/14, and Chromium accessibility
-  4/4. Hosted CI for the eventual committed head remains pending; do not merge before it passes.
+  4/4. Remediation commit `c8f7c57` passes the complete hardened Ubuntu 24.04 gate in hosted run
+  `29975232336`; PR #2 remains draft and unmerged.
 - Baseline commit `558a4cb` and hosted-CI evidence commit `bdcca47` were merged through PR #1 as
   `a7b0d85`. PR #2 proof head `48805cc` passed hosted run `29846200710`; the PR remains draft and
   unmerged. No live application, integrated staging,

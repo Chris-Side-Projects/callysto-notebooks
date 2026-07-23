@@ -126,9 +126,10 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
   complete local gate also passes formatting, lint, typecheck, 18 unit, 21 integration, 42 Python
   plus vectors, the 35-document contract, the Next.js `16.2.11` production build, PostgreSQL 17.9
   proof 4/4 with clean shutdown, production Chromium E2E 2/2, Chromium/Firefox security 14/14, and
-  Chromium accessibility 4/4. Hosted CI for the eventual committed remediation head remains
-  pending. Remove the override only after stable Next.js declares a patched Sharp range and a clean
-  no-override install, live audits, optimizer smoke, complete local gate, and hosted CI all pass.
+  Chromium accessibility 4/4. Remediation commit `c8f7c57` also passes the complete hardened Ubuntu
+  24.04 gate in hosted run `29975232336`. Remove the override only after stable Next.js declares a
+  patched Sharp range and a clean no-override install, live audits, optimizer smoke, complete local
+  gate, and hosted CI all pass.
 - M0.5: local feasibility complete. A gated two-host shell/gateway, per-request nonce CSP, Ed25519
   capabilities, hostile HTML/SVG confinement, lazy refresh, preview/public expiry, and restriction
   bound pass 14 production-server cases in Chromium and Firefox. An eight-case local Cloudflare

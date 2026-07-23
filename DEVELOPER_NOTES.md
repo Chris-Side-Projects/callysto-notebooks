@@ -29,15 +29,15 @@ If documents disagree, stop and reconcile the higher-authority product/decision 
 The scaffold is green raw material plus bounded proofs, not a working MVP. The complete hosted
 baseline below remains tied to its exact 2026-07-21 commit and run. The strengthened
 launcher/harness tree and disposable-provider proof were reconciled on 2026-07-22. The approved
-Next/sharp dependency repair passes its local gates, while hosted CI is still required for the
-eventual committed head.
+Next/sharp dependency repair passes its local gates and hardened Ubuntu 24.04 run `29975232336` at
+commit `c8f7c57`.
 
-| Prior evidence | Result | Interpretation |
+| Evidence | Result | Interpretation |
 |---|---|---|
 | Strict clean `npm ci` | Pass: 461 packages added and 462 audited; only the 4 accepted moderate development findings reported. | The patched exact lockfile is reproducible on the verified macOS arm64 runtime; sharp has no install script and the lifecycle-script denial remains in force. |
 | `npm run audit:prod` | Pass: zero vulnerabilities. | No known moderate-or-higher production finding at verification time. |
 | `npm run audit:all` | Pass at `high`; reports 4 moderate Drizzle Kit/esbuild findings. | Accepted development-only exception in `docs/DEPENDENCY_RISKS.md`; do not expose the affected dev server. |
-| `npm run test:next-sharp` | Local pass with `sharp@0.35.3` and libvips `8.18.3`; hosted execution pending. | Reproducible compatibility check for both gates, not an upstream compatibility guarantee. |
+| `npm run test:next-sharp` | Local and Ubuntu pass with `sharp@0.35.3` and libvips `8.18.3`. | Reproducible compatibility check for both gates, not an upstream compatibility guarantee. |
 | `npm run lint` / `npm run typecheck` | Pass. | Baseline static contract is green. |
 | Unit/integration | The strengthened working tree passes 18 unit and 21 integration cases, including two bounded-pagination regressions. | Includes repository, local Worker, Vercel harness, capability, authority, TTL, and tamper contracts; this is still not product-domain coverage. |
 | `npm run test:python` | 42 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, platform CA-store selection, pinned-image provenance, close-on-exec handling, direct-child environment/descriptor/sentinel evidence, and a transitive project-local converter-module audit. |
@@ -45,7 +45,7 @@ eventual committed head.
 | `npm run docs:check` | Pass across 35 Markdown files. | Restart, evidence, external-input, and security links are internally consistent. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect remains repaired; the build required normal outside-sandbox loopback process binding. |
 | Browser suites | Pass locally: 2 Chromium E2E, 14 Chromium/Firefox security, and 4 Chromium axe smoke cases. | T003 local two-host hostile-output/capability feasibility is proven; deployed content-domain behavior and manual accessibility certification remain open. |
-| Historical GitHub Actions | Baseline `558a4cb` passed run `29780426457`; reconciled PR #2 proof head `48805cc` passed run `29846200710`. | The hardened Ubuntu 24.04 gate reproduced those exact historical heads outside the development Mac; hosted CI for the remediated head is pending. PR #2 remains draft and unmerged. |
+| GitHub Actions | Baseline `558a4cb` passed run `29780426457`; reconciled proof head `48805cc` passed run `29846200710`; remediation commit `c8f7c57` passed run `29975232336`. | Hardened Ubuntu 24.04 independently reproduced each exact head; PR #2 remains draft and unmerged. |
 | Disposable provider converter | The strengthened Vercel Sandbox converter slice passed its deterministic hostile fixture, non-execution/canary, isolation, and resource-limit cases; converter/bootstrap/snapshot cleanup reported complete and independent reconciliation found zero resources. | The mutable live `dnf` bootstrap makes this feasibility-only. The outer Sandbox remained TCP-reachable to link-local metadata, so Vercel is rejected for the secret-bearing orchestrator; T004 remains partial. |
 | Database migrations/product APIs/auth/storage | Absent. | Product implementation has not started and is not implied by the green scaffold. |
 | Staging/production | No live application, integrated staging, or production deployment exists. | An empty, unlinked `callysto-m0-proof` Vercel control project remains; ephemeral proof resources were cleaned. No Cloudflare Worker/R2 or Railway resource exists. |

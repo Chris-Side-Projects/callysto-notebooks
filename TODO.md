@@ -1,7 +1,7 @@
 # Callysto active queue
 
 - Status: **MILESTONE 0 ACTIVE**
-- Last reconciled: 2026-07-22; dependency remediation local-green, hosted CI pending
+- Last reconciled: 2026-07-22; dependency remediation local + hosted green
 - Complete sequence: [`PLAN.md`](./PLAN.md)
 - Rule: this file contains only work eligible to start next; it is not a second roadmap
 
@@ -48,7 +48,7 @@ Completion evidence:
 | ID | Work item | Dependency | Done when |
 |---|---|---|---|
 | T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T002 **BASELINE COMPLETE; REMEDIATION LOCAL-GREEN / HOSTED CI PENDING** | Pin runtimes and repair dependency/tooling baseline. | T000 | Historical acceptance remains recorded in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). Pre-remediation head `caee50b` failed hosted run `29972476045` at the production audit after new advisories appeared. The approved Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` remediation passes strict clean install, live audits, dependency-tree, native image smoke, complete local core/browser/PostgreSQL gate, and clean process shutdown; hosted CI for the eventual committed head is still required. |
+| T002 **COMPLETE — REMEDIATION LOCAL + HOSTED CI 2026-07-22** | Pin runtimes and repair dependency/tooling baseline. | T000 | Historical acceptance remains recorded in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). Pre-remediation head `caee50b` failed hosted run `29972476045` at the production audit after new advisories appeared. Exact remediation commit `c8f7c57` uses Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` and passes strict clean install, audits, native smoke, complete local gate, and hardened Ubuntu run `29975232336`. |
 | T003 **COMPLETE — LOCAL FEASIBILITY 2026-07-20** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | The two-host browser proof passes 14 cases and the Worker source contract passes 8 local cases. Deployed Cloudflare/R2/CDN evidence remains a cloud gate. See [`docs/evidence/M0.5.md`](./docs/evidence/M0.5.md). |
 | T004 **PARTIAL — FENCING + STRENGTHENED PROVIDER SLICE; FULL DEPLOYED GATE OPEN** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | PostgreSQL fencing and Python/vector proofs pass locally/CI; the strengthened digest-bound synthetic converter slice passed in ephemeral Vercel compute and reconciled to zero resources. The full hostile/limit/failure matrix has not run, outer metadata stayed reachable, mutable live-`dnf` prevents an immutable-runtime claim, and a DB/R2-only orchestrator platform remains unselected. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
 | T005 **EXTERNAL INPUT REQUIRED** | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | Repository work is exhausted; 6–10 participants/8 notebooks still need real source-workflow interviews, reviewers, and the non-gameable calculation. |
@@ -94,9 +94,6 @@ Resolved in the recorded local, hosted-CI, or disposable-provider environments:
 
 Still open:
 
-- hosted-CI validation for the eventual committed Next.js `16.2.11` plus temporary Next-scoped
-  `sharp@0.35.3` remediation head; pre-remediation head `caee50b` failed hosted run `29972476045` at
-  the production audit, while the remediated local gate is green;
 - deployed content-origin/provider behavior and DB/R2-only orchestrator enforcement; the
   strengthened disposable nested converter synthetic slice passed, but the complete hostile/
   limit/failure matrix is open and outer metadata denial failed;

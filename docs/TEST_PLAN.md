@@ -12,9 +12,9 @@
   credential-bearing orchestrator. Pre-remediation branch head `caee50b` failed hosted run
   `29972476045` only at the production audit after new Next.js/Sharp advisories appeared. The
   approved dependency working tree passes its strict clean install, live audits, dependency-tree,
-  native image-optimizer smoke, and complete local core/browser/PostgreSQL gate; hosted CI for the
-  eventual committed head remains pending. Integrated staging and product providers remain
-  unverified.
+  native image-optimizer smoke, and complete local core/browser/PostgreSQL gate. Remediation commit
+  `c8f7c57` passes the same complete matrix in hardened Ubuntu run `29975232336`. Integrated staging
+  and product providers remain unverified.
 
 ## 1. Test objective
 
@@ -58,7 +58,7 @@ untrusted notebook
 | Accessibility | axe Playwright 4.12.1 serious/critical smoke baseline passes on four routes through WCAG 2.2 tags; manual conformance evidence remains. |
 | API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, an eight-case local Cloudflare Worker contract, and a ten-case Vercel harness contract within the passing 21-case integration suite, including repeated-cursor, page-count, and retained-item pagination bounds. |
 | Docs | Local-link, required-document, and trailing-whitespace checker passes. |
-| Supply chain | The approved exact Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` remediation passes strict clean install (461 added/462 audited), zero-finding live production audit, exactly four accepted moderate development-only findings in the live full audit, and `npm run test:next-sharp` for the one-version tree, install-script absence, native image load, libvips `8.18.3`, and PNG transform. The smoke is part of `npm run check`, so hosted CI must exercise the Linux native package. `eslint-config-next` remains `16.2.10`; hosted CI for the eventual committed head is pending. Secret/license/SBOM work remains. |
+| Supply chain | The approved exact Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` remediation passes strict clean install (461 added/462 audited), zero-finding live production audit, exactly four accepted moderate development-only findings in the live full audit, and `npm run test:next-sharp` for the one-version tree, install-script absence, native image load, libvips `8.18.3`, and PNG transform. Remediation commit `c8f7c57` passes the complete hardened Ubuntu gate in run `29975232336`, including the Linux native package. `eslint-config-next` remains `16.2.10`. Secret/license/SBOM work remains. |
 
 Every claim remains environment-labeled. Current counts and commands are recorded in
 [`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md),

@@ -22,8 +22,8 @@ vulnerabilities; the full-tree audit retained exactly the four accepted moderate
 After the 2026-07-22 Next/sharp security patch, a fresh strict install again added 461 packages,
 audited 462 packages, and reported only the four accepted moderate development findings below.
 The live production audit reported zero vulnerabilities. The live full-tree audit reported exactly
-those four moderate findings and exited successfully at the configured `high` threshold. Hosted CI
-for the eventual committed patch head is pending.
+those four moderate findings and exited successfully at the configured `high` threshold.
+Remediation commit `c8f7c57` passed the same checks in hardened Ubuntu run `29975232336`.
 
 The direct `esbuild@0.28.1` development pin satisfies Vite's optional peer contract and prevents
 npm from incorrectly deduplicating Drizzle Kit's older `esbuild@0.25.12` into that slot.
@@ -61,8 +61,8 @@ adds an exact Next-scoped `sharp@0.35.3` override for
 - Behavior enabled: keep Next's native image-optimizer path available while removing the known
   production advisory. `npm run test:next-sharp`, included in `npm run check`, asserts the single
   lockfile resolution, absence of a Sharp install script, Next's native load, libvips `8.18.3`, and
-  an in-memory PNG transform with `sharp@0.35.3`. It passed locally; inclusion in `npm run check`
-  requires the pending hosted gate to execute the same check on Linux.
+  an in-memory PNG transform with `sharp@0.35.3`. It passed locally and on Ubuntu in run
+  `29975232336`.
 - Smaller alternatives considered: the Next `16.2.11` patch alone still resolved to vulnerable sharp;
   retaining it would fail the production audit, while a top-level direct sharp dependency would
   unnecessarily widen the application's declared interface. The transitive, Next-scoped override
@@ -73,7 +73,7 @@ adds an exact Next-scoped `sharp@0.35.3` override for
 - Compatibility risk: `0.35.3` is outside Next's declared `^0.34.5` range, so this is a reviewed
   temporary exception rather than evidence of upstream compatibility. The strict install, full
   local gate, production audit, full-tree audit, native image smoke, and hosted CI are required for
-  every affected head; hosted CI is still pending for the eventual committed patch head.
+  every affected head; commit `c8f7c57` passes that complete local/hosted gate.
 - Dependency-resolution footprint: `package.json` and `package-lock.json`; the reproducible
   compatibility check is `scripts/check-next-sharp-compat.mjs`. There is no product-source API or
   new external service. The production tree now uses Next `16.2.11` and sharp `0.35.3`;

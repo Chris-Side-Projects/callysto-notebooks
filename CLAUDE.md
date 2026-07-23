@@ -51,8 +51,8 @@ Do not treat `docs/agent-tournament.md`, current placeholder pages, or old comme
 - The approved runtime patch uses Next `16.2.11` and a temporary exact Next-scoped
   `sharp@0.35.3` override; `eslint-config-next` remains `16.2.10`. The strict clean install, native
   Next image smoke, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production
-  audit, and production build pass locally; hosted CI for the eventual committed patch head is
-  pending.
+  audit, and production build pass locally. Remediation commit `c8f7c57` passes hardened Ubuntu
+  24.04 CI run `29975232336`, including the Linux native image smoke and complete hosted gate.
 - Four documented moderate development-only Drizzle Kit/esbuild findings remain; production audit is clean.
 - Playwright app-shell suites pass locally and in the Ubuntu 24.04 hosted workflow against the production server.
 - The active branch adds local two-host hostile-output/capability isolation, converter-process, and

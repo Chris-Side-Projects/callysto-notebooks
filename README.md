@@ -12,10 +12,20 @@ The initial product is deliberately smaller than “GitHub for notebooks.” It 
 
 **Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green scaffold plus bounded feasibility proofs, not an MVP. M1 is currently NO-GO.**
 
-The baseline route/tooling repair and current PR #2 proof head `48805cc` pass their labeled local
+The baseline route/tooling repair and historical PR #2 proof head `48805cc` pass their labeled local
 checks and hardened Ubuntu 24.04 [Actions run
 29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710). The
-active M0 branch also has local two-host rich-output isolation, a local-only Cloudflare Worker
+later pre-remediation head `caee50b` failed [Actions run
+29972476045](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29972476045)
+only at the production audit after new Next.js/Sharp advisories appeared. The approved remediation
+working tree patches Next.js to `16.2.11` and temporarily pins Next's transitive Sharp to `0.35.3`;
+its strict clean install, live audits, dependency-tree assertion, native image-optimizer smoke, and
+complete local core/browser/PostgreSQL gate pass. Hosted CI remains pending for the eventual
+committed head. `eslint-config-next` stays at `16.2.10`. The Sharp override must remain until a
+stable Next.js release declares a patched range and the clean no-override install, live audits,
+optimizer smoke, complete local gate, and hosted CI all pass.
+
+The active M0 branch also has local two-host rich-output isolation, a local-only Cloudflare Worker
 contract, minimized converter-process and PostgreSQL fencing proofs, and an owner-approved
 strengthened converter run in ephemeral Vercel Sandbox compute. Its deterministic hostile fixture,
 non-execution/canary, isolation, and resource-limit slice passed; all reported cleanup completed and

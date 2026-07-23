@@ -112,10 +112,23 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 
 - M0.1: complete; D001-D024 and M0 authorization are recorded.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
-- M0.3/M0.4: complete and merged through PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
-  Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
-  baselines. Reconciled PR #2 proof head `48805cc` also passes its local core gate/audits and hosted
-  run `29846200710`.
+- M0.3/M0.4: the accepted baseline is complete and merged through PR #1. Historical local and Ubuntu
+  24.04 evidence passes strict clean install, exact Node/npm/Python, audits,
+  static/unit/integration/vector/docs checks, production build, and browser baselines. Reconciled PR
+  #2 proof head `48805cc` also passes its local core gate/audits and hosted run `29846200710`.
+  Pre-remediation head `caee50b` later failed hosted run `29972476045` only at the production audit
+  after new Next.js/Sharp advisories affected the lockfile. The owner-approved working-tree repair
+  patches Next.js `16.2.10` to `16.2.11` and applies a temporary Next-scoped exact `sharp@0.35.3`
+  override because stable Next.js still declares `sharp` as `^0.34.5`; `eslint-config-next` remains
+  `16.2.10`. Strict clean install (461 added/462 audited), zero-finding live production audit,
+  exactly four accepted moderate development-only findings in the live full audit, a single
+  `sharp@0.35.3` tree, and native image-optimizer smoke with libvips `8.18.3` pass locally. The
+  complete local gate also passes formatting, lint, typecheck, 18 unit, 21 integration, 42 Python
+  plus vectors, the 35-document contract, the Next.js `16.2.11` production build, PostgreSQL 17.9
+  proof 4/4 with clean shutdown, production Chromium E2E 2/2, Chromium/Firefox security 14/14, and
+  Chromium accessibility 4/4. Hosted CI for the eventual committed remediation head remains
+  pending. Remove the override only after stable Next.js declares a patched Sharp range and a clean
+  no-override install, live audits, optimizer smoke, complete local gate, and hosted CI all pass.
 - M0.5: local feasibility complete. A gated two-host shell/gateway, per-request nonce CSP, Ed25519
   capabilities, hostile HTML/SVG confinement, lazy refresh, preview/public expiry, and restriction
   bound pass 14 production-server cases in Chromium and Firefox. An eight-case local Cloudflare

@@ -9,7 +9,12 @@
   passed its deterministic hostile-fixture, non-execution/canary, isolation, and resource-limit
   slice, then reconciled to zero ephemeral resources. Its mutable live `dnf` bootstrap limits it to
   feasibility evidence, and its outer metadata result still rejects that runtime for the
-  credential-bearing orchestrator. Integrated staging and product providers remain unverified.
+  credential-bearing orchestrator. Pre-remediation branch head `caee50b` failed hosted run
+  `29972476045` only at the production audit after new Next.js/Sharp advisories appeared. The
+  approved dependency working tree passes its strict clean install, live audits, dependency-tree,
+  native image-optimizer smoke, and complete local core/browser/PostgreSQL gate; hosted CI for the
+  eventual committed head remains pending. Integrated staging and product providers remain
+  unverified.
 
 ## 1. Test objective
 
@@ -53,7 +58,7 @@ untrusted notebook
 | Accessibility | axe Playwright 4.12.1 serious/critical smoke baseline passes on four routes through WCAG 2.2 tags; manual conformance evidence remains. |
 | API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, an eight-case local Cloudflare Worker contract, and a ten-case Vercel harness contract within the passing 21-case integration suite, including repeated-cursor, page-count, and retained-item pagination bounds. |
 | Docs | Local-link, required-document, and trailing-whitespace checker passes. |
-| Supply chain | Exact lockfile, strict lifecycle-script denial, clean production audit, documented dev exception; secret/license/SBOM work remains. |
+| Supply chain | The approved exact Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` remediation passes strict clean install (461 added/462 audited), zero-finding live production audit, exactly four accepted moderate development-only findings in the live full audit, and `npm run test:next-sharp` for the one-version tree, install-script absence, native image load, libvips `8.18.3`, and PNG transform. The smoke is part of `npm run check`, so hosted CI must exercise the Linux native package. `eslint-config-next` remains `16.2.10`; hosted CI for the eventual committed head is pending. Secret/license/SBOM work remains. |
 
 Every claim remains environment-labeled. Current counts and commands are recorded in
 [`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md),
@@ -63,6 +68,19 @@ disposable-provider evidence cannot be generalized into staging or production ev
 strengthened run is bound to invocation base
 `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus harness SHA-256
 `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
+
+The exact `overrides.next.sharp` pin is a temporary compatibility/security exception, not a new
+direct application dependency. Keep it until a stable Next.js release declares a patched Sharp
+range and a clean no-override install resolves `sharp>=0.35.3`; before removal, rerun strict install,
+both live audits, the one-version dependency-tree assertion, image-optimizer smoke, the complete
+local gate, and hosted CI. A version declaration alone is not removal evidence.
+
+The remediated local matrix is green: `npm run check` passed formatting, lint, typecheck, 18 unit,
+21 integration, 42 Python plus shared vectors, the 35-document contract, and the Next.js `16.2.11`
+production build. The dedicated PostgreSQL 17.9 proof passed 4/4 and ended with
+`POSTGRES_STOPPED=yes`; production E2E passed 2/2 in Chromium, the security suite passed 14/14 in
+Chromium and Firefox, and accessibility passed 4/4 in Chromium. No listeners remain on ports
+`3100`, `3101`, or `55439`. These are local results, not hosted-CI, staging, or production evidence.
 
 ## 4. Assurance matrix
 

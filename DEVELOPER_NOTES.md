@@ -28,14 +28,16 @@ If documents disagree, stop and reconcile the higher-authority product/decision 
 
 The scaffold is green raw material plus bounded proofs, not a working MVP. The complete hosted
 baseline below remains tied to its exact 2026-07-21 commit and run. The strengthened
-launcher/harness tree and disposable-provider proof were reconciled on 2026-07-22; its complete
-local core gate passes, while hosted CI is still required for the eventual committed head.
+launcher/harness tree and disposable-provider proof were reconciled on 2026-07-22. The approved
+Next/sharp dependency repair passes its local gates, while hosted CI is still required for the
+eventual committed head.
 
 | Prior evidence | Result | Interpretation |
 |---|---|---|
-| Strict clean `npm ci` | Pass: 461 packages; no lifecycle script executed; no unreviewed scripts pending. | The exact lockfile and install-script policy are reproducible on the verified macOS arm64 runtime. |
+| Strict clean `npm ci` | Pass: 461 packages added and 462 audited; only the 4 accepted moderate development findings reported. | The patched exact lockfile is reproducible on the verified macOS arm64 runtime; sharp has no install script and the lifecycle-script denial remains in force. |
 | `npm run audit:prod` | Pass: zero vulnerabilities. | No known moderate-or-higher production finding at verification time. |
 | `npm run audit:all` | Pass at `high`; reports 4 moderate Drizzle Kit/esbuild findings. | Accepted development-only exception in `docs/DEPENDENCY_RISKS.md`; do not expose the affected dev server. |
+| `npm run test:next-sharp` | Local pass with `sharp@0.35.3` and libvips `8.18.3`; hosted execution pending. | Reproducible compatibility check for both gates, not an upstream compatibility guarantee. |
 | `npm run lint` / `npm run typecheck` | Pass. | Baseline static contract is green. |
 | Unit/integration | The strengthened working tree passes 18 unit and 21 integration cases, including two bounded-pagination regressions. | Includes repository, local Worker, Vercel harness, capability, authority, TTL, and tamper contracts; this is still not product-domain coverage. |
 | `npm run test:python` | 42 Python cases plus shared Node vectors pass under exact Python 3.14.6. | Includes exact launcher protocol validation, platform CA-store selection, pinned-image provenance, close-on-exec handling, direct-child environment/descriptor/sentinel evidence, and a transitive project-local converter-module audit. |
@@ -43,7 +45,7 @@ local core gate passes, while hosted CI is still required for the eventual commi
 | `npm run docs:check` | Pass across 35 Markdown files. | Restart, evidence, external-input, and security links are internally consistent. |
 | `npm run build` | Pass under exact Node 24.18.0/npm 11.16.0. | T001 build defect remains repaired; the build required normal outside-sandbox loopback process binding. |
 | Browser suites | Pass locally: 2 Chromium E2E, 14 Chromium/Firefox security, and 4 Chromium axe smoke cases. | T003 local two-host hostile-output/capability feasibility is proven; deployed content-domain behavior and manual accessibility certification remain open. |
-| GitHub Actions | Baseline `558a4cb` passed run `29780426457`; reconciled PR #2 proof head `48805cc` passed run `29846200710`. | The hardened Ubuntu 24.04 gate reproduces the current proof branch outside the development Mac; PR #2 remains draft and unmerged. |
+| Historical GitHub Actions | Baseline `558a4cb` passed run `29780426457`; reconciled PR #2 proof head `48805cc` passed run `29846200710`. | The hardened Ubuntu 24.04 gate reproduced those exact historical heads outside the development Mac; hosted CI for the remediated head is pending. PR #2 remains draft and unmerged. |
 | Disposable provider converter | The strengthened Vercel Sandbox converter slice passed its deterministic hostile fixture, non-execution/canary, isolation, and resource-limit cases; converter/bootstrap/snapshot cleanup reported complete and independent reconciliation found zero resources. | The mutable live `dnf` bootstrap makes this feasibility-only. The outer Sandbox remained TCP-reachable to link-local metadata, so Vercel is rejected for the secret-bearing orchestrator; T004 remains partial. |
 | Database migrations/product APIs/auth/storage | Absent. | Product implementation has not started and is not implied by the green scaffold. |
 | Staging/production | No live application, integrated staging, or production deployment exists. | An empty, unlinked `callysto-m0-proof` Vercel control project remains; ephemeral proof resources were cleaned. No Cloudflare Worker/R2 or Railway resource exists. |
@@ -108,7 +110,8 @@ Current exact baseline:
 
 - Node `24.18.0` and npm `11.16.0`;
 - Python `3.14.6` pinned and locally verified;
-- Next `16.2.10`, React/React DOM `19.2.7`, Drizzle ORM `0.45.2`, Drizzle Kit `0.31.10`;
+- Next `16.2.11`, React/React DOM `19.2.7`, Drizzle ORM `0.45.2`, Drizzle Kit `0.31.10`;
+- `eslint-config-next` `16.2.10`; the approved patch changes the runtime package only;
 - Vitest `4.1.10`, Playwright `1.61.1`, axe Playwright `4.12.1`, ESLint `9.39.5`, and TypeScript `5.9.3`;
 - `@vercel/sandbox` `2.8.0` as a development-only, wrapper-confined feasibility dependency;
 - no production Python dependency; the M0 proof intentionally uses the standard library.
@@ -117,6 +120,16 @@ Current exact baseline:
 `fsevents`, `sharp`, and `unrs-resolver`; locked prebuilt packages must satisfy the build or the gate
 fails visibly. Never use `--dangerously-allow-all-scripts`, `approve-scripts --all`, or
 `npm audit fix --force`.
+
+The existing Next-scoped PostCSS override is preserved. A temporary exact Next-scoped
+`sharp@0.35.3` override repairs
+[GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj) while stable Next
+`16.2.11` still declares `sharp@^0.34.5`. Sharp is Apache-2.0 licensed; the lock contains only sharp
+`0.35.3` and its matching native packages, and sharp has no install script. Because `0.35.3` is
+outside Next's declared range, retain the override only until stable Next declares `^0.35.3` or a
+later compatible range and the unoverridden graph passes the strict install, audits, native image
+smoke, complete local gate, and hosted CI. The exact rationale and removal contract are recorded in
+[`docs/DEPENDENCY_RISKS.md`](./docs/DEPENDENCY_RISKS.md).
 
 Do not add Auth.js, R2, PostgreSQL test containers, Markdown/sanitizer, `nbformat`, or `nbconvert`
 merely because the architecture mentions them. Add the smallest exact dependency only when the
@@ -178,6 +191,7 @@ npm run format:check        formatting check
 npm run typecheck           TypeScript check
 npm run test                JS/TS unit tests
 npm run test:integration    current repository contract tests
+npm run test:next-sharp     Next/Sharp lock, native-load, libvips, and PNG-transform check
 npm run test:postgres:proof proof-only PostgreSQL lease/generation cases; dedicated DB required
 npm run test:content-gateway:proof local Cloudflare Worker contract; no provider deployment
 npm run test:vercel-sandbox:contract validates the metered-proof wrapper contract without cloud use

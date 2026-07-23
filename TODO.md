@@ -1,7 +1,7 @@
 # Callysto active queue
 
 - Status: **MILESTONE 0 ACTIVE**
-- Last reconciled: 2026-07-22 22:32 -03 (2026-07-23T01:32Z)
+- Last reconciled: 2026-07-22; dependency remediation local-green, hosted CI pending
 - Complete sequence: [`PLAN.md`](./PLAN.md)
 - Rule: this file contains only work eligible to start next; it is not a second roadmap
 
@@ -48,7 +48,7 @@ Completion evidence:
 | ID | Work item | Dependency | Done when |
 |---|---|---|---|
 | T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T002 **COMPLETE — LOCAL + HOSTED CI 2026-07-20** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, browser suites, and the Ubuntu 24.04 workflow pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
+| T002 **BASELINE COMPLETE; REMEDIATION LOCAL-GREEN / HOSTED CI PENDING** | Pin runtimes and repair dependency/tooling baseline. | T000 | Historical acceptance remains recorded in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). Pre-remediation head `caee50b` failed hosted run `29972476045` at the production audit after new advisories appeared. The approved Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` remediation passes strict clean install, live audits, dependency-tree, native image smoke, complete local core/browser/PostgreSQL gate, and clean process shutdown; hosted CI for the eventual committed head is still required. |
 | T003 **COMPLETE — LOCAL FEASIBILITY 2026-07-20** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | The two-host browser proof passes 14 cases and the Worker source contract passes 8 local cases. Deployed Cloudflare/R2/CDN evidence remains a cloud gate. See [`docs/evidence/M0.5.md`](./docs/evidence/M0.5.md). |
 | T004 **PARTIAL — FENCING + STRENGTHENED PROVIDER SLICE; FULL DEPLOYED GATE OPEN** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | PostgreSQL fencing and Python/vector proofs pass locally/CI; the strengthened digest-bound synthetic converter slice passed in ephemeral Vercel compute and reconciled to zero resources. The full hostile/limit/failure matrix has not run, outer metadata stayed reachable, mutable live-`dnf` prevents an immutable-runtime claim, and a DB/R2-only orchestrator platform remains unselected. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
 | T005 **EXTERNAL INPUT REQUIRED** | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | Repository work is exhausted; 6–10 participants/8 notebooks still need real source-workflow interviews, reviewers, and the non-gameable calculation. |
@@ -68,8 +68,17 @@ Resolved in the recorded local, hosted-CI, or disposable-provider environments:
 
 - one canonical dynamic notebook route and one PostCSS configuration;
 - exact dependency/runtime declarations and strict install-script policy;
-- lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build;
-- current reconciled local counts: 18 unit, 19 integration, 41 Python, and 35 Markdown checks;
+- lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build
+  for their explicitly identified historical heads;
+- PR #2 proof-head counts: 18 unit, 19 integration, 41 Python, and 35 Markdown checks; the later
+  strengthened pre-remediation tree recorded 18 unit, 21 integration, 42 Python, and 35 Markdown
+  checks;
+- approved dependency-remediation checks: strict clean `npm ci` added 461 packages/audited 462,
+  live production audit zero, live full audit exactly four accepted moderate development-only
+  findings, only `sharp@0.35.3` in the dependency tree, native image-optimizer smoke passed with
+  libvips `8.18.3`, and the complete local gate passed formatting, lint, typecheck, 18 unit, 21
+  integration, 42 Python plus vectors, 35-document, Next.js production build, PostgreSQL 4/4,
+  production E2E 2/2, two-browser security 14/14, and accessibility 4/4;
 - local development and production-server Playwright baselines: canonical/invalid routes, exact
   application headers in Chromium/Firefox, and serious/critical axe smoke checks through WCAG 2.2;
 - local two-host app/content isolation, per-request nonce CSP, Ed25519 artifact capabilities,
@@ -85,6 +94,9 @@ Resolved in the recorded local, hosted-CI, or disposable-provider environments:
 
 Still open:
 
+- hosted-CI validation for the eventual committed Next.js `16.2.11` plus temporary Next-scoped
+  `sharp@0.35.3` remediation head; pre-remediation head `caee50b` failed hosted run `29972476045` at
+  the production audit, while the remediated local gate is green;
 - deployed content-origin/provider behavior and DB/R2-only orchestrator enforcement; the
   strengthened disposable nested converter synthetic slice passed, but the complete hostile/
   limit/failure matrix is open and outer metadata denial failed;
@@ -93,6 +105,11 @@ Still open:
   [`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).
 
 See [`CONTINUATION.md`](./CONTINUATION.md) for the exact restart sequence and why each step remains.
+
+The temporary Sharp override is removed only after a stable Next.js release declares a patched
+Sharp range and a clean no-override install resolves `sharp>=0.35.3` while the live audits,
+image-optimizer smoke, complete local gate, and hosted CI remain green. `eslint-config-next` stays
+at `16.2.10` during this runtime-only remediation.
 
 ## Completed documentation work
 

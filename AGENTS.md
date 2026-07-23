@@ -133,9 +133,24 @@ As of 2026-07-22:
 - T001 route/configuration repair and the complete local/hosted T002 acceptance gate were merged through PR #1;
 - the recorded baseline passed a strict clean install and production audit; four documented
   moderate development-only Drizzle Kit findings remain;
-- the 2026-07-22 working tree passes the current local core gate: formatting, lint, typecheck, 18
-  unit, 21 integration, 42 Python, 35-document, and production-build checks; the unchanged lockfile
-  retains the separately recorded strict-install and online-audit evidence;
+- the 2026-07-22 strengthened tree at pre-remediation head `caee50b` passed its local core gate, but
+  hosted run `29972476045` failed the production audit after new Next.js and Sharp advisories
+  affected the previously green lockfile;
+- the owner approved the narrow dependency remediation now in the working tree: Next.js `16.2.11`
+  plus a temporary Next-scoped exact `sharp@0.35.3` override because stable Next.js still declares
+  `sharp` as `^0.34.5`; `eslint-config-next` remains `16.2.10`;
+- the remediated working tree has a passing strict clean `npm ci` (461 packages added, 462 audited),
+  zero live production-audit findings, exactly the four accepted moderate development-only findings
+  in the live full audit, only `sharp@0.35.3` in the dependency tree, and a passing image-optimizer
+  smoke with libvips `8.18.3`;
+- the complete remediated local gate passes formatting, lint, typecheck, 18 unit, 21 integration, 42
+  Python plus vectors, the 35-document contract, the Next.js `16.2.11` production build, PostgreSQL
+  17.9 proof 4/4 with `POSTGRES_STOPPED=yes`, production Chromium E2E 2/2,
+  Chromium/Firefox security 14/14, and Chromium accessibility 4/4; hosted CI remains pending for
+  the eventual committed head;
+- remove the temporary Sharp override only after a stable Next.js release declares a patched Sharp
+  range and a clean no-override install resolves `sharp>=0.35.3` while the live audits,
+  image-optimizer smoke, complete local gate, and hosted CI remain green;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;
 - PR #2 proof head `48805cc` passed hardened Ubuntu 24.04 hosted CI run `29846200710`; the PR remains
@@ -157,8 +172,9 @@ As of 2026-07-22:
 - two pre-run local reconciliation exits 137 were macOS `EXC_GUARD` failures caused by closing
   Codex's guarded descriptor 3; the launcher now marks inherited descriptors close-on-exec, and
   pagination is bounded/time-limited with regression coverage;
-- the complete local core gate passes for the strengthened working tree; hosted CI still must pass
-  for the eventual committed head before merge;
+- the complete local gate passes for the remediated working tree; hosted CI must still pass for the
+  eventual committed head before merge, because historical green evidence does not satisfy that
+  current-head gate;
 - product migrations/APIs, real auth/storage/rendering, deployed converter/content isolation,
   staging, and production remain absent;
 - no live Callysto application is deployed; the only persistent new cloud record is an empty,

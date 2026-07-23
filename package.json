@@ -32,6 +32,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
+    "test:next-sharp": "node scripts/check-next-sharp-compat.mjs",
     "test:postgres:proof": "vitest run tests/postgres/lease-fencing-proof.test.ts",
     "test:e2e": "playwright test tests/e2e --project=chromium",
     "test:security": "CALLYSTO_PLAYWRIGHT_PRODUCTION=1 playwright test tests/security --project=chromium --project=firefox --workers=1",
@@ -41,11 +42,11 @@
     "audit:prod": "npm audit --omit=dev --audit-level=moderate",
     "audit:all": "npm audit --audit-level=high",
     "browser:install": "playwright install chromium firefox",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:integration && npm run test:python && npm run docs:check && npm run build"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:integration && npm run test:python && npm run test:next-sharp && npm run docs:check && npm run build"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
-    "next": "16.2.10",
+    "next": "16.2.11",
     "postgres": "3.4.9",
     "react": "19.2.7",
     "react-dom": "19.2.7"
@@ -70,7 +71,8 @@
   },
   "overrides": {
     "next": {
-      "postcss": "8.5.20"
+      "postcss": "8.5.20",
+      "sharp": "0.35.3"
     }
   },
   "allowScripts": {

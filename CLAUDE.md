@@ -1,6 +1,6 @@
 # CLAUDE.md — Callysto project context
 
-**Last reconciled:** 2026-07-20
+**Last reconciled:** 2026-07-22
 
 Follow [`AGENTS.md`](./AGENTS.md) for the complete contributor contract. This file is a concise orientation, not a competing source of truth.
 
@@ -48,7 +48,11 @@ Do not treat `docs/agent-tournament.md`, current placeholder pages, or old comme
 
 ## Current verified state
 
-- Strict clean install, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production audit, and production build pass locally.
+- The approved runtime patch uses Next `16.2.11` and a temporary exact Next-scoped
+  `sharp@0.35.3` override; `eslint-config-next` remains `16.2.10`. The strict clean install, native
+  Next image smoke, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production
+  audit, and production build pass locally; hosted CI for the eventual committed patch head is
+  pending.
 - Four documented moderate development-only Drizzle Kit/esbuild findings remain; production audit is clean.
 - Playwright app-shell suites pass locally and in the Ubuntu 24.04 hosted workflow against the production server.
 - The active branch adds local two-host hostile-output/capability isolation, converter-process, and

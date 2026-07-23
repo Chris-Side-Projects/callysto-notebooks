@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  collectBoundedPaginator,
   deleteSandboxAfterSnapshotCleanup,
   deleteSnapshotsAfterCreationAttempt,
   deleteVerifiedSandbox,
@@ -87,7 +88,7 @@ describe("Vercel Sandbox M0 proof harness", () => {
     );
     expect(proofScript).toContain("name: candidate.name");
     expect(proofScript).toContain(
-      "const projectSnapshots = await Snapshot.list(auth)",
+      "const projectSnapshots = await Snapshot.list({",
     );
     expect(proofScript).toContain(
       'reconcileStage = "assert-no-unowned-snapshots"',
@@ -97,10 +98,74 @@ describe("Vercel Sandbox M0 proof harness", () => {
       proofScript.indexOf("async function reconcileProofResources"),
     );
     expect(reconcileBody).not.toContain("snapshotId: candidate.id");
-    expect(proofScript).toContain(
-      "const sandboxAbsent = (await reconciledSandboxes.toArray()).length === 0",
-    );
+    expect(reconcileBody).not.toContain(".toArray()");
+    expect(proofScript).toContain("collectBoundedPaginator(");
     expect(proofScript).toContain("project_exclusive: true");
+  });
+
+  it("bounds provider pagination and rejects a repeated cursor", async () => {
+    const finite = {
+      async *pages() {
+        yield {
+          pagination: { count: 2, next: "cursor-a" },
+          sandboxes: [{ name: "first" }],
+        };
+        yield {
+          pagination: { count: 2, next: null },
+          sandboxes: [{ name: "second" }],
+        };
+      },
+    };
+    await expect(
+      collectBoundedPaginator<{ name: string }>(finite, "sandboxes"),
+    ).resolves.toEqual([{ name: "first" }, { name: "second" }]);
+
+    const repeated = {
+      async *pages() {
+        yield {
+          pagination: { count: 2, next: "cursor-a" },
+          snapshots: [{ id: "first" }],
+        };
+        yield {
+          pagination: { count: 2, next: "cursor-a" },
+          snapshots: [{ id: "second" }],
+        };
+      },
+    };
+    await expect(
+      collectBoundedPaginator<{ id: string }>(repeated, "snapshots"),
+    ).rejects.toThrow("PAGINATION_CURSOR_REPEATED");
+  });
+
+  it("bounds provider pagination pages and retained items", async () => {
+    const tooManyPages = {
+      async *pages() {
+        for (let page = 0; page < 17; page += 1) {
+          yield {
+            pagination: {
+              count: 17,
+              next: page === 16 ? null : `cursor-${page}`,
+            },
+            sandboxes: [],
+          };
+        }
+      },
+    };
+    await expect(
+      collectBoundedPaginator(tooManyPages, "sandboxes"),
+    ).rejects.toThrow("PAGINATION_PAGE_LIMIT_EXCEEDED");
+
+    const tooManyItems = {
+      async *pages() {
+        yield {
+          pagination: { count: 257, next: null },
+          snapshots: Array.from({ length: 257 }, (_, id) => ({ id })),
+        };
+      },
+    };
+    await expect(
+      collectBoundedPaginator(tooManyItems, "snapshots"),
+    ).rejects.toThrow("PAGINATION_ITEM_LIMIT_EXCEEDED");
   });
 
   it("refuses mismatched Sandbox identities before any destructive call", async () => {
@@ -163,7 +228,14 @@ describe("Vercel Sandbox M0 proof harness", () => {
         sourceSessionId: string;
         status: string;
       }>,
-    ) => ({ toArray: async () => values });
+    ) => ({
+      async *pages() {
+        yield {
+          pagination: { count: values.length, next: null },
+          snapshots: values,
+        };
+      },
+    });
     const get = vi.fn();
     const list = vi.fn().mockResolvedValue(
       paginator([

@@ -11,11 +11,11 @@ or project IDs.
 from __future__ import annotations
 
 import argparse
+import errno
 import hashlib
 import json
 import os
 import re
-import resource
 import ssl
 import stat
 import subprocess
@@ -249,6 +249,32 @@ def _read_token() -> str:
     return token
 
 
+def _mark_inherited_descriptors_close_on_exec() -> None:
+    try:
+        descriptor_names = os.listdir("/dev/fd")
+    except OSError as error:
+        raise LauncherError("PROCESS_BOUNDARY_INVALID") from error
+    descriptors = sorted(
+        {
+            int(name)
+            for name in descriptor_names
+            if name.isascii() and name.isdecimal() and int(name) >= 3
+        }
+    )
+    for descriptor in descriptors:
+        try:
+            if os.get_inheritable(descriptor):
+                os.set_inheritable(descriptor, False)
+            if os.get_inheritable(descriptor):
+                raise LauncherError("PROCESS_BOUNDARY_INVALID")
+        except OSError as error:
+            # The descriptor used internally to enumerate /dev/fd can disappear
+            # before inspection. A closed descriptor cannot cross exec.
+            if error.errno == errno.EBADF:
+                continue
+            raise LauncherError("PROCESS_BOUNDARY_INVALID") from error
+
+
 def _restrict_inherited_process_state() -> None:
     standard_input = os.open(os.devnull, os.O_RDONLY)
     try:
@@ -261,13 +287,7 @@ def _restrict_inherited_process_state() -> None:
     os.dup2(standard_error, 2)
     for descriptor in source_descriptors - {0, 2}:
         os.close(descriptor)
-    try:
-        soft_limit, _ = resource.getrlimit(resource.RLIMIT_NOFILE)
-    except (OSError, ValueError) as error:
-        raise LauncherError("PROCESS_BOUNDARY_INVALID") from error
-    if not isinstance(soft_limit, int) or soft_limit <= 3:
-        raise LauncherError("PROCESS_BOUNDARY_INVALID")
-    os.closerange(3, min(soft_limit, 1_048_576))
+    _mark_inherited_descriptors_close_on_exec()
 
 
 def _request(

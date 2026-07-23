@@ -19,6 +19,15 @@ type SnapshotListItem = {
   status: string;
 };
 
+type ProviderPage = {
+  pagination: unknown;
+  [key: string]: unknown;
+};
+
+type ProviderPaginator = {
+  pages(): AsyncIterable<ProviderPage>;
+};
+
 type SnapshotLike = {
   delete(): Promise<unknown>;
   snapshotId: string;
@@ -28,10 +37,80 @@ type SnapshotLike = {
 
 type SnapshotApi = {
   get(options: ProofAuth & { snapshotId: string }): Promise<SnapshotLike>;
-  list(options: ProofAuth & { name: string }): Promise<{
-    toArray(): Promise<SnapshotListItem[]>;
-  }>;
+  list(
+    options: ProofAuth & { name: string; signal: AbortSignal },
+  ): Promise<ProviderPaginator>;
 };
+
+const PROVIDER_LIST_TIMEOUT_MS = 20_000;
+const PROVIDER_PAGINATION_MAX_CURSOR_LENGTH = 2_048;
+const PROVIDER_PAGINATION_MAX_ITEMS = 256;
+const PROVIDER_PAGINATION_MAX_PAGES = 16;
+
+export function providerListSignal(): AbortSignal {
+  return AbortSignal.timeout(PROVIDER_LIST_TIMEOUT_MS);
+}
+
+export async function collectBoundedPaginator<T>(
+  paginator: ProviderPaginator,
+  itemsKey: string,
+): Promise<T[]> {
+  const items: T[] = [];
+  const seenCursors = new Set<string>();
+  let lastNext: string | null | undefined;
+  let pageCount = 0;
+  for await (const page of paginator.pages()) {
+    pageCount += 1;
+    if (pageCount > PROVIDER_PAGINATION_MAX_PAGES) {
+      throw new Error("PAGINATION_PAGE_LIMIT_EXCEEDED");
+    }
+    if (!page || typeof page !== "object") {
+      throw new Error("PAGINATION_PAGE_INVALID");
+    }
+    const pageItems = page[itemsKey];
+    const pagination = page.pagination;
+    const paginationCount =
+      pagination && typeof pagination === "object" && "count" in pagination
+        ? pagination.count
+        : null;
+    const paginationNext =
+      pagination && typeof pagination === "object" && "next" in pagination
+        ? pagination.next
+        : undefined;
+    if (
+      !Array.isArray(pageItems) ||
+      !pagination ||
+      typeof pagination !== "object" ||
+      typeof paginationCount !== "number" ||
+      !Number.isSafeInteger(paginationCount) ||
+      paginationCount < 0 ||
+      (paginationNext !== null && typeof paginationNext !== "string")
+    ) {
+      throw new Error("PAGINATION_PAGE_INVALID");
+    }
+    if (items.length + pageItems.length > PROVIDER_PAGINATION_MAX_ITEMS) {
+      throw new Error("PAGINATION_ITEM_LIMIT_EXCEEDED");
+    }
+    items.push(...(pageItems as T[]));
+    lastNext = paginationNext;
+    if (lastNext !== null) {
+      if (
+        !lastNext ||
+        lastNext.length > PROVIDER_PAGINATION_MAX_CURSOR_LENGTH
+      ) {
+        throw new Error("PAGINATION_CURSOR_INVALID");
+      }
+      if (seenCursors.has(lastNext)) {
+        throw new Error("PAGINATION_CURSOR_REPEATED");
+      }
+      seenCursors.add(lastNext);
+    }
+  }
+  if (pageCount === 0 || lastNext !== null) {
+    throw new Error("PAGINATION_INCOMPLETE");
+  }
+  return items;
+}
 
 function validResourceName(name: string): boolean {
   return /^callysto-m0-[a-z0-9-]{1,120}$/u.test(name);
@@ -164,10 +243,14 @@ export async function deleteVerifiedSnapshots({
       return false;
     }
 
-    const listed = await Snapshot.list({ ...auth, name });
-    const candidates = (await listed.toArray()).filter(
-      (candidate) => candidate.status === "created",
-    );
+    const listed = await Snapshot.list({
+      ...auth,
+      name,
+      signal: providerListSignal(),
+    });
+    const candidates = (
+      await collectBoundedPaginator<SnapshotListItem>(listed, "snapshots")
+    ).filter((candidate) => candidate.status === "created");
     if (
       observedSnapshot !== undefined &&
       !candidates.some(
@@ -209,10 +292,14 @@ export async function deleteVerifiedSnapshots({
     }
 
     await wait();
-    const reconciled = await Snapshot.list({ ...auth, name });
-    return !(await reconciled.toArray()).some(
-      (candidate) => candidate.status === "created",
-    );
+    const reconciled = await Snapshot.list({
+      ...auth,
+      name,
+      signal: providerListSignal(),
+    });
+    return !(
+      await collectBoundedPaginator<SnapshotListItem>(reconciled, "snapshots")
+    ).some((candidate) => candidate.status === "created");
   } catch {
     return false;
   }

@@ -6,10 +6,12 @@ import { setTimeout as delay } from "node:timers/promises";
 import { APIError, Sandbox, Snapshot } from "@vercel/sandbox";
 
 import {
+  collectBoundedPaginator,
   deleteSandboxAfterSnapshotCleanup,
   deleteSnapshotsAfterCreationAttempt,
   deleteVerifiedSandbox,
   deleteVerifiedSnapshots,
+  providerListSignal,
 } from "./m0-vercel-resource-cleanup.mts";
 
 /** @typedef {{projectId: string, teamId: string, token: string}} ProofAuth */
@@ -1490,8 +1492,14 @@ async function runOrchestratorProof(auth, retainedProjectState) {
 async function reconcileProofResources(auth, retainedProjectState) {
   let reconcileStage = "list-sandboxes";
   try {
-    const listedSandboxes = await Sandbox.list(auth);
-    const allSandboxes = await listedSandboxes.toArray();
+    const listedSandboxes = await Sandbox.list({
+      ...auth,
+      signal: providerListSignal(),
+    });
+    const allSandboxes = await collectBoundedPaginator(
+      listedSandboxes,
+      "sandboxes",
+    );
     if (
       allSandboxes.some(
         (candidate) => !candidate.name.startsWith("callysto-m0-"),
@@ -1510,10 +1518,11 @@ async function reconcileProofResources(auth, retainedProjectState) {
       const listedSnapshots = await Snapshot.list({
         ...auth,
         name: candidate.name,
+        signal: providerListSignal(),
       });
-      snapshotCount += (await listedSnapshots.toArray()).filter(
-        (snapshot) => snapshot.status === "created",
-      ).length;
+      snapshotCount += (
+        await collectBoundedPaginator(listedSnapshots, "snapshots")
+      ).filter((snapshot) => snapshot.status === "created").length;
       const snapshotsCleaned = await deleteExactSnapshots({
         auth,
         expectedSourceSessionId: candidate.currentSessionId,
@@ -1532,23 +1541,34 @@ async function reconcileProofResources(auth, retainedProjectState) {
     }
 
     reconcileStage = "list-snapshots";
-    const projectSnapshots = await Snapshot.list(auth);
-    const unownedCreatedSnapshots = (await projectSnapshots.toArray()).filter(
-      (candidate) => candidate.status === "created",
-    );
+    const projectSnapshots = await Snapshot.list({
+      ...auth,
+      signal: providerListSignal(),
+    });
+    const unownedCreatedSnapshots = (
+      await collectBoundedPaginator(projectSnapshots, "snapshots")
+    ).filter((candidate) => candidate.status === "created");
     if (unownedCreatedSnapshots.length !== 0) {
       reconcileStage = "assert-no-unowned-snapshots";
       throw new Error("failed:unowned-snapshot");
     }
     await delay(500);
     reconcileStage = "verify-sandboxes";
-    const reconciledSandboxes = await Sandbox.list(auth);
-    const sandboxAbsent = (await reconciledSandboxes.toArray()).length === 0;
+    const reconciledSandboxes = await Sandbox.list({
+      ...auth,
+      signal: providerListSignal(),
+    });
+    const sandboxAbsent =
+      (await collectBoundedPaginator(reconciledSandboxes, "sandboxes"))
+        .length === 0;
     reconcileStage = "verify-snapshots";
-    const reconciledSnapshots = await Snapshot.list(auth);
-    const snapshotAbsent = !(await reconciledSnapshots.toArray()).some(
-      (candidate) => candidate.status === "created",
-    );
+    const reconciledSnapshots = await Snapshot.list({
+      ...auth,
+      signal: providerListSignal(),
+    });
+    const snapshotAbsent = !(
+      await collectBoundedPaginator(reconciledSnapshots, "snapshots")
+    ).some((candidate) => candidate.status === "created");
     if (!sandboxCleanupSucceeded || !sandboxAbsent || !snapshotAbsent) {
       throw new ProofFailure("SANDBOX_CLEANUP_FAILED", false);
     }

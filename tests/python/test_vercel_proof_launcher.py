@@ -49,7 +49,7 @@ class VercelProofLauncherTests(unittest.TestCase):
         ]
         self.assertEqual(proxy_handlers, [])
 
-    def test_process_boundary_closes_inherited_descriptors(self) -> None:
+    def test_process_boundary_marks_inherited_descriptors_close_on_exec(self) -> None:
         program = """
 import importlib.util
 import os
@@ -65,9 +65,27 @@ module._restrict_inherited_process_state()
 try:
     os.fstat(descriptor)
 except OSError:
-    print("closed")
+    print("closed-before-exec")
+    raise SystemExit(0)
+if os.get_inheritable(descriptor):
+    print("still-inheritable")
+    raise SystemExit(0)
+child = '''
+import os
+import sys
+
+try:
+    os.fstat(int(sys.argv[1]))
+except OSError:
+    print("absent-after-exec")
 else:
-    print("open")
+    print("present-after-exec")
+'''
+os.execve(
+    sys.executable,
+    [sys.executable, "-I", "-B", "-c", child, str(descriptor)],
+    {"LANG": "C", "LC_ALL": "C", "PATH": "/usr/bin:/bin", "TZ": "UTC"},
+)
 """
         environment = {
             "LANG": "C",
@@ -86,7 +104,7 @@ else:
             timeout=10,
         )
         self.assertEqual(completed.returncode, 0)
-        self.assertEqual(completed.stdout, b"closed\n")
+        self.assertEqual(completed.stdout, b"absent-after-exec\n")
         self.assertEqual(completed.stderr, b"")
 
     def test_process_boundary_reopens_preclosed_standard_error(self) -> None:
@@ -120,6 +138,23 @@ else:
         )
         self.assertEqual(completed.returncode, 0)
         self.assertEqual(completed.stdout, b"open\n")
+
+    def test_process_boundary_fails_closed_when_inheritance_cannot_be_cleared(
+        self,
+    ) -> None:
+        launcher = _load_launcher()
+        with (
+            mock.patch.object(launcher.os, "listdir", return_value=["9"]),
+            mock.patch.object(launcher.os, "get_inheritable", return_value=True),
+            mock.patch.object(
+                launcher.os,
+                "set_inheritable",
+                side_effect=PermissionError("denied"),
+            ),
+            self.assertRaises(launcher.LauncherError) as raised,
+        ):
+            launcher._mark_inherited_descriptors_close_on_exec()
+        self.assertEqual(raised.exception.code, "PROCESS_BOUNDARY_INVALID")
 
     def test_node_runtime_is_fixed_and_digest_pinned(self) -> None:
         launcher = _load_launcher()

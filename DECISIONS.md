@@ -82,9 +82,19 @@ This is an ADR-lite record. The project owner approved D001-D024 in the Codex ta
 
 ## D013 — Deploy on the chosen boring stack
 
-- Status: **ACCEPTED — 2026-07-20**
+- Status: **ACCEPTED — 2026-07-20; COMPUTE PLACEMENT STILL OPEN**
 - Decision: Railway hosts web, orchestrator, and PostgreSQL only if Milestone 0 proves the required DB/R2 allowlist and credential-free no-network converter boundary. Cloudflare R2 stores incoming, accepted, recovery, normalized, and derived artifacts under separated credentials. Cloudflare serves the short-capability isolated content origin. GitHub Actions gates merges and deployments.
 - Why: These services are plausible for pilot scale, but provider convenience cannot override the converter or recovery boundary. If Railway cannot enforce it, move that boundary rather than adding broad infrastructure.
+- Evidence note — reconciled 2026-07-22: Railway compute fails the conditional platform test
+  because no provider-enforced destination allowlist is documented. The owner-approved strengthened
+  ephemeral Vercel proof passed a credential-free deterministic hostile-fixture,
+  non-execution/canary, isolation, and resource-limit converter slice inside nested Docker
+  `--network none`; all cleanup reported complete and independent reconciliation found zero
+  Sandbox/snapshot resources. Its live `dnf` bootstrap is mutable, so this is feasibility evidence,
+  not a certified runtime. Vercel's outer `deny-all` runtime still accepted TCP to link-local
+  metadata and is therefore rejected for the credential-bearing orchestrator under the current
+  invariant. This applies D013; it does not amend it or accept the proposed two-Sandbox topology.
+  Production orchestrator/control-plane placement remains unresolved and M1 remains gated.
 
 ## D014 — Treat the current UI as disposable reference material
 

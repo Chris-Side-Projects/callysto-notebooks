@@ -1,7 +1,7 @@
 # Callysto build plan
 
 - Status: **MILESTONE 0 AUTHORIZED — M1-M8 GATED**
-- Product stage: pre-build; an incomplete scaffold exists
+- Product stage: Milestone 0 feasibility; the product MVP is not implemented
 - Planning unit: one milestone must end in independently verifiable behavior
 - Product source of truth: [`PRODUCT_SPEC.md`](./PRODUCT_SPEC.md)
 - Technical source of truth: [`ARCHITECTURE.md`](./ARCHITECTURE.md)
@@ -108,18 +108,52 @@ M2 and the isolated Python renderer core in M3 can proceed in parallel after M1.
 | M0.11 | Resolve license and policy ownership. | M0.1 | Repository license, notebook-license menu, contributor terms, privacy/terms/AUP/copyright owners, and launch deadlines are recorded. |
 | M0.12 | Prove recovery objectives and operator bootstrap. | M0.3 | Provider topology demonstrates proposed DB RPO/RTO, separate accepted-original recovery copy/no-delete credentials, isolated restore, offline operator grant, recent reauth, and MFA operating rule—or owner explicitly changes the objectives. |
 
-#### M0 progress snapshot — 2026-07-20
+#### M0 progress snapshot — 2026-07-22
 
 - M0.1: complete; D001-D024 and M0 authorization are recorded.
 - M0.2: locally complete; the canonical route/configuration contract and production build pass.
-- M0.3/M0.4: complete on draft PR #1. Local and Ubuntu 24.04 CI pass strict clean install, exact
-  Node/npm/Python, audits, static/unit/integration/vector/docs checks, production build, and browser
-  baselines.
-- M0.5: application headers only; the real two-origin capability/isolation/revocation proof is open.
-- M0.6: exact cell-ID/default-deny conversion/SQLite fencing proof passes locally; PostgreSQL and
-  deployed secret/egress/sentinel evidence remain open.
+- M0.3/M0.4: the accepted baseline is complete and merged through PR #1. Historical local and Ubuntu
+  24.04 evidence passes strict clean install, exact Node/npm/Python, audits,
+  static/unit/integration/vector/docs checks, production build, and browser baselines. Reconciled PR
+  #2 proof head `48805cc` also passes its local core gate/audits and hosted run `29846200710`.
+  Pre-remediation head `caee50b` later failed hosted run `29972476045` only at the production audit
+  after new Next.js/Sharp advisories affected the lockfile. The owner-approved working-tree repair
+  patches Next.js `16.2.10` to `16.2.11` and applies a temporary Next-scoped exact `sharp@0.35.3`
+  override because stable Next.js still declares `sharp` as `^0.34.5`; `eslint-config-next` remains
+  `16.2.10`. Strict clean install (461 added/462 audited), zero-finding live production audit,
+  exactly four accepted moderate development-only findings in the live full audit, a single
+  `sharp@0.35.3` tree, and native image-optimizer smoke with libvips `8.18.3` pass locally. The
+  complete local gate also passes formatting, lint, typecheck, 18 unit, 21 integration, 42 Python
+  plus vectors, the 35-document contract, the Next.js `16.2.11` production build, PostgreSQL 17.9
+  proof 4/4 with clean shutdown, production Chromium E2E 2/2, Chromium/Firefox security 14/14, and
+  Chromium accessibility 4/4. Remediation commit `c8f7c57` also passes the complete hardened Ubuntu
+  24.04 gate in hosted run `29975232336`. Remove the override only after stable Next.js declares a
+  patched Sharp range and a clean no-override install, live audits, optimizer smoke, complete local
+  gate, and hosted CI all pass.
+- M0.5: local feasibility complete. A gated two-host shell/gateway, per-request nonce CSP, Ed25519
+  capabilities, hostile HTML/SVG confinement, lazy refresh, preview/public expiry, and restriction
+  bound pass 14 production-server cases in Chromium and Firefox. An eight-case local Cloudflare
+  Worker contract also passes; deployed hostname/R2/CDN evidence is still open.
+- M0.6: exact cell-ID/default-deny conversion, minimized secret-free child process, and SQLite plus
+  PostgreSQL 17.9 database-clock/`SKIP LOCKED`/generation fencing proofs pass locally and in hosted
+  CI. The owner-approved strengthened Vercel/nested-Docker converter replay passed its deterministic
+  hostile-fixture, non-execution/canary, isolation, and resource-limit slice; all reported cleanup
+  completed, and independent reconciliation found zero Sandboxes/snapshots. The run is bound to
+  invocation base `c2cdbac` plus harness SHA-256
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`. Its mutable live `dnf`
+  bootstrap limits this to feasibility evidence. The outer runtime still reaches link-local
+  metadata, so Vercel is rejected for the secret-bearing orchestrator; the exact DB/R2-only
+  orchestrator and integrated content/R2/recovery gates remain open.
 - M0.10: complete; four static responsive mockups were approved without amendment under D024.
-- M0.1a/M0.7-M0.9/M0.11-M0.12: no real participant/provider/staging/policy evidence yet.
+- M0.1a/M0.7-M0.9/M0.11-M0.12: repository analysis and input packets are exhausted, but no real
+  participant/provider/storage/recovery/policy evidence exists. One empty Vercel proof project
+  persists; there is no live staging/production application. Exact blockers are recorded in
+  [`docs/evidence/M0-gate-reconciliation.md`](./docs/evidence/M0-gate-reconciliation.md).
+
+**M1 decision — 2026-07-21: NO-GO.** M1 remains closed until the cohort/source choice,
+Cloudflare/R2 least privilege, deployed content gateway, metadata-safe DB/R2-only orchestrator,
+promotion/recovery, identity/contact/delivery, and policy ownership gates have environment-labeled
+evidence and the owner explicitly approves the reconciled gate.
 
 See [`CONTINUATION.md`](./CONTINUATION.md) and [`docs/evidence`](./docs/evidence/) for exact commands,
 environment labels, and the next sequence.
@@ -291,6 +325,8 @@ The following ideas require a new decision record and pilot evidence before ente
 5. Each milestone closes with a short evidence report linking tests, screenshots where relevant, migrations, runbooks, and unresolved risks.
 6. Claims use evidence labels: `verified locally`, `verified in staging`, `verified in production`, or `not yet verified`.
 
-## 11. Owner approval request
+## 11. Owner approval record
 
-Approve this plan only if it matches the intended product. Approval means “begin M0,” not “build every later feature regardless of what the pilot teaches.” The M8 decision gate is intentionally binding.
+The owner approved this plan on 2026-07-20. That approval means “complete T001-T010/M0,” not “build
+every later feature regardless of what the pilot teaches.” M1-M8 remain unauthorized, and the M8
+proceed/iterate/stop-or-reframe decision gate remains binding.

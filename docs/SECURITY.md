@@ -93,6 +93,20 @@ Boundary rules:
 - The converter receives only server-selected local input/output paths. It has no public listener, database/storage/session credential, cloud metadata route, or network namespace.
 - Operator access is an authorization role, not a hidden route or UI condition.
 
+M0 evidence reconciled on 2026-07-22 established a passing strengthened disposable-provider
+converter slice behind an independent nested Docker `--network none` layer. The deterministic
+hostile fixture, non-execution marker, no-network canary, isolation, and resource-limit cases passed;
+converter/bootstrap/snapshot cleanup reported complete, and an independent reconciliation found
+zero ephemeral Sandboxes/snapshots. The live `dnf` bootstrap is mutable, so the result is
+feasibility evidence rather than security certification. The outer provider `deny-all` runtime
+still accepted TCP to `169.254.169.254:80`; it is not approved to hold orchestrator credentials.
+Railway compute also remains rejected for lack of a documented destination allowlist. Two local
+pre-run exit-137 failures were traced to macOS `EXC_GUARD` when the launcher tried to close Codex's
+guarded descriptor 3; inherited descriptors are now marked close-on-exec, and provider pagination
+is bounded/time-limited with regression tests. These findings preserve, rather than weaken, the
+normative metadata and DB/R2-only requirements. See
+[`docs/evidence/M0-vercel-sandbox-converter.md`](./evidence/M0-vercel-sandbox-converter.md).
+
 ## 5. Threat model and control ownership
 
 | ID | Threat | Impact | Prevent | Detect | Contain/recover | Owner |
@@ -104,7 +118,7 @@ Boundary rules:
 | T04 | Base64/output/resource bomb | Conversion outage, cost amplification | Source, cell, decoded-output, render-size, CPU, memory, disk, and time limits; inspect lengths before decode | Resource metrics and named limit failures | Kill task, terminal failure, restrict repeated abuse | Renderer |
 | T05 | Cross-account object access or mutation | Private draft disclosure, artifact corruption | Ownership-scoped queries, server-side role checks, opaque IDs, no bucket listing | Authorization matrix and IDOR tests, audit events | Revoke sessions, restrict affected records, repair pointers from audit | Web/data |
 | T06 | Presigned upload misuse/overwrite | Storage abuse or accepted-byte substitution | Unique incoming key, short expiry/quotas; server streams/hash-verifies and promotes local bytes to a different no-overwrite accepted key; draft-generation CAS | Incoming overwrite and promotion tests; lifecycle/anomaly metrics | Revoke credentials if systemic; clean incoming objects; accepted objects stay unchanged | Web/storage/orchestrator |
-| T07 | Digest or version substitution | Broken citation and review integrity | Server-computed digest; accepted/recovery copies; immutable versions; fenced render; expected digest compare at publish | Integrity reconciliation, stale-attempt tests, download fixtures | Restrict pointer, retain accepted/recovery original, activate audited safe render revision | Web/orchestrator/data |
+| T07 | Digest, index, or version substitution | Broken citation and review integrity | Server-computed digest; accepted/recovery copies; immutable versions; fenced render; expected digest compare at publish; signed exact content-index digest with content-addressed lookup and gateway re-hash before parse | Integrity reconciliation, stale-attempt, index-substitution, and download fixtures | Restrict pointer, retain accepted/recovery original, activate audited safe render revision | Web/orchestrator/data/gateway |
 | T07A | Stale lease or superseded draft commits | Wrong preview/version content | Lease token/generation fencing plus active upload/draft-generation CAS and immutable artifact identity | Fence-rejection metrics and race tests | Reject promotion, orphan-sweep derived artifacts | Orchestrator/data |
 | T07B | Restricted artifact persists in cache | Ongoing platform delivery after moderation | Signed ≤60-second capabilities, no-store user artifacts, no new issuance after restriction | Revocation-latency browser/gateway tests | Disable issuance, rotate signing key only for systemic compromise | Web/gateway |
 | T08 | OAuth callback or account-link attack | Account takeover or identity confusion | State, PKCE where supported, exact redirect URIs, secure host-only cookies, explicit second-provider flow, no email-only merge | Callback/link collision security events | Revoke sessions/provider tokens, unlink only through verified recovery | Auth |
@@ -269,16 +283,26 @@ The application must not parse or query rich-output iframe DOM. Cell ID, output 
 
 Hostile or complex per-cell output is served through a gateway on a dedicated, cookieless origin. The gateway:
 
-- accepts a signed short-lived capability containing only an opaque render-revision/output ID, audience, and expiry; resolves it through a server-controlled manifest; and never accepts arbitrary R2 keys, paths, MIME values, or filenames;
+- accepts a signed short-lived capability containing only an opaque render-revision/output ID, exact content-index SHA-256, audience, and expiry; derives the content-addressed index key, verifies those exact bytes before parsing, requires canonical compact JSON with at most one terminal LF so duplicate keys and parser-differential encodings fail closed, resolves the output through that server-controlled index, and never accepts arbitrary R2 keys, paths, MIME values, or filenames;
 - has read-only access to the render prefix, no bucket listing, and no access to originals, normalized notebooks, sessions, OAuth, or the database beyond the minimal manifest lookup design;
 - returns only expected content types and rejects missing, revoked, restricted, malformed, or path-traversal requests;
 - sends a restrictive CSP with `default-src 'none'`, inline styles only, data/blob images/media as approved, no forms or base URL, and `frame-ancestors` restricted to approved Callysto origins;
 - sends `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy`, and `Cache-Control: private, no-store` for pilot user artifacts; and
 - never uses an `r2.dev` public bucket endpoint for production.
 
-Public capabilities expire within 60 seconds. Draft-preview capabilities expire within 5 minutes and bind the exact authorized draft generation and render revision. The application issues/refreshes them on demand per output after rechecking current activation and restriction state; manifests never carry a long-lived bearer URL. The cookieless gateway receives neither session cookie nor database credential. A restriction stops new capability issuance; already issued capabilities bound the maximum new-request revocation delay. The system never claims to recall bytes already downloaded.
+Public capabilities expire within 60 seconds. Draft-preview capabilities expire within 5 minutes and bind the exact authorized draft generation and render revision. Both audiences bind the exact immutable content-index digest, and the gateway rejects an expiry beyond its own current time plus the audience maximum even when the signed issuer time is within the allowed clock-skew window. The application issues/refreshes them on demand per output after rechecking current activation, restriction state, and active render index; manifests never carry a long-lived bearer URL. The cookieless gateway receives neither session cookie nor database credential. A restriction stops new capability issuance; already issued capabilities bound the maximum new-request revocation delay. The system never claims to recall bytes already downloaded.
 
 The application embeds each rich-output artifact in its own iframe with a `sandbox` attribute that omits `allow-scripts`, `allow-same-origin`, `allow-forms`, `allow-popups`, and every top-navigation permission. The iframe receives no credentialed requests or application tokens. Unsupported HTML, SVG, widget, multimedia, or MIME ambiguity produces a safe placeholder rather than a weaker sandbox.
+
+Local M0 evidence on 2026-07-20 implements this boundary behind a disabled-by-default proof gate:
+the application and content gateway bind distinct loopback addresses and the app-host gateway alias
+is unreachable; Ed25519 separates issuance from verification; the gateway starts under an exact
+public-verifier environment allowlist; the v2 verifier requires canonical exact-field tokens, active
+render/draft authority, the exact checked-in artifact-index digest, and gateway-current-time
+60/300-second maxima; and 14 optimized-server cases pass across
+Chromium and Firefox. This is synthetic local feasibility evidence only. It does not satisfy the
+staging launch gates below or prove Cloudflare/R2, a registrable content domain, CDN cache behavior,
+key rotation, or provider propagation latency. See [`docs/evidence/M0.5.md`](./evidence/M0.5.md).
 
 Raw notebook downloads pass through an authorized gateway and are returned as `application/octet-stream`, `Content-Disposition: attachment`, and `X-Content-Type-Options: nosniff`. User filenames are safely encoded and never become response-header injection.
 
@@ -466,7 +490,7 @@ Before any invited publisher can upload:
 - direct-upload expiry, incoming-key overwrite before/after finalize, server hash/promotion, no-overwrite behavior, promotion crash, quota, and lifecycle cleanup are verified against the staging bucket;
 - a real-browser suite proves app-owned cell anchors/comments work without cross-origin DOM access; rich-output scripts do not run; each iframe has an opaque origin; application cookies/storage are unreadable; top navigation/forms/popups are blocked; sanitizer/MIME-confusion fixtures stay outside the app DOM; and arbitrary external requests fail;
 - deployed tests prove orchestrator DB/R2-only egress and converter no network/metadata/credentials, no kernel/code execution, non-root/read-only/bounded runtime, fencing, and temp cleanup;
-- public/raw/restricted object access, short preview/public capability expiry, no-store behavior, ≤60-second revocation, and content-gateway traversal tests pass;
+- public/raw/restricted object access, short preview/public capability expiry against gateway current time, signed content-index digest/substitution rejection, no-store behavior, ≤60-second revocation, and content-gateway traversal tests pass;
 - application-origin CSP/cookie/security headers and content-origin headers pass in real browsers;
 - verified private-email onboarding plus notification fencing, preference race, provider outage, crash-after-provider-acceptance, and dead-letter drills pass;
 - database PITR plus separately credentialed accepted-original recovery copy/restore exercise passes without changing visibility or digests and meets approved RPO/RTO;

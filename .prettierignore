@@ -6,3 +6,4 @@ test-results/
 docs/
 work/
 package-lock.json
+contracts/m0-isolation-proof-content-index.json

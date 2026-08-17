@@ -1,0 +1,30 @@
+{
+  "schema_version": "callysto.converter-source-provenance.v0",
+  "sources": [
+    {
+      "asset_name": "alpine-minirootfs-3.24.1-x86_64.tar.gz",
+      "asset_url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/x86_64/alpine-minirootfs-3.24.1-x86_64.tar.gz",
+      "kind": "base_rootfs",
+      "license": "package-specific SPDX licenses recorded by Alpine package metadata",
+      "license_source": "https://pkgs.alpinelinux.org/packages?branch=v3.24&arch=x86_64",
+      "platform": "linux-x86_64-musl",
+      "publisher": "Alpine Linux",
+      "release": "3.24.1",
+      "sha256": "41f73e3cf5fa919b8aa5ca6b30dc48f0da2720776d7423e2a7748211456fe081",
+      "upstream_digest_source": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/x86_64/alpine-minirootfs-3.24.1-x86_64.tar.gz.sha256"
+    },
+    {
+      "asset_name": "cpython-3.14.6+20260623-x86_64-unknown-linux-musl-install_only_stripped.tar.gz",
+      "asset_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20260623/cpython-3.14.6%2B20260623-x86_64-unknown-linux-musl-install_only_stripped.tar.gz",
+      "kind": "python_runtime",
+      "license": "MPL-2.0 build project; CPython and bundled components retain upstream licenses",
+      "license_source": "https://github.com/astral-sh/python-build-standalone/blob/main/LICENSE",
+      "platform": "linux-x86_64-musl",
+      "publisher": "Astral python-build-standalone",
+      "release": "20260623",
+      "sha256": "f25064ecb3b07cfe2440b178e72001cf1e0d69a5e53625ca3a32b7ae4e2fdcc6",
+      "upstream_digest_source": "https://api.github.com/repos/astral-sh/python-build-standalone/releases/tags/20260623"
+    }
+  ],
+  "verified_at": "2026-07-21"
+}

@@ -10,9 +10,39 @@ The initial product is deliberately smaller than “GitHub for notebooks.” It 
 
 ## Status
 
-**Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green local scaffold plus feasibility proofs, not an MVP.**
+**Product/specification approved on 2026-07-20. Milestone 0 is active; M1-M8 remain gated. The repository is a green scaffold plus bounded feasibility proofs, not an MVP. M1 is currently NO-GO.**
 
-The baseline route/tooling repair now builds and passes local core and application-shell browser checks. Publishing, review APIs, authentication, storage, real rendering, provider integrations, staging, and deployment do not exist and must not be inferred from the pages or mockups.
+The baseline route/tooling repair and historical PR #2 proof head `48805cc` pass their labeled local
+checks and hardened Ubuntu 24.04 [Actions run
+29846200710](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29846200710). The
+later pre-remediation head `caee50b` failed [Actions run
+29972476045](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29972476045)
+only at the production audit after new Next.js/Sharp advisories appeared. The approved remediation
+working tree patches Next.js to `16.2.11` and temporarily pins Next's transitive Sharp to `0.35.3`;
+its strict clean install, live audits, dependency-tree assertion, native image-optimizer smoke, and
+complete local core/browser/PostgreSQL gate pass. Remediation commit `c8f7c57` also passes every
+step in hardened Ubuntu 24.04 [Actions run
+29975232336](https://github.com/Chris-Side-Projects/callysto-notebooks/actions/runs/29975232336),
+including Linux-native Sharp loading. `eslint-config-next` stays at `16.2.10`. The Sharp override
+must remain until a stable Next.js release declares a patched range and the clean no-override
+install, live audits, optimizer smoke, complete local gate, and hosted CI all pass.
+
+The active M0 branch also has local two-host rich-output isolation, a local-only Cloudflare Worker
+contract, minimized converter-process and PostgreSQL fencing proofs, and an owner-approved
+strengthened converter run in ephemeral Vercel Sandbox compute. Its deterministic hostile fixture,
+non-execution/canary, isolation, and resource-limit slice passed; all reported cleanup completed and
+an independent reconcile found zero Sandbox/snapshot resources. This remains feasibility-only
+because its live `dnf` bootstrap is mutable. It does not complete T004: the outer Sandbox still
+allowed link-local metadata TCP access, the credential-bearing orchestrator remains unselected, and
+the DB/R2-only orchestrator plus integrated content/R2/recovery gates remain open. Draft PR #2
+remains open and unmerged.
+
+No live Callysto application is deployed. The only persistent new cloud record is an empty,
+unlinked Vercel proof project; every ephemeral proof Sandbox and snapshot was cleaned. No
+Cloudflare Worker/R2 bucket, Railway service/database, integrated staging environment, or production
+environment exists. Publishing, review APIs, authentication, storage, provider integrations, and a
+production renderer remain absent and must not be inferred from CI, the proof page, the parked
+domain, or the mockups.
 
 ## Documentation map
 
@@ -26,13 +56,15 @@ Read these in order:
 6. [`ARCHITECTURE.md`](./ARCHITECTURE.md) — system boundaries, data model, failures, and deployment.
 7. [`docs/SECURITY.md`](./docs/SECURITY.md) — threat model, controls, incident posture, and security gates.
 8. [`PLAN.md`](./PLAN.md) — ordered implementation milestones and approval gates.
-9. [`docs/TEST_PLAN.md`](./docs/TEST_PLAN.md) — verification contract.
-10. [`TODO.md`](./TODO.md) — the short operational queue.
+9. [`TODO.md`](./TODO.md) — the short operational queue.
+10. [`docs/TEST_PLAN.md`](./docs/TEST_PLAN.md) — verification contract.
 11. [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md) — current baseline and operating contract.
 12. [`docs/PLANNING_REVIEW.md`](./docs/PLANNING_REVIEW.md) — strategic, design, and engineering review record.
 13. [`docs/RESEARCH_NOTES.md`](./docs/RESEARCH_NOTES.md) — primary sources, inferences, and open validation questions.
 14. [`AGENTS.md`](./AGENTS.md) and [`CODING.md`](./CODING.md) — contributor and implementation rules.
 15. [`CONTRIBUTING.md`](./CONTRIBUTING.md) — contribution boundaries.
+16. [`docs/evidence/M0-gate-reconciliation.md`](./docs/evidence/M0-gate-reconciliation.md) — current seven-workstream gate and explicit M1 NO-GO.
+17. [`docs/VPS_CREDENTIAL_HANDOFF.md`](./docs/VPS_CREDENTIAL_HANDOFF.md) — hidden-prompt credential intake without disclosure.
 
 ## Proposed pilot
 
@@ -51,6 +83,6 @@ The owner approved D001-D024 and authorized T001-T010/Milestone 0 on 2026-07-20.
 
 ## Project
 
-- Domain: [callysto.io](https://callysto.io)
+- Domain: [callysto.io](https://callysto.io) — registered and parked; no application is deployed there.
 - Repository: `Chris-Side-Projects/callysto-notebooks`
 - Platform-code license: awaiting owner/legal approval; Apache-2.0 is the current recommendation, separate from notebook content licenses.

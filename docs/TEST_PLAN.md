@@ -3,7 +3,18 @@
 - Status: **APPROVED VALIDATION CONTRACT — M0 HARNESS ACTIVE**
 - Scope: invite-only publishing pilot
 - Requirement sources: `PRODUCT_SPEC.md`, `UX_SPEC.md`, `ARCHITECTURE.md`, `docs/SECURITY.md`
-- Current implementation status: local and hosted Linux core/application-shell browser harnesses pass; PostgreSQL, staging, content-isolation, and provider suites remain
+- Current implementation status: local core, PostgreSQL fencing, converter-process, two-host
+  content-isolation, and local Worker contracts pass; PR #2 proof head `48805cc` passes hosted
+  Ubuntu run `29846200710`. The owner-approved strengthened disposable-provider converter replay
+  passed its deterministic hostile-fixture, non-execution/canary, isolation, and resource-limit
+  slice, then reconciled to zero ephemeral resources. Its mutable live `dnf` bootstrap limits it to
+  feasibility evidence, and its outer metadata result still rejects that runtime for the
+  credential-bearing orchestrator. Pre-remediation branch head `caee50b` failed hosted run
+  `29972476045` only at the production audit after new Next.js/Sharp advisories appeared. The
+  approved dependency working tree passes its strict clean install, live audits, dependency-tree,
+  native image-optimizer smoke, and complete local core/browser/PostgreSQL gate. Remediation commit
+  `c8f7c57` passes the same complete matrix in hardened Ubuntu run `29975232336`. Integrated staging
+  and product providers remain unverified.
 
 ## 1. Test objective
 
@@ -31,6 +42,9 @@ untrusted notebook
 - Synthetic notebooks prove plumbing and security behavior, not scientific reproducibility.
 - A mock provider does not verify real OAuth, R2 headers, Cloudflare isolation, email delivery, Railway deployment, or restore behavior.
 - Every launch claim links to current evidence by environment and commit.
+- Evidence labels are `verified locally`, `verified in hosted CI`, `verified in disposable provider
+  proof`, `verified in staging`, `verified in production`, or `not verified`. A disposable provider
+  proof is not staging.
 
 ## 3. Toolchain status
 
@@ -38,17 +52,35 @@ untrusted notebook
 |---|---|
 | TypeScript unit/baseline | Vitest 4.1.10; utility and repository-contract suites pass locally. |
 | React/UI | No component-test library yet; select only when an active M0 proof needs it. |
-| Database/integration | No PostgreSQL harness yet; SQLite is proof-only reference semantics. |
-| Python | Standard-library `unittest` proof passes under exact local Python 3.14.6; deployed converter isolation is separate. |
-| Browser/E2E/security | Playwright 1.61.1 local app-shell baseline passes in development and production-server modes; hostile cross-origin T003 suite remains. |
+| Database/integration | A dedicated-loopback PostgreSQL 17.9 proof covers DB-clock leases, `SKIP LOCKED`, expiry/reclaim, token/generation, stale completion, duplicate completion, and draft replacement; it is not a product migration. |
+| Python | 42 standard-library cases pass under exact local Python 3.14.6, including platform CA-store selection without ambient proxy inheritance and close-on-exec handling for inherited guarded descriptors. The strengthened real Vercel/nested-Docker converter slice passed as bounded provider feasibility only; the credential-bearing orchestrator remains unproven. |
+| Browser/E2E/security | Playwright 1.61.1 app-shell baselines pass; 14 production-server security cases across Chromium/Firefox cover exact headers plus the gated two-host hostile-output/capability lifecycle proof. |
 | Accessibility | axe Playwright 4.12.1 serious/critical smoke baseline passes on four routes through WCAG 2.2 tags; manual conformance evidence remains. |
-| API contracts | Proposed render-manifest JSON schema plus shared Python/Node cell-ID vectors. |
+| API contracts | Proposed render-manifest JSON schema, shared Python/Node cell-ID vectors, an eight-case local Cloudflare Worker contract, and a ten-case Vercel harness contract within the passing 21-case integration suite, including repeated-cursor, page-count, and retained-item pagination bounds. |
 | Docs | Local-link, required-document, and trailing-whitespace checker passes. |
-| Supply chain | Exact lockfile, strict lifecycle-script denial, clean production audit, documented dev exception; secret/license/SBOM work remains. |
+| Supply chain | The approved exact Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` remediation passes strict clean install (461 added/462 audited), zero-finding live production audit, exactly four accepted moderate development-only findings in the live full audit, and `npm run test:next-sharp` for the one-version tree, install-script absence, native image load, libvips `8.18.3`, and PNG transform. Remediation commit `c8f7c57` passes the complete hardened Ubuntu gate in run `29975232336`, including the Linux native package. `eslint-config-next` remains `16.2.10`. Secret/license/SBOM work remains. |
 
 Every claim remains environment-labeled. Current counts and commands are recorded in
-[`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md); deployment proofs cannot be replaced by the
-local harness.
+[`docs/evidence/M0.2-M0.4.md`](./evidence/M0.2-M0.4.md),
+[`docs/evidence/M0.5.md`](./evidence/M0.5.md), [`docs/evidence/M0.6.md`](./evidence/M0.6.md), and
+[`docs/evidence/M0-vercel-sandbox-converter.md`](./evidence/M0-vercel-sandbox-converter.md);
+disposable-provider evidence cannot be generalized into staging or production evidence. The
+strengthened run is bound to invocation base
+`c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus harness SHA-256
+`3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`.
+
+The exact `overrides.next.sharp` pin is a temporary compatibility/security exception, not a new
+direct application dependency. Keep it until a stable Next.js release declares a patched Sharp
+range and a clean no-override install resolves `sharp>=0.35.3`; before removal, rerun strict install,
+both live audits, the one-version dependency-tree assertion, image-optimizer smoke, the complete
+local gate, and hosted CI. A version declaration alone is not removal evidence.
+
+The remediated local matrix is green: `npm run check` passed formatting, lint, typecheck, 18 unit,
+21 integration, 42 Python plus shared vectors, the 35-document contract, and the Next.js `16.2.11`
+production build. The dedicated PostgreSQL 17.9 proof passed 4/4 and ended with
+`POSTGRES_STOPPED=yes`; production E2E passed 2/2 in Chromium, the security suite passed 14/14 in
+Chromium and Firefox, and accessibility passed 4/4 in Chromium. No listeners remain on ports
+`3100`, `3101`, or `55439`. These are local results, not hosted-CI, staging, or production evidence.
 
 ## 4. Assurance matrix
 
@@ -58,7 +90,7 @@ local harness.
 | Roles/ownership | full decision table | ownership-scoped queries | denied UI/API journeys | operator invitation drill |
 | Upload/integrity | validation/advisory digest | finalize/generation/fake promotion | progress/retry/reconnect | real R2 expiry/overwrite/server hash/no-overwrite promotion |
 | Notebook validation | Python fixtures | job-to-state contract | named failure UI | orchestrator/converter resource limits |
-| Non-execution | converter fixture | orchestrator/converter contract | sentinel/canary absence | deployed DB/R2-only orchestrator + no-network converter proof |
+| Non-execution | converter fixture | orchestrator/converter contract | sentinel/canary absence | strengthened marker/canary/isolation/resource-limit slice passed in disposable provider proof; mutable bootstrap, DB/R2-only orchestrator, and remaining integrated failure/retry evidence still required |
 | Cell manifest | schema and stable IDs | TS/Python contract | anchors/outline/selection | representative real notebooks |
 | Rich-output isolation | MIME policy | artifact/gateway contract | hostile cross-origin suite | real Cloudflare headers/origins |
 | Publication/versioning | domain transitions | concurrent transactions | preview/publish/version switch | production-disabled smoke |
@@ -200,7 +232,8 @@ Run against an ephemeral PostgreSQL database with actual migrations.
 - no overwrite of accepted/recovery original or published source record;
 - ready state never references missing artifact;
 - orphan-derived-object cleanup excludes published/original objects;
-- content gateway maps only manifest-authorized opaque output IDs;
+- content gateway maps only manifest-authorized opaque output IDs, derives the content-addressed index key from the signed digest, and re-hashes exact index bytes before parsing;
+- replacing an index at the signed key or publishing a different index under a new digest cannot make an existing capability serve substituted bytes;
 - restricted/revoked output returns neutral response; short capability expires; direct old URL cannot bypass issuance/restriction.
 
 ### Contract boundaries
@@ -215,6 +248,11 @@ Run against an ephemeral PostgreSQL database with actual migrations.
 
 Run the application and content gateway on genuinely distinct local/staging origins. A different port alone is useful for origin behavior but staging must prove the deployed cookie/domain configuration.
 
+The current local proof uses application host `127.0.0.1` and content host `localhost`, with the
+gateway bound to loopback. This distinguishes host-only cookies and origin authority without
+claiming a registrable-domain or CDN result. Its synthetic route/API is disabled unless the M0 proof
+harness explicitly enables it.
+
 For every hostile fixture, assert:
 
 - no `alert`, script marker, event handler, form submission, popup, download, or top navigation;
@@ -225,7 +263,8 @@ For every hostile fixture, assert:
 - application and content CSP, cookie scope, `nosniff`, referrer, permissions, no-store, and frame-ancestor headers match policy;
 - malformed manifest/output identifiers cannot traverse or expose another artifact;
 - draft-preview capability cannot expose another draft/generation and expires within 5 minutes;
-- public capability expires within 60 seconds; restriction stops new issuance and reload/direct-artifact requests within the measured SLO; already loaded/downloaded bytes are not falsely claimed recalled;
+- public capability expiry is no later than gateway current time plus 60 seconds, including at the allowed issuer clock-skew boundary; restriction stops new issuance and reload/direct-artifact requests within the measured SLO; already loaded/downloaded bytes are not falsely claimed recalled;
+- public and preview capabilities bind the server-authoritative exact content-index digest; issuer URLs work directly against the gateway, while index replacement, same-key byte substitution, duplicate JSON keys, and non-canonical encodings fail before artifact lookup;
 - a long notebook left open beyond 60 seconds can request a later in-viewport output through the on-demand public issuance path, while a newly restricted or revoked output fails closed without page-position loss;
 - restore or safe render-revision activation issues only the intended new capability and discloses regeneration;
 - raw notebook is downloaded as an attachment, never navigated inline.

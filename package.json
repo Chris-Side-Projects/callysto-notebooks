@@ -21,6 +21,9 @@
   },
   "scripts": {
     "dev": "next dev",
+    "proof:m0": "node scripts/m0-proof-server.mjs",
+    "test:content-gateway:proof": "vitest run tests/integration/m0-cloudflare-content-gateway-contract.test.ts",
+    "test:vercel-sandbox:contract": "vitest run tests/integration/vercel-sandbox-proof-contract.test.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
@@ -29,19 +32,21 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
+    "test:next-sharp": "node scripts/check-next-sharp-compat.mjs",
+    "test:postgres:proof": "vitest run tests/postgres/lease-fencing-proof.test.ts",
     "test:e2e": "playwright test tests/e2e --project=chromium",
-    "test:security": "playwright test tests/security --project=chromium --project=firefox",
+    "test:security": "CALLYSTO_PLAYWRIGHT_PRODUCTION=1 playwright test tests/security --project=chromium --project=firefox --workers=1",
     "test:a11y": "playwright test tests/a11y --project=chromium",
     "test:python": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=python python3 -m unittest discover -s tests/python -v && node tests/python/cell_id_vectors.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "audit:prod": "npm audit --omit=dev --audit-level=moderate",
     "audit:all": "npm audit --audit-level=high",
     "browser:install": "playwright install chromium firefox",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:integration && npm run test:python && npm run docs:check && npm run build"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:integration && npm run test:python && npm run test:next-sharp && npm run docs:check && npm run build"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
-    "next": "16.2.10",
+    "next": "16.2.11",
     "postgres": "3.4.9",
     "react": "19.2.7",
     "react-dom": "19.2.7"
@@ -52,6 +57,7 @@
     "@types/node": "24.13.3",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
+    "@vercel/sandbox": "2.8.0",
     "autoprefixer": "10.5.4",
     "drizzle-kit": "0.31.10",
     "esbuild": "0.28.1",
@@ -65,7 +71,8 @@
   },
   "overrides": {
     "next": {
-      "postcss": "8.5.20"
+      "postcss": "8.5.20",
+      "sharp": "0.35.3"
     }
   },
   "allowScripts": {

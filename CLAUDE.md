@@ -1,6 +1,6 @@
 # CLAUDE.md — Callysto project context
 
-**Last reconciled:** 2026-07-20
+**Last reconciled:** 2026-07-22
 
 Follow [`AGENTS.md`](./AGENTS.md) for the complete contributor contract. This file is a concise orientation, not a competing source of truth.
 
@@ -14,7 +14,7 @@ It is not currently a working product. The repository contains a locally green N
 
 **Milestone 0 is active. Repair/proof work and approved development dependencies are allowed; M1-M8 product features, production provisioning, and deployment are not.**
 
-T000 was approved on 2026-07-20. T001 and T002 are complete on draft PR #1; later product milestones remain gated. See [`CONTINUATION.md`](./CONTINUATION.md) before any new work.
+T000 was approved on 2026-07-20. T001 and T002 were merged through PR #1; later product milestones remain gated. See [`CONTINUATION.md`](./CONTINUATION.md) before any new work.
 
 ## Proposed pilot boundaries
 
@@ -48,9 +48,18 @@ Do not treat `docs/agent-tournament.md`, current placeholder pages, or old comme
 
 ## Current verified state
 
-- Strict clean install, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production audit, and production build pass locally.
+- The approved runtime patch uses Next `16.2.11` and a temporary exact Next-scoped
+  `sharp@0.35.3` override; `eslint-config-next` remains `16.2.10`. The strict clean install, native
+  Next image smoke, lint, typecheck, unit/integration/exact-Python/vector/docs checks, production
+  audit, and production build pass locally. Remediation commit `c8f7c57` passes hardened Ubuntu
+  24.04 CI run `29975232336`, including the Linux native image smoke and complete hosted gate.
 - Four documented moderate development-only Drizzle Kit/esbuild findings remain; production audit is clean.
 - Playwright app-shell suites pass locally and in the Ubuntu 24.04 hosted workflow against the production server.
-- Staging, providers, migrations, real product APIs, content-origin isolation, and deployment remain unverified.
+- The active branch adds local two-host hostile-output/capability isolation, converter-process, and
+  PostgreSQL fencing proofs; proof head `48805cc` passes hosted Ubuntu run `29846200710`.
+- No Callysto cloud deployment was found. Staging/providers, migrations, real product APIs, and
+  deployed content/converter isolation remain unverified. The shared root-only VPS Cloudflare
+  bundle is rejected for deployment; dedicated management and separate primary/recovery R2
+  identities remain absent.
 
 See [`CONTINUATION.md`](./CONTINUATION.md) and [`DEVELOPER_NOTES.md`](./DEVELOPER_NOTES.md) for the evidence boundary and exact restart sequence.

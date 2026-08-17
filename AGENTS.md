@@ -4,7 +4,7 @@ These instructions apply to every human or automated contributor working in this
 
 ## Current phase
 
-**Milestone 0 is active. M1-M8 are not authorized.**
+**Milestone 0 is active. M1-M8 are not authorized. M1 is currently NO-GO.**
 
 The repository contains a locally green Next.js scaffold, local feasibility proofs, and an approved product/build specification. It is not a working MVP. The owner approved T000 on 2026-07-20; only T001-T010/Milestone 0 work named in `TODO.md` is currently permitted.
 
@@ -61,6 +61,10 @@ If any condition is false, stop and ask for the missing decision. Do not “get 
 - Never render notebook-controlled HTML with application-origin authority.
 - Never weaken iframe sandbox/CSP, sanitizer, capability expiry/no-store, lease fence, draft-generation CAS, or recovery-copy policy to make a fixture display.
 - Never expose R2 credentials, arbitrary keys, presigned URLs, OAuth tokens, raw email, session data, notebook source, or comment bodies in logs.
+- For credentials already stored on the VPS, use the global `use-vps-secrets-safely` skill and
+  `docs/VPS_CREDENTIAL_HANDOFF.md`. Paste a Cloudflare token only after the hidden
+  `Callysto Cloudflare token:` prompt appears; never paste it into script text or replace the literal
+  `$CALLYSTO_CF_TOKEN` variable reference.
 - All mutations need server-side authentication/authorization, schema validation, rate limits, and CSRF posture appropriate to the framework.
 - Ownership-scoped database queries are required; UI visibility is not authorization.
 - Security boundary changes require updates to `ARCHITECTURE.md`, `docs/SECURITY.md`, and hostile-content browser tests.
@@ -124,14 +128,62 @@ A task is complete only when:
 
 ## Known current baseline
 
-As of 2026-07-20:
+As of 2026-07-22:
 
-- T001 route/configuration repair and the complete local/hosted T002 acceptance gate pass on draft PR #1;
-- a strict clean install and production audit pass; four documented moderate development-only Drizzle Kit findings remain;
-- unit, repository-contract, exact-Python proof, cell-ID vector, documentation, typecheck, lint, and production-build checks pass locally;
+- T001 route/configuration repair and the complete local/hosted T002 acceptance gate were merged through PR #1;
+- the recorded baseline passed a strict clean install and production audit; four documented
+  moderate development-only Drizzle Kit findings remain;
+- the 2026-07-22 strengthened tree at pre-remediation head `caee50b` passed its local core gate, but
+  hosted run `29972476045` failed the production audit after new Next.js and Sharp advisories
+  affected the previously green lockfile;
+- the owner approved the narrow dependency remediation now in the working tree: Next.js `16.2.11`
+  plus a temporary Next-scoped exact `sharp@0.35.3` override because stable Next.js still declares
+  `sharp` as `^0.34.5`; `eslint-config-next` remains `16.2.10`;
+- the remediated working tree has a passing strict clean `npm ci` (461 packages added, 462 audited),
+  zero live production-audit findings, exactly the four accepted moderate development-only findings
+  in the live full audit, only `sharp@0.35.3` in the dependency tree, and a passing image-optimizer
+  smoke with libvips `8.18.3`;
+- the complete remediated local gate passes formatting, lint, typecheck, 18 unit, 21 integration, 42
+  Python plus vectors, the 35-document contract, the Next.js `16.2.11` production build, PostgreSQL
+  17.9 proof 4/4 with `POSTGRES_STOPPED=yes`, production Chromium E2E 2/2,
+  Chromium/Firefox security 14/14, and Chromium accessibility 4/4;
+- remediation commit `c8f7c57` passed hardened Ubuntu 24.04 CI run `29975232336`, including the
+  zero-finding production audit, accepted four-moderate full audit, scripted Linux-native
+  Sharp/libvips transform, PostgreSQL proof, browser, security, accessibility, and cleanup steps;
+- remove the temporary Sharp override only after a stable Next.js release declares a patched Sharp
+  range and a clean no-override install resolves `sharp>=0.35.3` while the live audits,
+  image-optimizer smoke, complete local gate, and hosted CI remain green;
 - local development/production-server browser baselines and the hardened SHA-pinned Ubuntu 24.04 CI
   workflow pass for baseline commit `558a4cb`;
-- migrations, product APIs, real auth/storage/rendering, staging, and deployment evidence are absent;
-- `CONTINUATION.md` is the restart authority for the pull-request branch and exact next step.
+- PR #2 proof head `48805cc` passed hardened Ubuntu 24.04 hosted CI run `29846200710`; the PR remains
+  draft and unmerged;
+- the active proof branch adds a passing local two-host nonce-CSP/Ed25519/hostile-output suite in
+  Chromium and Firefox, a local-only Cloudflare Worker contract, a minimized converter child
+  process, and real local PostgreSQL fencing;
+- the owner-approved strengthened converter proof passed its deterministic hostile-fixture,
+  non-execution/canary, isolation, and resource-limit matrix slice in ephemeral Vercel Sandbox
+  compute; converter/bootstrap/snapshot cleanup all reported complete, and independent post-run
+  reconciliation found zero Sandbox/snapshot resources;
+- the proof is bound to invocation base `c2cdbac2f4f0d4cb0155941f29b8e76a5360f206` plus
+  working-tree hardening with harness SHA-256
+  `3da94b2033bd4556a0eb49586c22c30ff85f9efd6289e73aba4745c3deac27d3`; it remains
+  feasibility-only because the live `dnf` bootstrap is mutable;
+- the outer metadata-denial assertion still failed, the credential-bearing orchestrator remains
+  unselected, and the exact DB/R2-only orchestrator plus content/R2/recovery and remaining integrated
+  matrix are open, so T004 is not complete;
+- two pre-run local reconciliation exits 137 were macOS `EXC_GUARD` failures caused by closing
+  Codex's guarded descriptor 3; the launcher now marks inherited descriptors close-on-exec, and
+  pagination is bounded/time-limited with regression coverage;
+- the complete local and hosted gates pass for remediation commit `c8f7c57`; PR #2 remains draft
+  and unmerged;
+- product migrations/APIs, real auth/storage/rendering, deployed converter/content isolation,
+  staging, and production remain absent;
+- no live Callysto application is deployed; the only persistent new cloud record is an empty,
+  unlinked Vercel proof project, while Cloudflare Worker/R2 and Railway resources are absent;
+- dedicated Cloudflare and separate primary/recovery R2 identities, Railway spend/credentials, and
+  the external T005/T007/T010 inputs are absent;
+- all ephemeral provider-proof resources were cleaned, independent reconciliation found zero
+  Sandboxes/snapshots, and no proof process should remain running;
+- `CONTINUATION.md` is the restart authority for the active Milestone 0 branch and exact next step.
 
 Repair these through approved Milestone 0 tasks. Never hide them by lowering checks.

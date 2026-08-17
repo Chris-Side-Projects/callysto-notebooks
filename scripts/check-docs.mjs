@@ -6,6 +6,7 @@ const ignoredDirectories = new Set([
   ".git",
   ".next",
   "node_modules",
+  "output",
   "test-results",
 ]);
 const required = [

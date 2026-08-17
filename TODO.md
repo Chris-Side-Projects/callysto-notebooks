@@ -1,7 +1,7 @@
 # Callysto active queue
 
 - Status: **MILESTONE 0 ACTIVE**
-- Last reconciled: 2026-07-20
+- Last reconciled: 2026-07-22; dependency remediation local + hosted green
 - Complete sequence: [`PLAN.md`](./PLAN.md)
 - Rule: this file contains only work eligible to start next; it is not a second roadmap
 
@@ -48,38 +48,65 @@ Completion evidence:
 | ID | Work item | Dependency | Done when |
 |---|---|---|---|
 | T001 **COMPLETE — LOCAL 2026-07-20** | Repair conflicting scaffold routes/configuration. | T000 | Route/configuration contract and production build pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T002 **COMPLETE — LOCAL + HOSTED CI 2026-07-20** | Pin runtimes and repair dependency/tooling baseline. | T000 | Strict clean install, exact Python 3.14.6, core gate, browser suites, and the Ubuntu 24.04 workflow pass; evidence: [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). |
-| T003 **PARTIAL LOCAL PROOF** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | Application headers and a header test exist; real two-origin hostile-browser/capability/expiry/restriction proof remains. |
-| T004 **PARTIAL LOCAL PROOF** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | Local converter/vector/SQLite cases pass; PostgreSQL and deployed egress/secret/sentinel evidence remain. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
-| T005 | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | 6–10 participants/8 notebooks have source-workflow evidence; decision and affected docs are reconciled before ingestion code. |
+| T002 **COMPLETE — REMEDIATION LOCAL + HOSTED CI 2026-07-22** | Pin runtimes and repair dependency/tooling baseline. | T000 | Historical acceptance remains recorded in [`docs/evidence/M0.2-M0.4.md`](./docs/evidence/M0.2-M0.4.md). Pre-remediation head `caee50b` failed hosted run `29972476045` at the production audit after new advisories appeared. Exact remediation commit `c8f7c57` uses Next.js `16.2.11` plus temporary Next-scoped `sharp@0.35.3` and passes strict clean install, audits, native smoke, complete local gate, and hardened Ubuntu run `29975232336`. |
+| T003 **COMPLETE — LOCAL FEASIBILITY 2026-07-20** | Prove application/content headers, app-owned cell shell, output isolation, on-demand short capabilities, and revocation SLO. | T002 | The two-host browser proof passes 14 cases and the Worker source contract passes 8 local cases. Deployed Cloudflare/R2/CDN evidence remains a cloud gate. See [`docs/evidence/M0.5.md`](./docs/evidence/M0.5.md). |
+| T004 **PARTIAL — FENCING + STRENGTHENED PROVIDER SLICE; FULL DEPLOYED GATE OPEN** | Prove fenced orchestrator plus credential-free no-network converter and exact cell-ID vectors. | T002 | PostgreSQL fencing and Python/vector proofs pass locally/CI; the strengthened digest-bound synthetic converter slice passed in ephemeral Vercel compute and reconciled to zero resources. The full hostile/limit/failure matrix has not run, outer metadata stayed reachable, mutable live-`dnf` prevents an immutable-runtime claim, and a DB/R2-only orchestrator platform remains unselected. See [`docs/evidence/M0.6.md`](./docs/evidence/M0.6.md). |
+| T005 **EXTERNAL INPUT REQUIRED** | Recruit/interview candidate cohort and select one ingestion source using the documented rule. | T000 | Repository work is exhausted; 6–10 participants/8 notebooks still need real source-workflow interviews, reviewers, and the non-gameable calculation. |
 | T006 | Prove incoming-object promotion and draft-generation integrity for the selected source path. | T002, T005 | Server stream/hash, distinct no-overwrite accepted key, overwrite/retry/crash/stale-generation tests pass against staging storage. |
-| T007 | Prove GitHub/ORCID, verified private email, additive roles/operator bootstrap, and fenced transactional delivery. | T002 | Provider/linking/contact/reauth, preference race, provider-accept crash, and dead-letter evidence recorded. |
+| T007 **EXTERNAL INPUT REQUIRED** | Prove GitHub/ORCID, verified private email, additive roles/operator bootstrap, and fenced transactional delivery. | T002 | The exact provider/owner matrix exists; real apps, identities, email decisions, sender/DNS, operators, and staging exercises remain absent. |
 | T008 | Prove database/object recovery topology and objectives. | T002 | PITR meets approved database RPO/RTO; separately credentialed published-original recovery meets the approved RPO (proposed RPO 0) and preserves restrictions/digests. |
 | T009 **COMPLETE — OWNER APPROVED 2026-07-20** | Produce and approve responsive mockups. | T000 | Homepage, desktop review, mobile inline discussion, and draft failure/processing views in [`docs/design/m0`](./docs/design/m0/) were approved without amendment under D024. |
-| T010 | Resolve repository/content licensing and policy owners. | T000 | Decisions, owners, and pre-launch deadlines are documented. |
+| T010 **EXTERNAL OWNER/APPROVER INPUT REQUIRED** | Resolve repository/content licensing and policy owners. | T000 | The complete decision matrix exists; actual decisions, owners, approvers, and pre-launch deadlines remain absent. |
 
-Do not open M1 tasks until the Milestone 0 gate in `PLAN.md` is green.
+**M1 NO-GO — REAFFIRMED 2026-07-22.** Do not open M1 tasks until every blocked Milestone 0 row in
+[`docs/evidence/M0-gate-reconciliation.md`](./docs/evidence/M0-gate-reconciliation.md) is green and
+the owner explicitly approves the gate.
 
 ## Current evidence boundary
 
-Resolved locally:
+Resolved in the recorded local, hosted-CI, or disposable-provider environments:
 
 - one canonical dynamic notebook route and one PostCSS configuration;
 - exact dependency/runtime declarations and strict install-script policy;
-- lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build;
+- lint, formatting, typecheck, unit/integration/Python/vector/doc checks, production audit, and build
+  for their explicitly identified historical heads;
+- PR #2 proof-head counts: 18 unit, 19 integration, 41 Python, and 35 Markdown checks; the later
+  strengthened pre-remediation tree recorded 18 unit, 21 integration, 42 Python, and 35 Markdown
+  checks;
+- approved dependency-remediation checks: strict clean `npm ci` added 461 packages/audited 462,
+  live production audit zero, live full audit exactly four accepted moderate development-only
+  findings, only `sharp@0.35.3` in the dependency tree, native image-optimizer smoke passed with
+  libvips `8.18.3`, and the complete local gate passed formatting, lint, typecheck, 18 unit, 21
+  integration, 42 Python plus vectors, 35-document, Next.js production build, PostgreSQL 4/4,
+  production E2E 2/2, two-browser security 14/14, and accessibility 4/4;
 - local development and production-server Playwright baselines: canonical/invalid routes, exact
   application headers in Chromium/Firefox, and serious/critical axe smoke checks through WCAG 2.2;
-- local proof-only cell-ID, non-execution/default-deny conversion, and stale-worker fencing semantics;
+- local two-host app/content isolation, per-request nonce CSP, Ed25519 artifact capabilities,
+  hostile-output confinement, lazy refresh, and bounded restriction behavior in Chromium/Firefox;
+- local proof-only cell-ID/default-deny conversion plus a minimized child-process boundary and real
+  PostgreSQL database-clock/`SKIP LOCKED`/lease-generation fencing;
+- strengthened disposable Vercel converter proof on the digest-bound synthetic fixture: literal
+  non-execution marker, controlled zero-hit canary, inherited-descriptor, deterministic retry,
+  nested isolation, input/harness identity, and zero-resource reconciliation passed; the outer
+  metadata probe remained reachable and Docker 25.0.14 came from mutable live `dnf`;
+- reconciled PR #2 proof head `48805cc` passes hardened Ubuntu 24.04 hosted run `29846200710`;
 - owner-approved responsive product-demonstration mockups.
 
 Still open:
 
-- review/merge of draft PR [#1](https://github.com/Chris-Side-Projects/callysto-notebooks/pull/1); T002 acceptance evidence itself is complete;
-- real content-origin/capability isolation and deployed converter/egress proof;
+- deployed content-origin/provider behavior and DB/R2-only orchestrator enforcement; the
+  strengthened disposable nested converter synthetic slice passed, but the complete hostile/
+  limit/failure matrix is open and outer metadata denial failed;
 - migrations, application APIs, authentication, storage, staging, production, and provider evidence;
-- cohort/source choice and legal/policy ownership.
+- cohort/source choice and legal/policy ownership; exact missing inputs are recorded in
+  [`docs/evidence/M0-cloud-and-external-gates.md`](./docs/evidence/M0-cloud-and-external-gates.md).
 
 See [`CONTINUATION.md`](./CONTINUATION.md) for the exact restart sequence and why each step remains.
+
+The temporary Sharp override is removed only after a stable Next.js release declares a patched
+Sharp range and a clean no-override install resolves `sharp>=0.35.3` while the live audits,
+image-optimizer smoke, complete local gate, and hosted CI remain green. `eslint-config-next` stays
+at `16.2.10` during this runtime-only remediation.
 
 ## Completed documentation work
 

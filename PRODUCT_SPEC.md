@@ -304,22 +304,23 @@ The pilot cannot open until all gates are green:
 9. Review assignment and transactional notification delivery are exercised in staging, including provider outage and duplicate-event behavior.
 10. Incoming-object overwrite, stale-attempt fencing, draft replacement, preview/on-demand capability expiry, render-revision, and restriction/no-store tests pass in the deployed topology.
 
-## 12. Open approval choices
+## 12. Approval record
 
-These choices are intentionally not hidden in implementation details:
+On 2026-07-20 the owner accepted the choices below through D001-D024. The exact rationale and any
+conditional feasibility gates remain authoritative in [`DECISIONS.md`](./DECISIONS.md).
 
-1. Approve contextual comments as part of the MVP rather than Phase 2.
-2. Approve invite-only publishing for the pilot.
-3. Approve the Milestone 0 cohort-source audit and the 80% decision rule for direct upload versus exact GitHub commit import; only one path will be built.
-4. Approve GitHub + ORCID as pilot identity providers, with the documented GitHub-only fallback if ORCID is blocked.
-5. Approve mandatory content isolation and the purchase/provisioning of a separate content origin.
-6. Approve the proposed initial file limits.
-7. Approve requiring an explicit notebook license and commission the policy/legal work before public launch.
-8. Approve minimal transactional review email while deferring a general notification center.
-9. Approve reviewer-controlled resolution, owner `addressed` state, and the 15-minute comment edit window.
-10. Approve permanently frozen public handles/slugs after first publication.
-11. Approve one clearly labeled static homepage product demonstration before real pilot data exists.
-12. Approve no notebook execution and no author-reported/reproducibility badge in the pilot.
-13. Approve incoming-to-accepted promotion, explicit draft/render-revision models, fenced jobs/generations, short on-demand capabilities/no-store, and a separate accepted-original recovery copy as mandatory boundaries.
-14. Approve verified private contact and additive, non-possessory publisher/operator capabilities, including the publisher-revocation ownership rules.
-15. Approve or amend the pilot success gates and proposed database/object recovery objectives.
+1. Contextual comments are part of the MVP rather than Phase 2.
+2. Publishing is invite-only for the pilot.
+3. The Milestone 0 cohort-source audit uses the 80% rule to select direct upload or exact GitHub commit import; only one path will be built.
+4. GitHub + ORCID are the pilot identity-provider direction, with the documented GitHub-only fallback if ORCID is blocked.
+5. Content isolation and a separately provisioned content origin are mandatory.
+6. The initial file limits are accepted as M0 values subject to corpus and provider proof.
+7. Every notebook requires an explicit license, and policy/legal work must finish before public launch.
+8. The pilot includes minimal transactional review email and defers a general notification center.
+9. Resolution is reviewer-controlled; owners use `addressed`; comments have a 15-minute edit window.
+10. Public handles/slugs are permanently frozen after first publication.
+11. One clearly labeled static homepage product demonstration may exist before real pilot data.
+12. The pilot has no notebook execution and no author-reported/reproducibility badge.
+13. Incoming-to-accepted promotion, explicit draft/render-revision models, fenced jobs/generations, short on-demand capabilities/no-store, and a separate accepted-original recovery copy are mandatory boundaries.
+14. Private contact is verified; publisher/operator capabilities are additive and non-possessory, including after publisher revocation.
+15. The pilot success gates and proposed database/object recovery objectives are accepted subject to the explicit M0 provider proof.
